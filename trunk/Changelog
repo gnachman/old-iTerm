@@ -11,7 +11,7 @@
 	* Fixed "get contents" script support.
 	* Put in a warning when enabling "Send Input to all sessions".
 	* Encoding list in drop-down menu is sorted.
-	* Added support to specify path to nested bookmark.
+	* Added support to specify path to nested bookmark in AppleScript.
 
 2005-3-11	fabian
 
