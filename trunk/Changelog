@@ -1,6 +1,6 @@
 2005-4-03	ujwal
 	* Fixed "get contents" script support.
-
+	* Put in a warning when enabling "Send Input to all sessions".
 
 2005-3-11	fabian
 

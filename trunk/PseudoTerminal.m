@@ -1,5 +1,5 @@
 // -*- mode:objc -*-
-// $Id: PseudoTerminal.m,v 1.302 2004-11-21 00:41:03 ujwal Exp $
+// $Id: PseudoTerminal.m,v 1.303 2005-04-03 19:50:30 ujwal Exp $
 //
 /*
  **  PseudoTerminal.m
@@ -989,7 +989,16 @@ static unsigned int windowPositions[CACHED_WINDOW_POSITIONS];
 
 - (void) setSendInputToAllSessions: (BOOL) flag
 {
+#if DEBUG_METHOD_TRACE
+	NSLog(@"%s", __PRETTY_FUNCTION__);
+#endif
+	
     sendInputToAllSessions = flag;
+	if(flag)
+		NSRunInformationalAlertPanel(NSLocalizedStringFromTableInBundle(@"Warning!",@"iTerm", [NSBundle bundleForClass: [self class]], @"Warning"),
+									 NSLocalizedStringFromTableInBundle(@"Keyboard input will be sent to all sessions in this terminal.",@"iTerm", [NSBundle bundleForClass: [self class]], @"Keyboard Input"), 
+									 NSLocalizedStringFromTableInBundle(@"OK",@"iTerm", [NSBundle bundleForClass: [self class]], @"Profile"), nil, nil);
+	
 }
 
 - (IBAction) toggleInputToAllSessions: (id) sender
@@ -998,7 +1007,7 @@ static unsigned int windowPositions[CACHED_WINDOW_POSITIONS];
     NSLog(@"%s(%d):-[PseudoTerminal toggleInputToAllSessions:%@]",
 		  __FILE__, __LINE__, sender);
 #endif
-    sendInputToAllSessions = !sendInputToAllSessions;
+	[self setSendInputToAllSessions: ![self sendInputToAllSessions]];
     
     // cause reloading of menus
     [[iTermController sharedInstance] setCurrentTerminal: self];

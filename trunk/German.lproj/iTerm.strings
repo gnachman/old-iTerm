@@ -176,3 +176,9 @@
 /* Bookmarks */
 "Show Bookmarks" = "Lesezeichen einblenden";
 "Hide Bookmarks"="Lesezeichen ausblenden";
+
+/* Warning */
+"Warning!" = "Warning!";
+
+/* Keyboard Input */
+"Keyboard input will be sent to all sessions in this terminal." = "Keyboard input will be sent to all sessions in this terminal.";
