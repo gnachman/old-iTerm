@@ -37,6 +37,10 @@ static NSStringEncoding const *encodingList = nil;
 {
 	NSEnumerator *profileEnumerator;
 	NSString *aString;
+	NSMutableArray *anUnsortedArray;
+	NSArray *aSortedArray;
+	NSEnumerator *anEnumerator;
+	NSString *anEncoding;
 	
 	// load up the keyboard profiles
 	[kbProfileSelector removeAllItems];
@@ -61,13 +65,19 @@ static NSStringEncoding const *encodingList = nil;
 	while((aString = [profileEnumerator nextObject]) != nil)
 		[terminalProfileSelector addItemWithTitle: aString];
 
+	// add list of encodings
 	encodingList = [NSString availableStringEncodings];
 	NSStringEncoding const *p = encodingList;
 	[terminalEncoding removeAllItems];
+	anUnsortedArray = [[[NSMutableArray alloc] init] autorelease];
     while (*p) {
-	    [terminalEncoding addItemWithTitle:[NSString localizedNameOfStringEncoding:*p]];
+		[anUnsortedArray addObject: [NSString localizedNameOfStringEncoding:*p]];
         p++;
-    }	
+    }
+	aSortedArray = [anUnsortedArray sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
+	anEnumerator = [aSortedArray objectEnumerator];
+	while((anEncoding = [anEnumerator nextObject]) != NULL)
+	    [terminalEncoding addItemWithTitle: anEncoding];
 	
 	[self terminalProfileChanged: nil];
 	
@@ -596,8 +606,25 @@ static NSStringEncoding const *encodingList = nil;
 
 - (IBAction) terminalSetEncoding: (id) sender
 {
-	[[iTermTerminalProfileMgr singleInstance] setEncoding: encodingList[[sender indexOfSelectedItem]] 
-											   forProfile: [terminalProfileSelector titleOfSelectedItem]];
+	NSStringEncoding const *encodingList = [NSString availableStringEncodings];
+	NSStringEncoding const *p = encodingList;
+	NSString *selectedEncodingName, *encodingName;
+	
+	selectedEncodingName = [sender titleOfSelectedItem];
+	
+	while(*p)
+	{
+		encodingName = [NSString localizedNameOfStringEncoding: *p];
+		if([encodingName compare: selectedEncodingName] == NSOrderedSame)
+		{
+			[[iTermTerminalProfileMgr singleInstance] setEncoding: *p 
+													   forProfile: [terminalProfileSelector titleOfSelectedItem]];
+			break;
+		}
+		p++;
+	}
+	
+	
 }
 
 - (IBAction) terminalSetSilenceBell: (id) sender

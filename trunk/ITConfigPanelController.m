@@ -211,7 +211,23 @@ static ITConfigPanelController *singleInstance = nil;
 
 - (IBAction) setSessionEncoding: (id) sender
 {
-	[[_pseudoTerminal currentSession] setEncoding:[[iTermController sharedInstance] encodingList][[CONFIG_ENCODING indexOfSelectedItem]]];
+	NSStringEncoding const *encodingList = [NSString availableStringEncodings];
+	NSStringEncoding const *p = encodingList;
+	NSString *selectedEncodingName, *encodingName;
+	
+	selectedEncodingName = [CONFIG_ENCODING titleOfSelectedItem];
+	
+	while(*p)
+	{
+		encodingName = [NSString localizedNameOfStringEncoding: *p];
+		if([encodingName compare: selectedEncodingName] == NSOrderedSame)
+		{
+			[[_pseudoTerminal currentSession] setEncoding: *p];
+			break;
+		}
+		p++;
+	}
+
 }
 
 - (IBAction) setAntiIdle: (id) sender
@@ -356,8 +372,13 @@ static ITConfigPanelController *singleInstance = nil;
 // config panel sheet
 - (void)loadConfigWindow: (NSNotification *) aNotification
 {
-    int r;
-    NSStringEncoding const *p=[[iTermController sharedInstance] encodingList];
+    int r, i;
+	NSStringEncoding const *encodingList = [NSString availableStringEncodings];
+	NSStringEncoding const *p = encodingList;
+	NSMutableArray *anUnsortedArray;
+	NSArray *aSortedArray;
+	NSEnumerator *anEnumerator;
+	NSString *anEncoding;	
 	
 	[self window]; // force window to load
 	
@@ -391,16 +412,27 @@ static ITConfigPanelController *singleInstance = nil;
 	[charHorizontalSpacing setFloatValue: [_pseudoTerminal charSpacingHorizontal]];
 	[charVerticalSpacing setFloatValue: [_pseudoTerminal charSpacingVertical]];
     [CONFIG_NAME setStringValue:[_pseudoTerminal currentSessionName]];
+	
     [CONFIG_ENCODING removeAllItems];
-    r=0;
+	anUnsortedArray = [[[NSMutableArray alloc] init] autorelease];
     while (*p) 
     {
-        [CONFIG_ENCODING addItemWithTitle:[NSString localizedNameOfStringEncoding:*p]];
-        if (*p==[[currentSession TERMINAL] encoding]) 
-            r = p-[[iTermController sharedInstance] encodingList];
+		[anUnsortedArray addObject: [NSString localizedNameOfStringEncoding:*p]];
         p++;
     }
+	aSortedArray = [anUnsortedArray sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
+	anEnumerator = [aSortedArray objectEnumerator];
+	i = 0;
+	r=0;
+	while((anEncoding = [anEnumerator nextObject]) != NULL)
+	{
+        [CONFIG_ENCODING addItemWithTitle: anEncoding];
+		if([anEncoding caseInsensitiveCompare: [NSString localizedNameOfStringEncoding: [[currentSession TERMINAL] encoding]]] == NSOrderedSame)
+			r = i;
+		i++;
+	}
     [CONFIG_ENCODING selectItemAtIndex:r];
+	
     [CONFIG_TRANSPARENCY setFloatValue:([currentSession transparency]*100)];
     [CONFIG_TRANS2 setFloatValue:([currentSession transparency]*100)];
     [AI_ON setState:[currentSession antiIdle]?NSOnState:NSOffState];
