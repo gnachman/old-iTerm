@@ -172,6 +172,8 @@
 - (void) setAddressBookEntry:(NSDictionary*) entry;
 - (int) number;
 - (NSString *) tty;
+- (NSString *) contents;
+
 
 - (void)clearBuffer;
 - (void)clearScrollbackBuffer;

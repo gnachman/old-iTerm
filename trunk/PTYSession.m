@@ -1229,6 +1229,11 @@ static NSString *PWD_ENVVALUE = @"~";
     return ([[tabViewItem tabView] indexOfTabViewItem: tabViewItem]);
 }
 
+- (NSString *) contents
+{
+	return ([TEXTVIEW content]);
+}
+
 - (NSString *) backgroundImagePath
 {
     return (backgroundImagePath);
