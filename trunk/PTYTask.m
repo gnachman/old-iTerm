@@ -1,5 +1,5 @@
 // -*- mode:objc -*-
-// $Id: PTYTask.m,v 1.24 2004-10-03 08:28:05 ujwal Exp $
+// $Id: PTYTask.m,v 1.25 2005-04-05 03:34:00 ujwal Exp $
 //
 /*
  **  PTYTask.m
@@ -554,7 +554,7 @@ static int writep(int fds, char *buf, size_t len)
 - (int)wait
 {
     if (PID >= 0) 
-		waitpid(PID, &STATUS, 0);
+		waitpid(PID, &STATUS, WNOHANG);
 
     return STATUS;
 }
@@ -573,13 +573,14 @@ static int writep(int fds, char *buf, size_t len)
 
 - (void)stop
 {
-    [self sendSignal:SIGHUP];
+    [self sendSignal:SIGKILL];
+	usleep(10000);
     [self wait];
 }
 
 - (void)stopNoWait
 {
-    [self sendSignal:SIGHUP];
+    [self sendSignal:SIGKILL];
 }
 
 - (int)status

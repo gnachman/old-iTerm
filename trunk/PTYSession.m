@@ -243,7 +243,7 @@ static NSString *PWD_ENVVALUE = @"~";
 	// deregister from the notification center
 	[[NSNotificationCenter defaultCenter] removeObserver:self];    
     
-	[SHELL stopNoWait];
+	[SHELL stop];
 		
     if(tabViewItem)
     {

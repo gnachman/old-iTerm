@@ -1,5 +1,5 @@
 // -*- mode:objc -*-
-// $Id: PseudoTerminal.m,v 1.303 2005-04-03 19:50:30 ujwal Exp $
+// $Id: PseudoTerminal.m,v 1.304 2005-04-05 03:34:00 ujwal Exp $
 //
 /*
  **  PseudoTerminal.m
@@ -1071,7 +1071,7 @@ static unsigned int windowPositions[CACHED_WINDOW_POSITIONS];
     for (i = 0; i < sessionCount; i++)
     {
         if ([[_sessionMgr sessionAtIndex: i] exited]==NO)
-            [[[_sessionMgr sessionAtIndex: i] SHELL] stopNoWait];
+            [[[_sessionMgr sessionAtIndex: i] SHELL] stop];
     }
 	
     [self releaseObjects];
