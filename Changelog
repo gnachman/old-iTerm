@@ -1,7 +1,10 @@
 2005-4-03	ujwal
+
+	* Version number is 0.8.1.
 	* Fixed "get contents" script support.
 	* Put in a warning when enabling "Send Input to all sessions".
 	* Encoding list in drop-down menu is sorted.
+	* Added support to specify path to nested bookmark.
 
 2005-3-11	fabian
 

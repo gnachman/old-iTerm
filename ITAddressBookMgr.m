@@ -330,7 +330,26 @@ static TreeNode *defaultBookmark = nil;
 
 - (NSDictionary *) dataForBookmarkWithName: (NSString *) bookmarkName
 {
-	return ([self _getBookmarkNodeWithName: bookmarkName searchFromNode: bookmarks]);
+	NSArray *pathComponents;
+	NSEnumerator *anEnumerator;
+	NSString *aPathComponent;
+	TreeNode *theNode;
+	NSDictionary *theData;
+	
+	// break up into path components
+	pathComponents = [bookmarkName componentsSeparatedByString: @"/"];
+	anEnumerator = [pathComponents objectEnumerator];
+	theNode = bookmarks;
+	while((aPathComponent = [anEnumerator nextObject]) != NULL && theNode != NULL)
+	{
+		theNode = [self _getBookmarkNodeWithName: aPathComponent searchFromNode: theNode];
+	}
+	if([theNode isGroup])
+		theData = nil;
+	else
+		theData = [theNode nodeData];
+	
+	return (theData);
 }
 
 // migrate any old bookmarks in the old format we might have
@@ -597,30 +616,28 @@ static TreeNode *defaultBookmark = nil;
 	return (haveDefaultBookmark);
 }
 
-- (NSDictionary *) _getBookmarkNodeWithName: (NSString *) aName searchFromNode: (TreeNode *) aNode
+- (TreeNode *) _getBookmarkNodeWithName: (NSString *) aName searchFromNode: (TreeNode *) aNode
 {
 	NSEnumerator *entryEnumerator;
 	NSDictionary *dataDict;
-	TreeNode *entry;
+	TreeNode *entry, *theNode;
 	
 	dataDict = nil;
 	
 	entryEnumerator = [[aNode children] objectEnumerator];
 	while ((entry = [entryEnumerator nextObject]))
 	{
-		if([entry isGroup])
+		dataDict = [entry nodeData];
+		
+		if([[dataDict objectForKey: KEY_NAME] isEqualToString: aName])
 		{
-			dataDict = [self _getBookmarkNodeWithName: aName searchFromNode: entry];
-			if(dataDict != nil)
-				return (dataDict);
-		}
-		else
+			return (entry);
+		}					
+		else if([entry isGroup])
 		{
-			dataDict = [entry nodeData];
-			if([[dataDict objectForKey: KEY_NAME] isEqualToString: aName])
-			{
-				return (dataDict);
-			}			
+			theNode = [self _getBookmarkNodeWithName: aName searchFromNode: entry];
+			if(theNode != nil)
+				return (theNode);
 		}
 	}
 	

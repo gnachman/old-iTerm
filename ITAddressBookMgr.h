@@ -83,7 +83,7 @@
 @interface ITAddressBookMgr (Private)
 
 - (BOOL) _checkForDefaultBookmark: (TreeNode *) rootNode defaultBookmark: (TreeNode **)defaultBookmark;
-- (NSDictionary *) _getBookmarkNodeWithName: (NSString *) aName searchFromNode: (TreeNode *) aNode;
+- (TreeNode *) _getBookmarkNodeWithName: (NSString *) aName searchFromNode: (TreeNode *) aNode;
 - (TreeNode *) _getRendezvousServiceTypeNode: (NSString *) aType;
 
 @end
