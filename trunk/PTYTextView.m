@@ -1,5 +1,5 @@
 // -*- mode:objc -*-
-// $Id: PTYTextView.m,v 1.227 2004-12-13 15:27:52 yfabian Exp $
+// $Id: PTYTextView.m,v 1.228 2004-12-13 15:34:29 yfabian Exp $
 /*
  **  PTYTextView.m
  **
@@ -972,6 +972,7 @@ static SInt32 systemVersion;
 		  (modflag & NSFunctionKeyMask)))
 	{
 		[delegate keyDown:event];
+		return;
 	}
 	
     IM_INPUT_INSERT = NO;
