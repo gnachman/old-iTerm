@@ -24,12 +24,12 @@
  **  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+#import <iTerm/iTermController.h>
 #import <iTerm/iTermKeyBindingMgr.h>
 #import <iTerm/iTermDisplayProfileMgr.h>
 #import <iTerm/iTermTerminalProfileMgr.h>
 #import <iTerm/iTermProfileWindowController.h>
 
-static NSStringEncoding const *encodingList = nil;
 
 @implementation iTermProfileWindowController
 
@@ -37,10 +37,8 @@ static NSStringEncoding const *encodingList = nil;
 {
 	NSEnumerator *profileEnumerator;
 	NSString *aString;
-	NSMutableArray *anUnsortedArray;
-	NSArray *aSortedArray;
 	NSEnumerator *anEnumerator;
-	NSString *anEncoding;
+	NSNumber *anEncoding;
 	
 	// load up the keyboard profiles
 	[kbProfileSelector removeAllItems];
@@ -66,18 +64,13 @@ static NSStringEncoding const *encodingList = nil;
 		[terminalProfileSelector addItemWithTitle: aString];
 
 	// add list of encodings
-	encodingList = [NSString availableStringEncodings];
-	NSStringEncoding const *p = encodingList;
 	[terminalEncoding removeAllItems];
-	anUnsortedArray = [[[NSMutableArray alloc] init] autorelease];
-    while (*p) {
-		[anUnsortedArray addObject: [NSString localizedNameOfStringEncoding:*p]];
-        p++;
-    }
-	aSortedArray = [anUnsortedArray sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
-	anEnumerator = [aSortedArray objectEnumerator];
+	anEnumerator = [[[iTermController sharedInstance] sortedEncodingList] objectEnumerator];
 	while((anEncoding = [anEnumerator nextObject]) != NULL)
-	    [terminalEncoding addItemWithTitle: anEncoding];
+	{
+		[terminalEncoding addItemWithTitle: [NSString localizedNameOfStringEncoding: [anEncoding unsignedIntValue]]];
+		[[terminalEncoding lastItem] setTag: [anEncoding unsignedIntValue]];
+	}
 	
 	[self terminalProfileChanged: nil];
 	
@@ -606,25 +599,8 @@ static NSStringEncoding const *encodingList = nil;
 
 - (IBAction) terminalSetEncoding: (id) sender
 {
-	NSStringEncoding const *encodingList = [NSString availableStringEncodings];
-	NSStringEncoding const *p = encodingList;
-	NSString *selectedEncodingName, *encodingName;
-	
-	selectedEncodingName = [sender titleOfSelectedItem];
-	
-	while(*p)
-	{
-		encodingName = [NSString localizedNameOfStringEncoding: *p];
-		if([encodingName compare: selectedEncodingName] == NSOrderedSame)
-		{
-			[[iTermTerminalProfileMgr singleInstance] setEncoding: *p 
-													   forProfile: [terminalProfileSelector titleOfSelectedItem]];
-			break;
-		}
-		p++;
-	}
-	
-	
+	[[iTermTerminalProfileMgr singleInstance] setEncoding: [[terminalEncoding selectedItem] tag] 
+											   forProfile: [terminalProfileSelector titleOfSelectedItem]];
 }
 
 - (IBAction) terminalSetSilenceBell: (id) sender

@@ -510,6 +510,9 @@ static TreeNode *defaultBookmark = nil;
 	
 	//NSLog(@"%s: %@", __PRETTY_FUNCTION__, sender);
 	
+	// cancel the resolution
+	[sender stop];
+	
 	if([rendezvousServices containsObject: sender] == NO)
 		return;
 	
@@ -564,13 +567,14 @@ static TreeNode *defaultBookmark = nil;
 		[rendezvousServices removeObject: sender];
 	
 	// Post a notification for all listeners that bookmarks have changed
-	[[NSNotificationCenter defaultCenter] postNotificationName: @"iTermReloadAddressBook" object: nil userInfo: nil];    		
-	
+	[[NSNotificationCenter defaultCenter] postNotificationName: @"iTermReloadAddressBook" object: nil userInfo: nil];    	
+		
 }
 
 - (void)netService:(NSNetService *)aNetService didNotResolve:(NSDictionary *)errorDict
 {
 	//NSLog(@"%s: %@", __PRETTY_FUNCTION__, aNetService);
+	[aNetService stop];
 }
 
 - (void)netServiceWillResolve:(NSNetService *)aNetService

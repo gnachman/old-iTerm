@@ -1,5 +1,10 @@
 2005-4-03	ujwal
 
+	* Cancelling Rendezvous resolution after resolution or error.
+	* Re-implemented sorting of encoding list using user supplied patch.
+
+2005-4-03	ujwal
+
 	* Version number is 0.8.1.
 	* Fixed "get contents" script support.
 	* Put in a warning when enabling "Send Input to all sessions".
