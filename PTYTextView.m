@@ -1,5 +1,5 @@
 // -*- mode:objc -*-
-// $Id: PTYTextView.m,v 1.226 2004-11-20 23:52:52 ujwal Exp $
+// $Id: PTYTextView.m,v 1.227 2004-12-13 15:27:52 yfabian Exp $
 /*
  **  PTYTextView.m
  **
@@ -953,7 +953,8 @@ static SInt32 systemVersion;
     BOOL IMEnable = [imana wantsToInterpretAllKeystrokes];
     id delegate = [self delegate];
 	unsigned int modflag = [event modifierFlags];
-    
+    BOOL prev = [self hasMarkedText];
+	
 #if DEBUG_METHOD_TRACE
     NSLog(@"%s(%d):-[PTYTextView keyDown:%@]",
           __FILE__, __LINE__, event );
@@ -965,17 +966,16 @@ static SInt32 systemVersion;
     [NSCursor setHiddenUntilMouseMoves: YES];   
 	
 	// Check whether we have a custom mapping for this event or if numeric or function keys were pressed.
-	if([delegate hasKeyMappingForEvent: event] || 
-	   (modflag & NSNumericPadKeyMask) || 
-	   (modflag & NSFunctionKeyMask))
+	if ( prev == NO && 
+		 ([delegate hasKeyMappingForEvent: event] ||
+		  (modflag & NSNumericPadKeyMask) || 
+		  (modflag & NSFunctionKeyMask)))
 	{
-		[delegate keyDown: event];
-		return;
+		[delegate keyDown:event];
 	}
-
+	
     IM_INPUT_INSERT = NO;
     if (IMEnable) {
-        BOOL prev = [self hasMarkedText];
         [self interpretKeyEvents:[NSArray arrayWithObject:event]];
         
         if (prev == NO &&
@@ -986,14 +986,15 @@ static SInt32 systemVersion;
         }
     }
     else {
-        if([[self delegate] optionKey] == OPT_NORMAL)
-        {
-            [self interpretKeyEvents:[NSArray arrayWithObject:event]];
-        }
-        
-        if (IM_INPUT_INSERT == NO) {
-            [delegate keyDown:event];
-        }
+
+		if([[self delegate] optionKey] == OPT_NORMAL)
+		{
+			[self interpretKeyEvents:[NSArray arrayWithObject:event]];
+		}
+		
+		if (IM_INPUT_INSERT == NO) {
+			[delegate keyDown:event];
+		}
     }
 }
 
