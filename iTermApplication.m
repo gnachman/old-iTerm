@@ -1,5 +1,5 @@
 // -*- mode:objc -*-
-// $Id: iTermApplication.m,v 1.5 2004-09-08 06:11:24 ujwal Exp $
+// $Id: iTermApplication.m,v 1.6 2005-04-03 17:50:29 ujwal Exp $
 //
 /*
  **  iTermApplication.m
@@ -45,7 +45,7 @@
 	PTYSession *currentSession;
 	unsigned int modflag;
     NSString *unmodkeystr;
-    unichar unmodunicode;	
+    unichar unmodunicode = 0;	
 	
 	
 	if([anEvent type] == NSKeyDown)
