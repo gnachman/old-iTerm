@@ -70,23 +70,27 @@
 </UL>
 
 <FONT SIZE="5"><STRONG>What's new</STRONG></FONT><BR>
-<STRONG>0.8.0 released</STRONG> 4/14/2004<BR>
-This is a major update of iTerm. New features include:<BR>
+<STRONG>0.8.1 released</STRONG> 12/20/2004<BR>
+This release mainly fixes a few issues with 0.8.0. New features include:<BR>
 <UL>
-<LI>Now supports custom key-mapping.</LI>
-<LI>New drawing code with speed enhancement up to several folds.</LI>
-<LI>New improved bookmarks organization.</LI>
-<LI>Rendezvous support.</LI>
-<LI>Supports customizable character spacing.</LI>
+<LI>Support to show bookmarks in a drawer of terminal window.</LI>
+<LI>Added support to launch command line tools from Finder.</LI>
+<LI>Fixes for printing problems in 0.8.0.</LI>
+<LI>Added support to drag selection from terminal windows.</LI>
+<LI>Added support to specify a bookmark as a default.</LI>
+<LI>Added support for services.</LI>
+<LI>Added an option to maximize windows vertically only.</LI>
+<LI>Fixes for double/triple-click selection.</LI>
+<LI>Fixed reverse video issues on OpenVMS</LI>
 <LI>Other bug fixes and GUI enhancements as usual.</LI>
 For more detail, see <A HREF="history.shtml">Version History</A><BR>
 </UL>
 
 <FONT SIZE="5"><STRONG>Notice:</STRONG></FONT><BR>
-<UL>Due a change of bookmark organizations introduced in 0.8.0, old bookmark settings are
+<UL>Due a change of bookmark organizations introduced in 0.8.0, bookmark settings for versions older than 0.8.0 are
 no longer completely recognized. Only names, commands, directories, and shortcuts are migrated. 
 Display and terminal settings are not migrated. You have to re-enter these manually into the new version.</UL>
-<UL>Version 0.8.0 comes with a few keymapping/display/terminal profiles.
+<UL>Starting from version 0.8.0, iTerm comes with a few keymapping/display/terminal profiles.
 If you do not see them, please delete your iTerm.plist file in ~/Library/Preferences and
 restart the program.</UL>
 
