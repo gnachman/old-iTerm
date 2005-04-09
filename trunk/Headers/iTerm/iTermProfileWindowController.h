@@ -109,6 +109,8 @@
 	IBOutlet NSButton *terminalDoubleWidth;
 	IBOutlet NSButton *terminalSendIdleChar;
 	IBOutlet NSTextField *terminalIdleChar;
+	IBOutlet NSButton *xtermMouseReporting;
+
 }
 
 - (IBAction) showProfilesWindow: (id) sender;
@@ -152,6 +154,7 @@
 - (IBAction) terminalSetCloseOnSessionEnd: (id) sender;
 - (IBAction) terminalSetDoubleWidth: (id) sender;
 - (IBAction) terminalSetSendIdleChar: (id) sender;
+- (IBAction) terminalSetXtermMouseReporting: (id) sender;
 
 
 @end

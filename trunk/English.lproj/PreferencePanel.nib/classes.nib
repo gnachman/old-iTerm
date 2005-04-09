@@ -82,6 +82,7 @@
                 terminalSetSendIdleChar = id; 
                 terminalSetSilenceBell = id; 
                 terminalSetType = id; 
+                terminalSetXtermMouseReporting = id; 
             }; 
             CLASS = iTermProfileWindowController; 
             LANGUAGE = ObjC; 
@@ -152,6 +153,7 @@
                 terminalSendIdleChar = NSButton; 
                 terminalSilenceBell = NSButton; 
                 terminalType = NSPopUpButton; 
+                xtermMouseReporting = NSButton; 
             }; 
             SUPERCLASS = NSWindowController; 
         }

@@ -1,5 +1,5 @@
 // -*- mode:objc -*-
-// $Id: VT100Terminal.m,v 1.90 2004-07-07 07:30:38 ujwal Exp $
+// $Id: VT100Terminal.m,v 1.91 2005-04-09 23:42:56 ujwal Exp $
 //
 /*
  **  VT100Terminal.m
@@ -123,6 +123,8 @@
 // Secondary Device Attribute: VT100
 #define REPORT_SDA			 "\033[1;0;0c"
 #define REPORT_VT52          "\033/Z"
+
+#define MOUSE_REPORT_FORMAT	"\033[M%c%c%c"
 
 #define conststr_sizeof(n)   ((sizeof(n)) - 1)
 
@@ -1215,6 +1217,7 @@ static VT100TCC decode_string(unsigned char *datap,
     highlight = saveHighlight = NO;
     FG_COLORCODE = DEFAULT_FG_COLOR_CODE;
     BG_COLORCODE = DEFAULT_BG_COLOR_CODE;
+	MOUSE_MODE = MOUSE_REPORTING_NONE;
     
     TRACE = NO;
 	
@@ -1598,6 +1601,45 @@ static VT100TCC decode_string(unsigned char *datap,
     return (theData);
 }
 
+- (NSData *)mousePress: (int)button withModifiers: (unsigned int)modflag atX: (int)x Y: (int)y
+{
+	static char buf[7];
+	char cb;
+	
+	cb = button % 3;
+	if (button > 3) cb += 64;
+	if (modflag & NSControlKeyMask) cb += 16;
+	if (modflag & NSShiftKeyMask) cb += 4;
+	if (modflag & NSAlternateKeyMask) cb += 8;
+	sprintf(buf, MOUSE_REPORT_FORMAT, 32 + cb, 32 + x + 1, 32 + y + 1);
+
+	return [NSData dataWithBytes: buf length: strlen(buf)];
+}
+
+- (NSData *)mouseReleaseAtX: (int)x Y: (int)y
+{
+	static char buf[7];
+	sprintf(buf, MOUSE_REPORT_FORMAT, 32 + 3, 32 + x + 1, 32 + y + 1);
+	
+	return [NSData dataWithBytes: buf length: strlen(buf)];
+}
+
+- (NSData *)mouseMotion: (int)button withModifiers: (unsigned int)modflag atX: (int)x Y: (int)y
+{
+	static char buf[7];
+	char cb;
+	
+	cb = button % 3;
+	if (button > 3) cb += 64;
+	if (modflag & NSControlKeyMask) cb += 16;
+	if (modflag & NSShiftKeyMask) cb += 4;
+	if (modflag & NSAlternateKeyMask) cb += 8;
+	sprintf(buf, MOUSE_REPORT_FORMAT, 32 + 32 + cb, 32 + x + 1, 32 + y + 1);
+	
+	return [NSData dataWithBytes: buf length: strlen(buf)];	
+}
+
+
 - (BOOL)lineMode
 {
     return LINE_MODE;
@@ -1663,6 +1705,11 @@ static VT100TCC decode_string(unsigned char *datap,
     return CHARSET;
 }
 
+- (mouseMode) mouseMode
+{
+	return MOUSE_MODE;
+}
+
 - (int)foregroundColorCode
 {
 	return (reversed?BG_COLORCODE:FG_COLORCODE+(highlight?1:bold)*8)+bold*BOLD_MASK+under*UNDER_MASK+blink*BLINK_MASK;
@@ -1723,6 +1770,13 @@ static VT100TCC decode_string(unsigned char *datap,
                 case 9:  INTERLACE_MODE  = mode; break;
 				case 40: allowColumnMode = mode; break;
 				case 47: if(mode) [SCREEN saveBuffer]; else [SCREEN restoreBuffer]; break; // alternate screen buffer mode
+				case 1000:
+				/* case 1001: */ /* MOUSE_REPORTING_HILITE not implemented yet */
+				case 1002:
+				case 1003:
+					if (mode) MOUSE_MODE = token.u.csi.p[0] - 1000;
+					else MOUSE_MODE = MOUSE_REPORTING_NONE;
+					break;
             }
 				break;
         case VT100CSI_SM:
