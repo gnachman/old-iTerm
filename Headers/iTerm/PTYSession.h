@@ -74,6 +74,7 @@
     BOOL waiting;
     BOOL autoClose;
     BOOL doubleWidth;
+	BOOL xtermMouseReporting;
     NSString *backgroundImagePath;
     //NSFont *configFont;
     NSDictionary *addressBookEntry;
@@ -168,6 +169,8 @@
 - (void) setAutoClose:(BOOL)set;
 - (BOOL) doubleWidth;
 - (void) setDoubleWidth:(BOOL)set;
+- (BOOL) xtermMouseReporting;
+- (void) setXtermMouseReporting:(BOOL)set;
 - (NSDictionary *) addressBookEntry;
 - (void) setAddressBookEntry:(NSDictionary*) entry;
 - (int) number;

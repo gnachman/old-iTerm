@@ -1,5 +1,5 @@
 // -*- mode:objc -*-
-// $Id: PTYTextView.m,v 1.228 2004-12-13 15:34:29 yfabian Exp $
+// $Id: PTYTextView.m,v 1.229 2005-04-09 23:42:56 ujwal Exp $
 /*
  **  PTYTextView.m
  **
@@ -38,6 +38,7 @@
 #import <iTerm/FindPanelWindowController.h>
 #import <iTerm/PreferencePanel.h>
 #import <iTerm/PTYScrollView.h>
+#import <iTerm/PTYTask.h>
 
 #define  SELECT_CODE 0x40
 #define  CURSOR_CODE 0x80
@@ -1009,10 +1010,268 @@ static SInt32 systemVersion;
 #if DEBUG_METHOD_TRACE
     NSLog(@"%s: %@]", __PRETTY_FUNCTION__, sender );
 #endif
+
+    NSPoint locationInWindow, locationInTextView;
+    locationInWindow = [event locationInWindow];
+    locationInTextView = [self convertPoint: locationInWindow fromView: nil]; 
+	
+	NSRect visibleRect = [[self enclosingScrollView] documentVisibleRect];
+	if (([[self delegate] xtermMouseReporting]) 
+		&& (locationInTextView.y > visibleRect.origin.y))
+		//		&& ([event modifierFlags] & NSCommandKeyMask == 0)) 
+	{
+		int rx, ry;
+		rx = (locationInTextView.x-MARGIN - visibleRect.origin.x)/charWidth;
+		ry = (locationInTextView.y - visibleRect.origin.y)/lineHeight;
+		if (rx < 0) rx = -1;
+		if (ry < 0) ry = -1;
+		VT100Terminal *terminal = [dataSource terminal];
+		PTYTask *task = [dataSource shellTask];
+
+		int bnum = [event buttonNumber];
+		if (bnum == 2) bnum = 1;
+		
+		switch ([terminal mouseMode]) {
+			case MOUSE_REPORTING_NORMAL:
+			case MOUSE_REPORTING_BUTTON_MOTION:
+			case MOUSE_REPORTING_ALL_MOTION:
+				reportingMouseDown = YES;
+				[task writeTask:[terminal mousePress:bnum withModifiers:[event modifierFlags] atX:rx Y:ry]];
+				return;
+				break;
+			case MOUSE_REPORTING_NONE:
+			case MOUSE_REPORTING_HILITE:
+				// fall through
+				break;
+		}
+	}
+	
 	if([[PreferencePanel sharedInstance] pasteFromClipboard])
 		[self paste: nil];
 	else
 		[self pasteSelection: nil];
+}
+
+- (void)otherMouseUp:(NSEvent *)event
+{
+	NSPoint locationInWindow, locationInTextView;
+    locationInWindow = [event locationInWindow];
+    locationInTextView = [self convertPoint: locationInWindow fromView: nil]; 
+	
+	NSRect visibleRect = [[self enclosingScrollView] documentVisibleRect];
+	if (([[self delegate] xtermMouseReporting]) 
+		&& reportingMouseDown)
+	{
+		reportingMouseDown = NO;
+		int rx, ry;
+		rx = (locationInTextView.x-MARGIN - visibleRect.origin.x)/charWidth;
+		ry = (locationInTextView.y - visibleRect.origin.y)/lineHeight;
+		if (rx < 0) rx = -1;
+		if (ry < 0) ry = -1;
+		VT100Terminal *terminal = [dataSource terminal];
+		PTYTask *task = [dataSource shellTask];
+		
+		switch ([terminal mouseMode]) {
+			case MOUSE_REPORTING_NORMAL:
+			case MOUSE_REPORTING_BUTTON_MOTION:
+			case MOUSE_REPORTING_ALL_MOTION:
+				[task writeTask:[terminal mouseReleaseAtX:rx Y:ry]];
+				return;
+				break;
+			case MOUSE_REPORTING_NONE:
+			case MOUSE_REPORTING_HILITE:
+				// fall through
+				break;
+		}
+	}	
+	[super otherMouseUp:event];
+}
+
+- (void)otherMouseDragged:(NSEvent *)event
+{
+    NSPoint locationInWindow, locationInTextView;
+    locationInWindow = [event locationInWindow];
+    locationInTextView = [self convertPoint: locationInWindow fromView: nil]; 
+	
+	NSRect visibleRect = [[self enclosingScrollView] documentVisibleRect];
+	if (([[self delegate] xtermMouseReporting]) 
+		&& (locationInTextView.y > visibleRect.origin.y)
+		&& reportingMouseDown)
+	{
+		int rx, ry;
+		rx = (locationInTextView.x-MARGIN - visibleRect.origin.x)/charWidth;
+		ry = (locationInTextView.y - visibleRect.origin.y)/lineHeight;
+		if (rx < 0) rx = -1;
+		if (ry < 0) ry = -1;
+		VT100Terminal *terminal = [dataSource terminal];
+		PTYTask *task = [dataSource shellTask];
+		
+		int bnum = [event buttonNumber];
+		if (bnum == 2) bnum = 1;
+		
+		switch ([terminal mouseMode]) {
+			case MOUSE_REPORTING_NORMAL:
+			case MOUSE_REPORTING_BUTTON_MOTION:
+			case MOUSE_REPORTING_ALL_MOTION:
+				[task writeTask:[terminal mouseMotion:bnum withModifiers:[event modifierFlags] atX:rx Y:ry]];
+				return;
+				break;
+			case MOUSE_REPORTING_NONE:
+			case MOUSE_REPORTING_HILITE:
+				// fall through
+				break;
+		}
+	}
+	[super otherMouseDragged:event];
+}
+
+- (void) rightMouseDown: (NSEvent *) event
+{
+#if DEBUG_METHOD_TRACE
+    NSLog(@"%s: %@]", __PRETTY_FUNCTION__, sender );
+#endif
+	
+    NSPoint locationInWindow, locationInTextView;
+    locationInWindow = [event locationInWindow];
+    locationInTextView = [self convertPoint: locationInWindow fromView: nil]; 
+	
+	NSRect visibleRect = [[self enclosingScrollView] documentVisibleRect];
+	if (([[self delegate] xtermMouseReporting]) 
+		&& (locationInTextView.y > visibleRect.origin.y))
+		//		&& ([event modifierFlags] & NSCommandKeyMask == 0)) 
+	{
+		int rx, ry;
+		rx = (locationInTextView.x-MARGIN - visibleRect.origin.x)/charWidth;
+		ry = (locationInTextView.y - visibleRect.origin.y)/lineHeight;
+		if (rx < 0) rx = -1;
+		if (ry < 0) ry = -1;
+		VT100Terminal *terminal = [dataSource terminal];
+		PTYTask *task = [dataSource shellTask];
+		
+		switch ([terminal mouseMode]) {
+			case MOUSE_REPORTING_NORMAL:
+			case MOUSE_REPORTING_BUTTON_MOTION:
+			case MOUSE_REPORTING_ALL_MOTION:
+				reportingMouseDown = YES;
+				[task writeTask:[terminal mousePress:2 withModifiers:[event modifierFlags] atX:rx Y:ry]];
+				return;
+				break;
+			case MOUSE_REPORTING_NONE:
+			case MOUSE_REPORTING_HILITE:
+				// fall through
+				break;
+		}
+	}
+	[super rightMouseDown:event];
+}
+
+- (void)rightMouseUp:(NSEvent *)event
+{
+	NSPoint locationInWindow, locationInTextView;
+    locationInWindow = [event locationInWindow];
+    locationInTextView = [self convertPoint: locationInWindow fromView: nil]; 
+	
+	NSRect visibleRect = [[self enclosingScrollView] documentVisibleRect];
+	if (([[self delegate] xtermMouseReporting]) 
+		&& reportingMouseDown)
+	{
+		reportingMouseDown = NO;
+		int rx, ry;
+		rx = (locationInTextView.x-MARGIN - visibleRect.origin.x)/charWidth;
+		ry = (locationInTextView.y - visibleRect.origin.y)/lineHeight;
+		if (rx < 0) rx = -1;
+		if (ry < 0) ry = -1;
+		VT100Terminal *terminal = [dataSource terminal];
+		PTYTask *task = [dataSource shellTask];
+		
+		switch ([terminal mouseMode]) {
+			case MOUSE_REPORTING_NORMAL:
+			case MOUSE_REPORTING_BUTTON_MOTION:
+			case MOUSE_REPORTING_ALL_MOTION:
+				[task writeTask:[terminal mouseReleaseAtX:rx Y:ry]];
+				return;
+				break;
+			case MOUSE_REPORTING_NONE:
+			case MOUSE_REPORTING_HILITE:
+				// fall through
+				break;
+		}
+	}	
+	[super rightMouseUp:event];
+}
+
+- (void)rightMouseDragged:(NSEvent *)event
+{
+    NSPoint locationInWindow, locationInTextView;
+    locationInWindow = [event locationInWindow];
+    locationInTextView = [self convertPoint: locationInWindow fromView: nil]; 
+	
+	NSRect visibleRect = [[self enclosingScrollView] documentVisibleRect];
+	if (([[self delegate] xtermMouseReporting]) 
+		&& (locationInTextView.y > visibleRect.origin.y)
+		&& reportingMouseDown)
+	{
+		int rx, ry;
+		rx = (locationInTextView.x-MARGIN - visibleRect.origin.x)/charWidth;
+		ry = (locationInTextView.y - visibleRect.origin.y)/lineHeight;
+		if (rx < 0) rx = -1;
+		if (ry < 0) ry = -1;
+		VT100Terminal *terminal = [dataSource terminal];
+		PTYTask *task = [dataSource shellTask];
+		
+		switch ([terminal mouseMode]) {
+			case MOUSE_REPORTING_NORMAL:
+			case MOUSE_REPORTING_BUTTON_MOTION:
+			case MOUSE_REPORTING_ALL_MOTION:
+				[task writeTask:[terminal mouseMotion:2 withModifiers:[event modifierFlags] atX:rx Y:ry]];
+				return;
+				break;
+			case MOUSE_REPORTING_NONE:
+			case MOUSE_REPORTING_HILITE:
+				// fall through
+				break;
+		}
+	}
+	[super rightMouseDragged:event];
+}
+
+- (void)scrollWheel:(NSEvent *)event
+{
+#if DEBUG_METHOD_TRACE
+    NSLog(@"%s: %@]", __PRETTY_FUNCTION__, sender );
+#endif
+	
+    NSPoint locationInWindow, locationInTextView;
+    locationInWindow = [event locationInWindow];
+    locationInTextView = [self convertPoint: locationInWindow fromView: nil]; 
+	
+	NSRect visibleRect = [[self enclosingScrollView] documentVisibleRect];
+	if (([[self delegate] xtermMouseReporting]) 
+		&& (locationInTextView.y > visibleRect.origin.y))
+		//		&& ([event modifierFlags] & NSCommandKeyMask == 0)) 
+	{
+		int rx, ry;
+		rx = (locationInTextView.x-MARGIN - visibleRect.origin.x)/charWidth;
+		ry = (locationInTextView.y - visibleRect.origin.y)/lineHeight;
+		if (rx < 0) rx = -1;
+		if (ry < 0) ry = -1;
+		VT100Terminal *terminal = [dataSource terminal];
+		PTYTask *task = [dataSource shellTask];
+		
+		switch ([terminal mouseMode]) {
+			case MOUSE_REPORTING_NORMAL:
+			case MOUSE_REPORTING_BUTTON_MOTION:
+			case MOUSE_REPORTING_ALL_MOTION:
+				[task writeTask:[terminal mousePress:([event deltaY] > 0 ? 5:4) withModifiers:[event modifierFlags] atX:rx Y:ry]];
+				return;
+				break;
+			case MOUSE_REPORTING_NONE:
+			case MOUSE_REPORTING_HILITE:
+				// fall through
+				break;
+		}
+	}
+	[super scrollWheel:event];	
 }
 
 - (void)mouseExited:(NSEvent *)event
@@ -1041,6 +1300,43 @@ static SInt32 systemVersion;
     int x, y;
     int width = [dataSource width];
 	
+    locationInWindow = [event locationInWindow];
+    locationInTextView = [self convertPoint: locationInWindow fromView: nil]; 
+    
+    x = (locationInTextView.x-MARGIN)/charWidth;
+	if (x<0) x=0;
+    y = locationInTextView.y/lineHeight;
+	
+    if (x>=width) x = width  - 1;
+
+	NSRect visibleRect = [[self enclosingScrollView] documentVisibleRect];
+	if (([[self delegate] xtermMouseReporting]) 
+		&& (locationInTextView.y > visibleRect.origin.y))
+//		&& ([event modifierFlags] & NSCommandKeyMask == 0)) 
+	{
+		int rx, ry;
+		rx = (locationInTextView.x-MARGIN - visibleRect.origin.x)/charWidth;
+		ry = (locationInTextView.y - visibleRect.origin.y)/lineHeight;
+		if (rx < 0) rx = -1;
+		if (ry < 0) ry = -1;
+		VT100Terminal *terminal = [dataSource terminal];
+		PTYTask *task = [dataSource shellTask];
+		
+		switch ([terminal mouseMode]) {
+			case MOUSE_REPORTING_NORMAL:
+			case MOUSE_REPORTING_BUTTON_MOTION:
+			case MOUSE_REPORTING_ALL_MOTION:
+				reportingMouseDown = YES;
+				[task writeTask:[terminal mousePress:0 withModifiers:[event modifierFlags] atX:rx Y:ry]];
+				return;
+				break;
+			case MOUSE_REPORTING_NONE:
+			case MOUSE_REPORTING_HILITE:
+				// fall through
+				break;
+		}
+	}
+	
 	if(mouseDownEvent != nil)
     {
 		[mouseDownEvent release];
@@ -1054,15 +1350,6 @@ static SInt32 systemVersion;
 	mouseDown = YES;
 	mouseDownOnSelection = NO;
     
-    locationInWindow = [event locationInWindow];
-    locationInTextView = [self convertPoint: locationInWindow fromView: nil];
-    
-    x = (locationInTextView.x-MARGIN)/charWidth;
-	if (x<0) x=0;
-    y = locationInTextView.y/lineHeight;
-	
-    if (x>=width) x = width  - 1;
-	
     if ([event clickCount]<2) {
         selectMode = SELECT_CHAR;
 
@@ -1160,6 +1447,45 @@ static SInt32 systemVersion;
     NSLog(@"%s(%d):-[PTYTextView mouseUp:%@]",
           __FILE__, __LINE__, event );
 #endif
+	NSPoint locationInWindow = [event locationInWindow];
+    NSPoint locationInTextView = [self convertPoint: locationInWindow fromView: nil];
+	int x, y;
+	int width = [dataSource width];
+	
+    x = (locationInTextView.x - MARGIN) / charWidth;
+	if (x < 0) x = 0;
+	if (x>=width) x = width - 1;
+	
+    
+	y = locationInTextView.y/lineHeight;
+	
+	
+	if ([[self delegate] xtermMouseReporting]
+		&& reportingMouseDown) 
+	{
+		reportingMouseDown = NO;
+		int rx, ry;
+		NSRect visibleRect = [[self enclosingScrollView] documentVisibleRect];
+		rx = (locationInTextView.x-MARGIN - visibleRect.origin.x)/charWidth;
+		ry = (locationInTextView.y - visibleRect.origin.y)/lineHeight;
+		if (rx < 0) rx = -1;
+		if (ry < 0) ry = -1;
+		VT100Terminal *terminal = [dataSource terminal];
+		PTYTask *task = [dataSource shellTask];
+		
+		switch ([terminal mouseMode]) {
+			case MOUSE_REPORTING_NORMAL:
+			case MOUSE_REPORTING_BUTTON_MOTION:
+			case MOUSE_REPORTING_ALL_MOTION:
+				[task writeTask:[terminal mouseReleaseAtX:rx Y:ry]];
+				return;
+				break;
+			case MOUSE_REPORTING_NONE:
+			case MOUSE_REPORTING_HILITE:
+				// fall through
+				break;
+		}
+	}
 	
 	if(mouseDown == NO)
 		return;
@@ -1217,6 +1543,39 @@ static SInt32 systemVersion;
     int width = [dataSource width];
 	NSString *theSelectedText;
 	
+    x = (locationInTextView.x - MARGIN) / charWidth;
+	if (x < 0) x = 0;
+	if (x>=width) x = width - 1;
+	
+    
+	y = locationInTextView.y/lineHeight;
+	
+	if (([[self delegate] xtermMouseReporting])
+		&& reportingMouseDown) 
+	{
+		int rx, ry;
+		NSRect visibleRect = [[self enclosingScrollView] documentVisibleRect];
+		rx = (locationInTextView.x-MARGIN - visibleRect.origin.x)/charWidth;
+		ry = (locationInTextView.y - visibleRect.origin.y)/lineHeight;
+		if (rx < 0) rx = -1;
+		if (ry < 0) ry = -1;
+		VT100Terminal *terminal = [dataSource terminal];
+		PTYTask *task = [dataSource shellTask];
+		
+		switch ([terminal mouseMode]) {
+			case MOUSE_REPORTING_BUTTON_MOTION:
+			case MOUSE_REPORTING_ALL_MOTION:
+				[task writeTask:[terminal mouseMotion:0 withModifiers:[event modifierFlags] atX:rx Y:ry]];
+			case MOUSE_REPORTING_NORMAL:
+				return;
+				break;
+			case MOUSE_REPORTING_NONE:
+			case MOUSE_REPORTING_HILITE:
+				// fall through
+				break;
+		}
+	}
+	
 	mouseDragged = YES;
 	
 	// check if we want to drag and drop a selection
@@ -1240,13 +1599,6 @@ static SInt32 systemVersion;
         [self scrollRectToVisible: rectInTextView];
     }
     
-    x = (locationInTextView.x - MARGIN) / charWidth;
-	if (x < 0) x = 0;
-	if (x>=width) x = width - 1;
-	
-    
-	y = locationInTextView.y/lineHeight;
-	
 	// if we are on an empty line, we select the current line to the end
 	if([self _isBlankLine: y] && y >= 0)
 		x = width - 1;

@@ -1,5 +1,5 @@
 // -*- mode:objc -*-
-// $Id: PTYTextView.h,v 1.50 2004-11-20 23:52:58 ujwal Exp $
+// $Id: PTYTextView.h,v 1.51 2005-04-09 23:43:02 ujwal Exp $
 //
 /*
  **  PTYTextView.h
@@ -109,9 +109,11 @@ enum { SELECT_CHAR, SELECT_WORD, SELECT_LINE };
     char selectMode;
 	BOOL mouseDownOnSelection;
 	NSEvent *mouseDownEvent;
-	
+		
 	//find support
 	int lastFindX, lastFindY;
+	
+	BOOL reportingMouseDown;
 	
 	//cache
 	CharCache	charImages[CACHESIZE];
@@ -144,6 +146,12 @@ enum { SELECT_CHAR, SELECT_WORD, SELECT_LINE };
 - (void)mouseUp:(NSEvent *)event;
 - (void)mouseDragged:(NSEvent *)event;
 - (void) otherMouseDown: (NSEvent *) event;
+- (void)otherMouseUp:(NSEvent *)event;
+- (void)otherMouseDragged:(NSEvent *)event;
+- (void)rightMouseDown:(NSEvent *)event;
+- (void)rightMouseUp:(NSEvent *)event;
+- (void)rightMouseDragged:(NSEvent *)event;
+- (void)scrollWheel:(NSEvent *)event;
 - (NSString *) contentFromX:(int)startx Y:(int)starty ToX:(int)endx Y:(int)endy breakLines: (BOOL) breakLines;
 - (NSString *) selectedText;
 - (NSString *) selectedTextBreakingLines: (BOOL) breakLines;

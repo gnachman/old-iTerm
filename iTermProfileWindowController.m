@@ -586,6 +586,7 @@
 	[terminalSendIdleChar setState: [[iTermTerminalProfileMgr singleInstance] sendIdleCharForProfile: theProfile]];
 	[terminalIdleChar setStringValue: [NSString stringWithFormat: @"%d",  
 		[[iTermTerminalProfileMgr singleInstance] idleCharForProfile: theProfile]]];
+	[xtermMouseReporting setState: [[iTermTerminalProfileMgr singleInstance] xtermMouseReportingForProfile: theProfile]];
 	
 	[terminalProfileDeleteButton setEnabled: ![[iTermTerminalProfileMgr singleInstance] isDefaultProfile: theProfile]];
 
@@ -631,6 +632,12 @@
 {
 	[[iTermTerminalProfileMgr singleInstance] setSendIdleChar: [sender state] 
 												   forProfile: [terminalProfileSelector titleOfSelectedItem]];
+}
+
+- (IBAction) terminalSetXtermMouseReporting: (id) sender
+{
+	[[iTermTerminalProfileMgr singleInstance] setXtermMouseReporting: [sender state] 
+												  forProfile: [terminalProfileSelector titleOfSelectedItem]];
 }	
 
 

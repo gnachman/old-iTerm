@@ -467,5 +467,39 @@ static iTermTerminalProfileMgr *singleInstance = nil;
 	[aProfile setObject: [NSNumber numberWithChar: idle] forKey: @"Idle Char"];	
 }
 
+- (BOOL) xtermMouseReportingForProfile: (NSString *) profileName
+{
+	NSDictionary *aProfile;
+	NSNumber *xtermMouseReporting;
+	
+	if([profileName length] <= 0)
+		return (YES);
+	
+	aProfile = [profiles objectForKey: profileName];
+	if(aProfile == nil)
+		return (YES);
+	
+	xtermMouseReporting = [aProfile objectForKey: @"Xterm Mouse Reporting"];
+	if(xtermMouseReporting == nil)
+		return (YES);
+	
+	return ([xtermMouseReporting boolValue]);	
+}
+
+- (void) setXtermMouseReporting: (BOOL) xtermMouseReporting forProfile: (NSString *) profileName
+{
+	NSMutableDictionary *aProfile;
+	
+	if([profileName length] <= 0)
+		return;
+	
+	aProfile = [profiles objectForKey: profileName];
+	
+	if(aProfile == nil)
+		return;
+	
+	[aProfile setObject: [NSNumber numberWithBool: xtermMouseReporting] forKey: @"Xterm Mouse Reporting"];	
+}
+
 
 @end

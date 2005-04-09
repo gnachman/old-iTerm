@@ -1008,6 +1008,7 @@ static NSString *PWD_ENVVALUE = @"~";
     [self setAntiIdle: [terminalProfileMgr sendIdleCharForProfile: terminalProfile]];
     [self setAutoClose: [terminalProfileMgr closeOnSessionEndForProfile: terminalProfile]];
     [self setDoubleWidth:[terminalProfileMgr doubleWidthForProfile: terminalProfile]];
+	[self setXtermMouseReporting:[terminalProfileMgr xtermMouseReportingForProfile: terminalProfile]];
     
 }
 
@@ -1447,6 +1448,17 @@ static NSString *PWD_ENVVALUE = @"~";
 {
     doubleWidth=set;
 }
+
+- (BOOL) xtermMouseReporting
+{
+	return xtermMouseReporting;
+}
+
+- (void) setXtermMouseReporting:(BOOL)set
+{
+	xtermMouseReporting = set;
+}
+
 
 - (BOOL) logging
 {
