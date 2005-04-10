@@ -292,6 +292,41 @@ static iTermTerminalProfileMgr *singleInstance = nil;
 	[aProfile setObject: [NSNumber numberWithBool: silent] forKey: @"Silence Bell"];	
 }
 
+- (BOOL) showBellForProfile: (NSString *) profileName
+{
+	NSDictionary *aProfile;
+	NSNumber *showBell;
+	
+	if([profileName length] <= 0)
+		return (NO);
+	
+	aProfile = [profiles objectForKey: profileName];
+	if(aProfile == nil)
+		return (NO);
+	
+	showBell = [aProfile objectForKey: @"Show Bell"];
+	if(showBell == nil)
+		return (YES);
+	
+	return ([showBell boolValue]);	
+}
+
+- (void) setShowBell: (BOOL) showBell forProfile: (NSString *) profileName
+{
+	NSMutableDictionary *aProfile;
+	
+	if([profileName length] <= 0)
+		return;
+	
+	aProfile = [profiles objectForKey: profileName];
+	
+	if(aProfile == nil)
+		return;
+	
+	[aProfile setObject: [NSNumber numberWithBool: showBell] forKey: @"Show Bell"];	
+}
+
+
 
 - (BOOL) blinkCursorForProfile: (NSString *) profileName
 {

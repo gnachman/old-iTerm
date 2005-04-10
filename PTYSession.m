@@ -1000,6 +1000,7 @@ static NSString *PWD_ENVVALUE = @"~";
 	
     // set up the rest of the preferences
     [SCREEN setPlayBellFlag: ![terminalProfileMgr silenceBellForProfile: terminalProfile]];
+	[SCREEN setShowBellFlag: [terminalProfileMgr showBellForProfile: terminalProfile]];
 	[SCREEN setBlinkingCursor: [terminalProfileMgr blinkCursorForProfile: terminalProfile]];
 	[TEXTVIEW setBlinkingCursor: [terminalProfileMgr blinkCursorForProfile: terminalProfile]];
     [self setEncoding: [terminalProfileMgr encodingForProfile: terminalProfile]];
