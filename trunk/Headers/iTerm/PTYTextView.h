@@ -1,5 +1,5 @@
 // -*- mode:objc -*-
-// $Id: PTYTextView.h,v 1.52 2005-04-10 00:59:34 ujwal Exp $
+// $Id: PTYTextView.h,v 1.53 2005-04-10 02:31:16 ujwal Exp $
 //
 /*
  **  PTYTextView.h
@@ -153,9 +153,9 @@ enum { SELECT_CHAR, SELECT_WORD, SELECT_LINE };
 - (void)rightMouseUp:(NSEvent *)event;
 - (void)rightMouseDragged:(NSEvent *)event;
 - (void)scrollWheel:(NSEvent *)event;
-- (NSString *) contentFromX:(int)startx Y:(int)starty ToX:(int)endx Y:(int)endy breakLines: (BOOL) breakLines;
+- (NSString *) contentFromX:(int)startx Y:(int)starty ToX:(int)endx Y:(int)endy breakLines: (BOOL) breakLines pad: (BOOL) pad;
 - (NSString *) selectedText;
-- (NSString *) selectedTextBreakingLines: (BOOL) breakLines;
+- (NSString *) selectedTextBreakingLines: (BOOL) breakLines pad: (BOOL) pad;
 - (NSString *) content;
 - (void)copy: (id) sender;
 - (void)paste:(id)sender;
