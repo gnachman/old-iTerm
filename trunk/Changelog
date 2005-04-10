@@ -6,6 +6,7 @@
 	* Fixed "Find" and "Copy" in selecting correct text and breaking across lines.
 	* Fixed "appending of spaces and of last line coped". Bug #1068198.
 	* Added an option to "show" bell that is separate from "play" bell in terminal profile.
+	* Fixed visual representation of "help" key in keymapping editor.
 
 2005-04-06	fabian
 
