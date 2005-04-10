@@ -201,6 +201,8 @@
 - (void) setCursorTextColor: (NSColor *) aColor;
 - (float) transparency;
 - (void)setTransparency:(float)transparency;
+- (BOOL) useTransparency;
+- (void) setUseTransparency: (BOOL) flag;
 - (BOOL) disableBold;
 - (void) setDisableBold: (BOOL) boldFlag;
 - (BOOL) disableBold;
