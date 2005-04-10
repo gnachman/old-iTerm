@@ -1,5 +1,5 @@
 // -*- mode:objc -*-
-// $Id: PTYTextView.m,v 1.230 2005-04-10 00:59:29 ujwal Exp $
+// $Id: PTYTextView.m,v 1.231 2005-04-10 02:31:11 ujwal Exp $
 /*
  **  PTYTextView.m
  **
@@ -1584,7 +1584,7 @@ static SInt32 systemVersion;
 	// check if we want to drag and drop a selection
 	if(mouseDownOnSelection == YES)
 	{
-		theSelectedText = [self contentFromX: startX Y: startY ToX: endX Y: endY breakLines: YES];
+		theSelectedText = [self contentFromX: startX Y: startY ToX: endX Y: endY breakLines: YES pad: NO];
 		if([theSelectedText length] > 0)
 		{
 			[self _dragText: theSelectedText forEvent: event];
@@ -1662,7 +1662,7 @@ static SInt32 systemVersion;
 	//NSLog(@"(%d,%d)-(%d,%d)",startX,startY,endX,endY);
 }
 
-- (NSString *) contentFromX:(int)startx Y:(int)starty ToX:(int)endx Y:(int)endy breakLines: (BOOL) breakLines
+- (NSString *) contentFromX:(int)startx Y:(int)starty ToX:(int)endx Y:(int)endy breakLines: (BOOL) breakLines pad: (BOOL) pad
 {
 	unichar *temp;
 	int j, line, scline;
@@ -1704,7 +1704,7 @@ static SInt32 systemVersion;
 						if(buf[i] != 0)
 							endOfLine = NO;
 					}
-					if(endOfLine && y < endy)
+					if(endOfLine && !pad && y < endy)
 					{
 						temp[j] = '\n'; // hard break
 						j++;
@@ -1742,11 +1742,11 @@ static SInt32 systemVersion;
 
 - (NSString *) selectedText
 {
-	return [self selectedTextBreakingLines: NO];
+	return [self selectedTextBreakingLines: NO pad: NO];
 }
 
 
-- (NSString *) selectedTextBreakingLines: (BOOL) breakLines
+- (NSString *) selectedTextBreakingLines: (BOOL) breakLines pad: (BOOL) pad
 {
 	
 #if DEBUG_METHOD_TRACE
@@ -1755,7 +1755,7 @@ static SInt32 systemVersion;
 	
 	if (startX == -1) return nil;
 	
-	return ([self contentFromX: startX Y: startY ToX: endX Y: endY breakLines: breakLines]);
+	return ([self contentFromX: startX Y: startY ToX: endX Y: endY breakLines: breakLines pad: pad]);
 	
 }
 
@@ -1766,7 +1766,7 @@ static SInt32 systemVersion;
     NSLog(@"%s(%d):-[PTYTextView copy:%@]", __FILE__, __LINE__, sender );
 #endif
     	
-	return [self contentFromX:0 Y:0 ToX:[dataSource width]-1 Y:[dataSource numberOfLines]-1 breakLines: YES];
+	return [self contentFromX:0 Y:0 ToX:[dataSource width]-1 Y:[dataSource numberOfLines]-1 breakLines: YES pad: NO];
 }
 
 - (void) copy: (id) sender
@@ -2132,10 +2132,10 @@ static SInt32 systemVersion;
 			numLines = visibleRect.size.height/lineHeight;
 			[self printContent: [self contentFromX: 0 Y: lineOffset 
 											   ToX: [dataSource width] - 1 Y: lineOffset + numLines - 1
-										breakLines: YES]];
+										breakLines: YES pad: NO]];
 			break;
 		case 1: // text selection
-			[self printContent: [self selectedTextBreakingLines: YES]];
+			[self printContent: [self selectedTextBreakingLines: YES pad: NO]];
 			break;
 		case 2: // entire buffer
 			[self printContent: [self content]];
@@ -2645,7 +2645,7 @@ static SInt32 systemVersion;
 	tmpY = y;
 	while(tmpX >= 0)
 	{
-		aString = [self contentFromX:tmpX Y:tmpY ToX:tmpX Y:tmpY breakLines: NO];
+		aString = [self contentFromX:tmpX Y:tmpY ToX:tmpX Y:tmpY breakLines: NO pad: YES];
 		if(([aString length] == 0 || 
 			[aString rangeOfCharacterFromSet: [NSCharacterSet alphanumericCharacterSet]].length == 0) &&
 		   [wordChars rangeOfString: aString].length == 0)
@@ -2684,7 +2684,7 @@ static SInt32 systemVersion;
 	tmpY = y;
 	while(tmpX < [dataSource width])
 	{
-		aString = [self contentFromX:tmpX Y:tmpY ToX:tmpX Y:tmpY breakLines: NO];
+		aString = [self contentFromX:tmpX Y:tmpY ToX:tmpX Y:tmpY breakLines: NO pad: YES];
 		if(([aString length] == 0 || 
 			[aString rangeOfCharacterFromSet: [NSCharacterSet alphanumericCharacterSet]].length == 0) &&
 		   [wordChars rangeOfString: aString].length == 0)
@@ -2718,7 +2718,7 @@ static SInt32 systemVersion;
 	x2 = tmpX;
 	y2 = tmpY;
 
-	return ([self contentFromX:x1 Y:y1 ToX:x2 Y:y2 breakLines: NO]);
+	return ([self contentFromX:x1 Y:y1 ToX:x2 Y:y2 breakLines: NO pad: YES]);
 	
 }
 
@@ -2761,7 +2761,7 @@ static SInt32 systemVersion;
 	char blankString[1024];	
 	
 	
-	lineContents = [self contentFromX: 0 Y: y ToX: [dataSource width] - 1 Y: y breakLines: NO];
+	lineContents = [self contentFromX: 0 Y: y ToX: [dataSource width] - 1 Y: y breakLines: NO pad: YES];
 	memset(blankString, ' ', 1024);
 	blankString[[dataSource width]] = 0;
 	blankLine = [NSString stringWithUTF8String: (const char*)blankString];
@@ -2883,7 +2883,7 @@ static SInt32 systemVersion;
 	}
 	
 	// ok, now get the search body
-	searchBody = [self contentFromX: x1 Y: y1 ToX: x2 Y: y2 breakLines: NO];
+	searchBody = [self contentFromX: x1 Y: y1 ToX: x2 Y: y2 breakLines: NO pad: YES];
 	
 	if([searchBody length] <= 0)
 	{
@@ -2909,7 +2909,7 @@ static SInt32 systemVersion;
 		{
 			anIndex = x1;
 		}
-		
+				
 		// calculate index of start of found range
 		anIndex += foundRange.location;
 		startX = lastFindX = anIndex % [dataSource width];
