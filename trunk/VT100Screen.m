@@ -1,5 +1,5 @@
 // -*- mode:objc -*-
-// $Id: VT100Screen.m,v 1.211 2004-11-20 23:52:52 ujwal Exp $
+// $Id: VT100Screen.m,v 1.212 2005-04-10 03:44:57 ujwal Exp $
 //
 /*
  **  VT100Screen.m
@@ -541,7 +541,7 @@ void padString(NSString *s, unichar *buf, char doubleWidth, int *len)
 
     //  VT100 CC
     case VT100CC_ENQ: break;
-    case VT100CC_BEL: [self playBell]; break;
+    case VT100CC_BEL: [self activateBell]; break;
     case VT100CC_BS:  [self backSpace]; break;
     case VT100CC_HT:  [self setTab]; break;
     case VT100CC_LF:
@@ -1422,15 +1422,27 @@ void padString(NSString *s, unichar *buf, char doubleWidth, int *len)
     PLAYBELL = flag;
 }
 
-- (void)playBell
+- (void)setShowBellFlag:(BOOL)flag
+{
+#if DEBUG_METHOD_TRACE
+    NSLog(@"%s(%d):+[VT100Screen setShowBellFlag:%s]",
+		  __FILE__, __LINE__, flag == YES ? "YES" : "NO");
+#endif
+    SHOWBELL = flag;
+}
+
+- (void)activateBell
 {
 #if DEBUG_METHOD_TRACE
     NSLog(@"%s(%d):-[VT100Screen playBell]",  __FILE__, __LINE__);
 #endif
     if (PLAYBELL) {
 		NSBeep();
-        [SESSION setBell];
     }
+	if (SHOWBELL)
+	{
+		[SESSION setBell];
+	}
 }
 
 - (void)deviceReport:(VT100TCC)token
