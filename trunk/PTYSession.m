@@ -1391,6 +1391,16 @@ static NSString *PWD_ENVVALUE = @"~";
 	
 }
 
+- (BOOL) useTransparency
+{
+  return [TEXTVIEW useTransparency];
+}
+
+- (void) setUseTransparency: (BOOL) flag
+{
+  [TEXTVIEW setUseTransparency: flag];
+}
+
 - (void) setColorTable:(int) index highLight:(BOOL)hili color:(NSColor *) c
 {
     [TEXTVIEW setColorTable:index highLight:hili color:c];

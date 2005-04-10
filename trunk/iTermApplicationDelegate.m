@@ -1,5 +1,5 @@
 // -*- mode:objc -*-
-// $Id: iTermApplicationDelegate.m,v 1.27 2004-11-15 02:09:47 ujwal Exp $
+// $Id: iTermApplicationDelegate.m,v 1.28 2005-04-10 00:59:29 ujwal Exp $
 /*
  **  iTermApplicationDelegate.m
  **
@@ -36,6 +36,7 @@
 #import <iTerm/VT100Terminal.h>
 #import <iTerm/FindPanelWindowController.h>
 #import <iTerm/PTYWindow.h>
+
 
 static NSString *SCRIPT_DIRECTORY = @"~/Library/Application Support/iTerm/Scripts";
 static NSString* AUTO_LAUNCH_SCRIPT = @"~/Library/Application Support/iTerm/AutoLaunch.scpt";
@@ -93,7 +94,6 @@ static BOOL usingAutoLaunchScript = NO;
     [[NSApp mainMenu] insertItem: scriptMenuItem atIndex: 4];
     [scriptMenuItem release];
     [scriptMenuItem setTitle: NSLocalizedStringFromTableInBundle(@"Script",@"iTerm", [NSBundle bundleForClass: [iTermController class]], @"Script")];
-     
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
@@ -217,7 +217,7 @@ static BOOL usingAutoLaunchScript = NO;
                                              selector:@selector(nonTerminalWindowBecameKey:)
                                                  name:@"nonTerminalWindowBecameKey"
                                                object:nil];    
-    
+
     return self;
 }
 
@@ -289,6 +289,13 @@ static BOOL usingAutoLaunchScript = NO;
 - (IBAction) smallerFont: (id) sender
 {
     [[[iTermController sharedInstance] currentTerminal] changeFontSize: NO];
+}
+
+// transparency
+- (IBAction) useTransparency: (id) sender
+{
+  BOOL b = [[[[iTermController sharedInstance] currentTerminal] currentSession] useTransparency];
+  [[[[iTermController sharedInstance] currentTerminal] currentSession] setUseTransparency: !b];
 }
 
 
@@ -489,6 +496,16 @@ static BOOL usingAutoLaunchScript = NO;
 
     [logStart setEnabled: ![aSession logging]];
     [logStop setEnabled: [aSession logging]];
+}
+
+- (BOOL) validateMenuItem: (NSMenuItem *) menuItem
+{
+  if ([menuItem action] == @selector(useTransparency:)) 
+  {
+    BOOL b = [[[[iTermController sharedInstance] currentTerminal] currentSession] useTransparency];
+    [menuItem setState: b == YES ? NSOnState : NSOffState];
+  }
+  return YES;
 }
 
 @end

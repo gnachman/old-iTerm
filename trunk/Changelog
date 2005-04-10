@@ -2,6 +2,7 @@
 
 	* Removed bouncing icon feature. Not a good idea for a terminal.
 	* Incorporated Geoff Reedy's patch for xterm mouse reporting with minor changes.
+	* Incorporated Rob Warner's patch to toggle transparency.
 
 2005-04-06	fabian
 

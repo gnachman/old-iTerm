@@ -1,5 +1,5 @@
 // -*- mode:objc -*-
-// $Id: PTYTextView.m,v 1.229 2005-04-09 23:42:56 ujwal Exp $
+// $Id: PTYTextView.m,v 1.230 2005-04-10 00:59:29 ujwal Exp $
 /*
  **  PTYTextView.m
  **
@@ -84,8 +84,9 @@ static SInt32 systemVersion;
 	// init the cache
 	memset(charImages, 0, CACHESIZE*sizeof(CharCache));	
     charWidth = 12;
+    
+    [self setUseTransparency: YES];
 		
-	
     return (self);
 }
 
@@ -674,6 +675,8 @@ static SInt32 systemVersion;
 	BOOL double_width;
 	BOOL reversed = [[dataSource terminal] screenMode]; 
 	
+  float trans = useTransparency ? 1.0 - transparency : 1.0;
+    
     if(lineHeight <= 0 || lineWidth <= 0)
         return;
     
@@ -685,7 +688,7 @@ static SInt32 systemVersion;
 		}
 		else {
 			aColor = [self colorForCode:(reversed ? DEFAULT_FG_COLOR_CODE : DEFAULT_BG_COLOR_CODE)];
-			aColor = [aColor colorWithAlphaComponent: (1 - transparency)];
+			aColor = [aColor colorWithAlphaComponent: trans];
 			[aColor set];
 			NSRectFill(rect);
 		}
@@ -761,7 +764,7 @@ static SInt32 systemVersion;
 					aColor = (bgcode & SELECTION_MASK) ? selectionColor : 
 						[self colorForCode: 
 							((reversed && bgcode == DEFAULT_BG_COLOR_CODE) ? DEFAULT_FG_COLOR_CODE: bgcode)]; 
-					aColor = [aColor colorWithAlphaComponent: (1 - transparency)];
+					aColor = [aColor colorWithAlphaComponent: trans];
 					[aColor set];
 					
 					bgRect = NSMakeRect(floor(curX+bgstart*charWidth),curY-lineHeight,ceil((j-bgstart)*charWidth),lineHeight);
@@ -789,7 +792,7 @@ static SInt32 systemVersion;
 					aColor = (bgcode & SELECTION_MASK) ? selectionColor : 
 						[self colorForCode: 
 							((reversed && bgcode == DEFAULT_BG_COLOR_CODE) ? DEFAULT_FG_COLOR_CODE: bgcode)]; 
-					aColor = [aColor colorWithAlphaComponent: (1 - transparency)];
+					aColor = [aColor colorWithAlphaComponent: trans];
 					[aColor set];
 					
 					bgRect = NSMakeRect(floor(curX+bgstart*charWidth),curY-lineHeight,ceil((j-bgstart)*charWidth),lineHeight);
@@ -820,7 +823,7 @@ static SInt32 systemVersion;
 			aColor = (bgcode & SELECTION_MASK) ? selectionColor : 
 				[self colorForCode: 
 					((reversed && bgcode == DEFAULT_BG_COLOR_CODE) ? DEFAULT_FG_COLOR_CODE: bgcode)]; 
-			aColor = [aColor colorWithAlphaComponent: (1 - transparency)];
+			aColor = [aColor colorWithAlphaComponent: trans];
 			[aColor set];
 			
 			bgRect = NSMakeRect(floor(curX+bgstart*charWidth),curY-lineHeight,ceil((j-bgstart)*charWidth),lineHeight);
@@ -895,7 +898,7 @@ static SInt32 systemVersion;
 		fg=[dataSource screenFGColor]+y1*WIDTH;
 		if(showCursor)
 		{			
-			[[[self defaultCursorColor] colorWithAlphaComponent: (1 - transparency)] set];
+			[[[self defaultCursorColor] colorWithAlphaComponent: trans] set];
 
 			if([[self window] isKeyWindow])
 			{
@@ -2360,6 +2363,18 @@ static SInt32 systemVersion;
 	transparency = fVal;
 	forceUpdate = YES;
 	[self setNeedsDisplay: YES];
+}
+
+- (BOOL) useTransparency
+{
+  return useTransparency;
+}
+
+- (void) setUseTransparency: (BOOL) flag
+{
+  useTransparency = flag;
+  forceUpdate = YES;
+  [self setNeedsDisplay: YES];
 }
 
 // service stuff
