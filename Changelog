@@ -4,6 +4,7 @@
 	* Incorporated Geoff Reedy's patch for xterm mouse reporting with minor changes.
 	* Incorporated Rob Warner's patch to toggle transparency.
 	* Fixed "Find" and "Copy" in selecting correct text and breaking across lines.
+	* Fixed "appending of spaces and of last line coped". Bug #1068198.
 
 2005-04-06	fabian
 
