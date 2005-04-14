@@ -908,7 +908,6 @@ static NSString *PWD_ENVVALUE = @"~";
             if (REFRESHED)
 			{
 				[tabViewItem setLabelAttributes: idleStateAttribute];
-				[NSApp requestUserAttention: NSInformationalRequest];
 			}
             else
                 [tabViewItem setLabelAttributes: normalStateAttribute];
@@ -916,7 +915,6 @@ static NSString *PWD_ENVVALUE = @"~";
         else if (waiting&&oIdleCount<=200) {
             waiting=NO;
             [tabViewItem setLabelAttributes: newOutputStateAttribute];
-			[NSApp requestUserAttention: NSInformationalRequest];
         }
     }
     else {
