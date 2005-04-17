@@ -1,4 +1,4 @@
-// $Id: PreferencePanel.m,v 1.122 2004-11-20 06:25:31 ujwal Exp $
+// $Id: PreferencePanel.m,v 1.123 2005-04-17 02:09:14 ujwal Exp $
 /*
  **  PreferencePanel.m
  **
@@ -169,6 +169,7 @@ static BOOL editingBookmark = NO;
 	[prefs setObject: [[iTermDisplayProfileMgr singleInstance] profiles] forKey: @"Displays"];
 	[prefs setObject: [[iTermTerminalProfileMgr singleInstance] profiles] forKey: @"Terminals"];
 	[prefs setObject: [[ITAddressBookMgr sharedInstance] bookmarks] forKey: @"Bookmarks"];
+	[prefs synchronize];
 }
 
 - (void)run
