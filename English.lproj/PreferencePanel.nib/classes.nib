@@ -1,6 +1,5 @@
 {
     IBClasses = (
-        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
         {
             ACTIONS = {
                 addBookmark = id; 
@@ -21,7 +20,7 @@
             CLASS = PreferencePanel; 
             LANGUAGE = ObjC; 
             OUTLETS = {
-                addBookmarkFolderPanel = NSButton; 
+                addBookmarkFolderPanel = NSPanel; 
                 bookmarkCommand = NSTextField; 
                 bookmarkDeleteButton = NSButton; 
                 bookmarkDisplayProfile = NSPopUpButton; 
@@ -40,7 +39,7 @@
                 enableRendezvous = NSButton; 
                 focusFollowsMouse = NSButton; 
                 hideTab = id; 
-                maxVertically = id; 
+                maxVertically = NSButton; 
                 middleButtonPastesFromClipboard = NSButton; 
                 profilesWindow = NSWindow; 
                 promptOnClose = id; 

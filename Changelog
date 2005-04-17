@@ -1,4 +1,9 @@
-2005-4-09	ujwal
+2005-04-16	ujwal
+
+	* All key input is checked for mapping.
+	* Preferences are saved to disk on hitting OK.
+
+2005-04-09	ujwal
 
 	* Removed bouncing icon feature. Not a good idea for a terminal.
 	* Incorporated Geoff Reedy's patch for xterm mouse reporting with minor changes.

@@ -1,5 +1,5 @@
 // -*- mode:objc -*-
-// $Id: PTYTextView.m,v 1.232 2005-04-10 02:41:25 ujwal Exp $
+// $Id: PTYTextView.m,v 1.233 2005-04-17 02:09:12 ujwal Exp $
 /*
  **  PTYTextView.m
  **
@@ -1506,7 +1506,7 @@ static SInt32 systemVersion;
 			 [mouseDownEvent locationInWindow].y == [event locationInWindow].y && 
 			 !([event modifierFlags] & NSCommandKeyMask) &&
 			 [event clickCount] < 2 && !mouseDragged) 
-	{
+	{		
 		startX=-1;
 	}
 	

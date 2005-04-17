@@ -1,5 +1,5 @@
 // -*- mode:objc -*-
-// $Id: iTermApplication.m,v 1.6 2005-04-03 17:50:29 ujwal Exp $
+// $Id: iTermApplication.m,v 1.7 2005-04-17 02:09:15 ujwal Exp $
 //
 /*
  **  iTermApplication.m
@@ -37,7 +37,7 @@
 
 @implementation iTermApplication
 
-// override to catch key mappings with command key down
+// override to catch key mappings
 - (void)sendEvent:(NSEvent *)anEvent
 {
 	id aWindow;
@@ -53,9 +53,10 @@
 		modflag = [anEvent modifierFlags];
 		unmodkeystr = [anEvent charactersIgnoringModifiers];
 		unmodunicode = [unmodkeystr length]>0?[unmodkeystr characterAtIndex:0]:0;	
+		//NSLog(@"unmodkeystr = '%@'; unmodunicode = 0x%x", unmodkeystr, unmodunicode);
 	}
 	
-	if([anEvent type] == NSKeyDown && (([anEvent modifierFlags] & NSCommandKeyMask) || (unmodunicode == NSHelpFunctionKey)))
+	if([anEvent type] == NSKeyDown)
 	{
 		
 		aWindow = [self keyWindow];
