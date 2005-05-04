@@ -1,3 +1,7 @@
+2005-05-04	fabian
+
+	* Changes in decoding_string(). Now we do not ignore the whole line after receiving an invalid code.
+	
 2005-04-16	ujwal
 
 	* All key input is checked for mapping.
