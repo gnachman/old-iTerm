@@ -1,3 +1,7 @@
+2005-09-21	fabian
+
+	* Added contribution from Damon Parker into Resource page of the website.
+
 2005-05-04	fabian
 
 	* Changes in decoding_string(). Now we do not ignore the whole line after receiving an invalid code.
