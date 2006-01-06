@@ -426,7 +426,7 @@ static TreeNode *defaultBookmark = nil;
 	// add to temporary array to retain it so that resolving works.
 	[rendezvousServices addObject: aNetService];
 	[aNetService setDelegate: self];
-	[aNetService resolve];
+	[aNetService resolveWithTimeout: (NSTimeInterval)5];
 	
 }
 
