@@ -1,5 +1,5 @@
 // -*- mode:objc -*-
-// $Id: iTermApplicationDelegate.m,v 1.28 2005-04-10 00:59:29 ujwal Exp $
+// $Id: iTermApplicationDelegate.m,v 1.29 2006-01-06 17:54:35 dnedrow Exp $
 /*
  **  iTermApplicationDelegate.m
  **
@@ -81,7 +81,7 @@ static BOOL usingAutoLaunchScript = NO;
     // populate the submenu with ascripts found in the script directory
     NSDirectoryEnumerator *directoryEnumerator = [[NSFileManager defaultManager] enumeratorAtPath: [SCRIPT_DIRECTORY stringByExpandingTildeInPath]];
     NSString *file;
-    while (file = [directoryEnumerator nextObject])
+    while ((file = [directoryEnumerator nextObject]))
     {
 		NSMenuItem *scriptItem = [[NSMenuItem alloc] initWithTitle: file action: @selector(launchScript:) keyEquivalent: @""];
 		[scriptItem setTarget: [iTermController sharedInstance]];
