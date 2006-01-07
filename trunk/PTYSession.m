@@ -516,7 +516,7 @@ static NSString *PWD_ENVVALUE = @"~";
                 data = [TERMINAL keyFunction:unicode-NSF1FunctionKey+1];
 			
 			if (data != nil) {
-				send_str = (char *)[data bytes];
+				send_str = (unsigned char *)[data bytes];
 				send_strlen = [data length];
 			}
 		}
@@ -528,7 +528,7 @@ static NSString *PWD_ENVVALUE = @"~";
 			[unmodkeystr dataUsingEncoding:NSUTF8StringEncoding];
 			// META combination
 			if (keydat != nil) {
-				send_str = (char *)[keydat bytes];
+				send_str = (unsigned char *)[keydat bytes];
 				send_strlen = [keydat length];
 			}
             if ([self optionKey] == OPT_ESC) {
@@ -573,7 +573,7 @@ static NSString *PWD_ENVVALUE = @"~";
 			
 			
 			if (data != nil ) {
-				send_str = (char *)[data bytes];
+				send_str = (unsigned char *)[data bytes];
 				send_strlen = [data length];
 			}
 			
@@ -582,14 +582,14 @@ static NSString *PWD_ENVVALUE = @"~";
 				 send_strlen == 1 &&
 				 send_str[0] == 0x03) || keycode==52)
 			{
-				send_str = "\015";  // NumericPad or Laptop Enter -> 0x0d
+				send_str = (unsigned char*)"\015";  // NumericPad or Laptop Enter -> 0x0d
 				send_strlen = 1;
 			}
 			if (modflag & NSControlKeyMask &&
 				send_strlen == 1 &&
 				send_str[0] == '|')
 			{
-				send_str = "\034"; // control-backslash
+				send_str = (unsigned char*)"\034"; // control-backslash
 				send_strlen = 1;
 			}
 			
@@ -598,14 +598,14 @@ static NSString *PWD_ENVVALUE = @"~";
 				send_strlen == 1 &&
 				send_str[0] == '/')
 			{
-				send_str = "\177"; // control-?
+				send_str = (unsigned char*)"\177"; // control-?
 				send_strlen = 1;
 			}						
 			else if (modflag & NSControlKeyMask &&
 					 send_strlen == 1 &&
 					 send_str[0] == '/')
 			{
-				send_str = "\037"; // control-/
+				send_str = (unsigned char*)"\037"; // control-/
 				send_strlen = 1;
 			}
 			
@@ -615,7 +615,7 @@ static NSString *PWD_ENVVALUE = @"~";
         {
 			if (send_pchr >= 0) {
 				char c = send_pchr;
-				dataPtr = &c;
+				dataPtr = (unsigned char*)&c;
 				dataLength = 1;
 				[self writeTask:[NSData dataWithBytes:dataPtr length:dataLength]];
 			}
