@@ -1,4 +1,4 @@
-// $Id: PreferencePanel.m,v 1.123 2005-04-17 02:09:14 ujwal Exp $
+// $Id: PreferencePanel.m,v 1.124 2006-01-07 03:17:50 dnedrow Exp $
 /*
  **  PreferencePanel.m
  **
@@ -61,8 +61,8 @@ static BOOL editingBookmark = NO;
 	self = [super init];
 	
 	[self readPreferences];
-	if(defaultEnableRendezvous == YES)
-		[[ITAddressBookMgr sharedInstance] locateRendezvousServices];
+	if(defaultEnableBounjour == YES)
+		[[ITAddressBookMgr sharedInstance] locateBounjourServices];
 	
 	// get the version
 	NSDictionary *myDict = [[NSBundle bundleForClass:[self class]] infoDictionary];
@@ -121,7 +121,7 @@ static BOOL editingBookmark = NO;
     defaultHideTab=[prefs objectForKey:@"HideTab"]?[[prefs objectForKey:@"HideTab"] boolValue]: YES;
     defaultPromptOnClose = [prefs objectForKey:@"PromptOnClose"]?[[prefs objectForKey:@"PromptOnClose"] boolValue]: YES;
     defaultFocusFollowsMouse = [prefs objectForKey:@"FocusFollowsMouse"]?[[prefs objectForKey:@"FocusFollowsMouse"] boolValue]: NO;
-	defaultEnableRendezvous = [prefs objectForKey:@"EnableRendezvous"]?[[prefs objectForKey:@"EnableRendezvous"] boolValue]: YES;
+	defaultEnableBounjour = [prefs objectForKey:@"EnableBounjour"]?[[prefs objectForKey:@"EnableBounjour"] boolValue]: YES;
 	defaultCmdSelection = [prefs objectForKey:@"CommandSelection"]?[[prefs objectForKey:@"CommandSelection"] boolValue]: YES;
 	defaultMaxVertically = [prefs objectForKey:@"MaxVertically"]?[[prefs objectForKey:@"MaxVertically"] boolValue]: YES;
 	[defaultWordChars release];
@@ -161,7 +161,7 @@ static BOOL editingBookmark = NO;
     [prefs setInteger:defaultTabViewType forKey:@"TabViewType"];
     [prefs setBool:defaultPromptOnClose forKey:@"PromptOnClose"];
     [prefs setBool:defaultFocusFollowsMouse forKey:@"FocusFollowsMouse"];
-	[prefs setBool:defaultEnableRendezvous forKey:@"EnableRendezvous"];
+	[prefs setBool:defaultEnableBounjour forKey:@"EnableBounjour"];
 	[prefs setBool:defaultCmdSelection forKey:@"CommandSelection"];
 	[prefs setBool:defaultMaxVertically forKey:@"MaxVertically"];
 	[prefs setObject: defaultWordChars forKey: @"WordCharacters"];
@@ -187,7 +187,7 @@ static BOOL editingBookmark = NO;
     [hideTab setState:defaultHideTab?NSOnState:NSOffState];
     [promptOnClose setState:defaultPromptOnClose?NSOnState:NSOffState];
 	[focusFollowsMouse setState: defaultFocusFollowsMouse?NSOnState:NSOffState];
-	[enableRendezvous setState: defaultEnableRendezvous?NSOnState:NSOffState];
+	[enableBounjour setState: defaultEnableBounjour?NSOnState:NSOffState];
 	[cmdSelection setState: defaultCmdSelection?NSOnState:NSOffState];
 	[maxVertically setState: defaultMaxVertically?NSOnState:NSOffState];
 	[wordChars setStringValue: ([defaultWordChars length] > 0)?defaultWordChars:@""];	
@@ -211,7 +211,7 @@ static BOOL editingBookmark = NO;
     defaultHideTab=([hideTab state]==NSOnState);
     defaultPromptOnClose = ([promptOnClose state] == NSOnState);
     defaultFocusFollowsMouse = ([focusFollowsMouse state] == NSOnState);
-	defaultEnableRendezvous = ([enableRendezvous state] == NSOnState);
+	defaultEnableBounjour = ([enableBounjour state] == NSOnState);
 	defaultCmdSelection = ([cmdSelection state] == NSOnState);
 	defaultMaxVertically = ([maxVertically state] == NSOnState);
 	[defaultWordChars release];
@@ -571,9 +571,9 @@ static BOOL editingBookmark = NO;
     return (defaultFocusFollowsMouse);
 }
 
-- (BOOL) enableRendezvous
+- (BOOL) enableBounjour
 {
-	return (defaultEnableRendezvous);
+	return (defaultEnableBounjour);
 }
 
 - (BOOL) cmdSelection
