@@ -66,34 +66,34 @@ static TreeNode *defaultBookmark = nil;
 - (void)dealloc;
 {
 	[bookmarks release];
-	[bounjourGroup release];	
-	[bounjourServices removeAllObjects];
-	[bounjourServices release];
+	[bonjourGroup release];	
+	[bonjourServices removeAllObjects];
+	[bonjourServices release];
 	
-	[sshBounjourBrowser stop];
-	[ftpBounjourBrowser stop];
-	[telnetBounjourBrowser stop];	
-	[sshBounjourBrowser release];
-	[ftpBounjourBrowser release];
-	[telnetBounjourBrowser release];
+	[sshBonjourBrowser stop];
+	[ftpBonjourBrowser stop];
+	[telnetBonjourBrowser stop];	
+	[sshBonjourBrowser release];
+	[ftpBonjourBrowser release];
+	[telnetBonjourBrowser release];
 	
     [super dealloc];
 }
 
-- (void) locateBounjourServices
+- (void) locateBonjourServices
 {
-	sshBounjourBrowser = [[NSNetServiceBrowser alloc] init];
-	ftpBounjourBrowser = [[NSNetServiceBrowser alloc] init];
-	telnetBounjourBrowser = [[NSNetServiceBrowser alloc] init];
+	sshBonjourBrowser = [[NSNetServiceBrowser alloc] init];
+	ftpBonjourBrowser = [[NSNetServiceBrowser alloc] init];
+	telnetBonjourBrowser = [[NSNetServiceBrowser alloc] init];
 	
-	bounjourServices = [[NSMutableArray alloc] init];
+	bonjourServices = [[NSMutableArray alloc] init];
 	
-	[sshBounjourBrowser setDelegate: self];
-	[ftpBounjourBrowser setDelegate: self];
-	[telnetBounjourBrowser setDelegate: self];
-	[sshBounjourBrowser searchForServicesOfType: @"_ssh._tcp." inDomain: @""];
-	[ftpBounjourBrowser searchForServicesOfType: @"_ftp._tcp." inDomain: @""];
-	[telnetBounjourBrowser searchForServicesOfType: @"_telnet._tcp." inDomain: @""];		
+	[sshBonjourBrowser setDelegate: self];
+	[ftpBonjourBrowser setDelegate: self];
+	[telnetBonjourBrowser setDelegate: self];
+	[sshBonjourBrowser searchForServicesOfType: @"_ssh._tcp." inDomain: @""];
+	[ftpBonjourBrowser searchForServicesOfType: @"_ftp._tcp." inDomain: @""];
+	[telnetBonjourBrowser searchForServicesOfType: @"_telnet._tcp." inDomain: @""];		
 	
 }
 
@@ -146,10 +146,10 @@ static TreeNode *defaultBookmark = nil;
 		
 	}
 	
-	// add any bounjour services if we have any
-	if([bounjourGroup numberOfChildren] > 0)
+	// add any bonjour services if we have any
+	if([bonjourGroup numberOfChildren] > 0)
 	{
-		[bookmarks insertChild: bounjourGroup atIndex: [bookmarks numberOfChildren]];
+		[bookmarks insertChild: bonjourGroup atIndex: [bookmarks numberOfChildren]];
 	}	
 
 }
@@ -161,14 +161,14 @@ static TreeNode *defaultBookmark = nil;
 	
 	//NSLog(@"%s", __PRETTY_FUNCTION__);
 	
-	// remove bounjour group since we do not want to save that
-	anIndex = [[bookmarks children] indexOfObject: bounjourGroup];
-	[bounjourGroup retain];
-	[bookmarks  removeChild: bounjourGroup];	
+	// remove bonjour group since we do not want to save that
+	anIndex = [[bookmarks children] indexOfObject: bonjourGroup];
+	[bonjourGroup retain];
+	[bookmarks  removeChild: bonjourGroup];	
 	aDict = [bookmarks dictionary];
 	if(anIndex != NSNotFound)
-		[bookmarks insertChild: bounjourGroup atIndex: anIndex];	
-	[bounjourGroup release];
+		[bookmarks insertChild: bonjourGroup atIndex: anIndex];	
+	[bonjourGroup release];
 	
 	return (aDict);
 }
@@ -180,7 +180,7 @@ static TreeNode *defaultBookmark = nil;
 	if([defaultBookmark isDescendantOfNode: aNode])
 		mayDeleteNode = NO;
 	
-	if([aNode isDescendantOfNode: bounjourGroup])
+	if([aNode isDescendantOfNode: bonjourGroup])
 		mayDeleteNode = NO;
 	
 	return (mayDeleteNode);
@@ -407,24 +407,24 @@ static TreeNode *defaultBookmark = nil;
 
 	//NSLog(@"%s: %@", __PRETTY_FUNCTION__, aNetService);
 	
-	if(bounjourGroup == nil)
+	if(bonjourGroup == nil)
 	{
 		aDict = [[NSMutableDictionary alloc] init];
-		[aDict setObject: @"Bounjour" forKey: KEY_NAME];
+		[aDict setObject: @"Bonjour" forKey: KEY_NAME];
 		[aDict setObject: @"" forKey: KEY_DESCRIPTION];
 		[aDict setObject: @"Yes" forKey: KEY_BONJOUR_GROUP];
 						
-		bounjourGroup = [[TreeNode alloc] initWithData: aDict parent: nil children: [NSArray array]];
-		[bounjourGroup setIsLeaf: NO];
+		bonjourGroup = [[TreeNode alloc] initWithData: aDict parent: nil children: [NSArray array]];
+		[bonjourGroup setIsLeaf: NO];
 		[aDict release];
 	}
 	
 	// add a subgroup for this service if it does not already exist
-	[self _getBounjourServiceTypeNode: [aNetService type]];
+	[self _getBonjourServiceTypeNode: [aNetService type]];
 	
 	// resolve the service
 	// add to temporary array to retain it so that resolving works.
-	[bounjourServices addObject: aNetService];
+	[bonjourServices addObject: aNetService];
 	[aNetService setDelegate: self];
 	[aNetService resolveWithTimeout: (NSTimeInterval)5];
 	
@@ -444,7 +444,7 @@ static TreeNode *defaultBookmark = nil;
 		return;
 		
 	// grab the service group node in the tree
-	serviceNode = [self _getBounjourServiceTypeNode: [aNetService type]];
+	serviceNode = [self _getBonjourServiceTypeNode: [aNetService type]];
 	
 	// remove host entry from this group
 	anEnumerator = [[serviceNode children] objectEnumerator];
@@ -469,7 +469,7 @@ static TreeNode *defaultBookmark = nil;
 	if(sshService == YES)
 	{
 		// grab the service group node in the tree
-		serviceNode = [self _getBounjourServiceTypeNode: @"_sftp.tcp."];
+		serviceNode = [self _getBonjourServiceTypeNode: @"_sftp.tcp."];
 		
 		// remove host entry from this group
 		anEnumerator = [[serviceNode children] objectEnumerator];
@@ -489,9 +489,9 @@ static TreeNode *defaultBookmark = nil;
 		}
 	}
 	
-	// if bounjour group is empty, remove it
-	if([bounjourGroup numberOfChildren] == 0)
-		[bounjourGroup removeFromParent];
+	// if bonjour group is empty, remove it
+	if([bonjourGroup numberOfChildren] == 0)
+		[bonjourGroup removeFromParent];
 	
 	// Post a notification for all listeners that bookmarks have changed
 	[[NSNotificationCenter defaultCenter] postNotificationName: @"iTermReloadAddressBook" object: nil userInfo: nil];    		
@@ -513,13 +513,13 @@ static TreeNode *defaultBookmark = nil;
 	// cancel the resolution
 	[sender stop];
 	
-	if([bounjourServices containsObject: sender] == NO)
+	if([bonjourServices containsObject: sender] == NO)
 		return;
 	
-	// now that we have at least one resolved service, add the bounjour group to the bookmarks.
-	if([[bookmarks children] containsObject: bounjourGroup] == NO)
+	// now that we have at least one resolved service, add the bonjour group to the bookmarks.
+	if([[bookmarks children] containsObject: bonjourGroup] == NO)
 	{
-		[bookmarks insertChild: bounjourGroup atIndex: [bookmarks numberOfChildren]];
+		[bookmarks insertChild: bonjourGroup atIndex: [bookmarks numberOfChildren]];
 	}	
 	
 	// grab the address
@@ -529,7 +529,7 @@ static TreeNode *defaultBookmark = nil;
 	
 	aDict = [[NSMutableDictionary alloc] init];
 
-	serviceNode = [self _getBounjourServiceTypeNode: [sender type]];
+	serviceNode = [self _getBonjourServiceTypeNode: [sender type]];
 	
 	[aDict setObject: [NSString stringWithFormat: @"%@", [sender name]] forKey: KEY_NAME];
 	[aDict setObject: [NSString stringWithFormat: @"%@", [sender name]] forKey: KEY_DESCRIPTION];
@@ -543,10 +543,10 @@ static TreeNode *defaultBookmark = nil;
 	
 	[[ITAddressBookMgr sharedInstance] addBookmarkWithData: aDict toNode: serviceNode];
 
-	// No bounjour service for sftp. Rides over ssh, so try to detect that
+	// No bonjour service for sftp. Rides over ssh, so try to detect that
 	if([[[serviceNode nodeData] objectForKey: KEY_BONJOUR_SERVICE] isEqualToString: @"ssh"])
 	{
-		serviceNode = [self _getBounjourServiceTypeNode: @"_sftp._tcp."];
+		serviceNode = [self _getBonjourServiceTypeNode: @"_sftp._tcp."];
 		
 		[aDict setObject: [NSString stringWithFormat: @"%@", [sender name]] forKey: KEY_NAME];
 		[aDict setObject: [NSString stringWithFormat: @"%@", [sender name]] forKey: KEY_DESCRIPTION];
@@ -563,8 +563,8 @@ static TreeNode *defaultBookmark = nil;
 	[aDict release];
 	
 	// remove from array now that resolving is done
-	if([bounjourServices containsObject: sender])
-		[bounjourServices removeObject: sender];
+	if([bonjourServices containsObject: sender])
+		[bonjourServices removeObject: sender];
 	
 	// Post a notification for all listeners that bookmarks have changed
 	[[NSNotificationCenter defaultCenter] postNotificationName: @"iTermReloadAddressBook" object: nil userInfo: nil];    	
@@ -648,7 +648,7 @@ static TreeNode *defaultBookmark = nil;
 	return (nil);
 }
 
-- (TreeNode *) _getBounjourServiceTypeNode: (NSString *) aType
+- (TreeNode *) _getBonjourServiceTypeNode: (NSString *) aType
 {
 	NSEnumerator *keyEnumerator;
 	BOOL aBool;
@@ -667,7 +667,7 @@ static TreeNode *defaultBookmark = nil;
 	}	
 	
 	aBool = NO;
-	keyEnumerator = [[bounjourGroup children] objectEnumerator];
+	keyEnumerator = [[bonjourGroup children] objectEnumerator];
 	while ((childNode = [keyEnumerator nextObject]))
 	{
 		if([[[childNode nodeData] objectForKey: KEY_NAME] isEqualToString: serviceType])
@@ -687,7 +687,7 @@ static TreeNode *defaultBookmark = nil;
 		[childNode setIsLeaf: NO];
 		[aDict release];
 		
-		[bounjourGroup insertChild: childNode atIndex: [bounjourGroup numberOfChildren]];
+		[bonjourGroup insertChild: childNode atIndex: [bonjourGroup numberOfChildren]];
 		[childNode release];		
 
 	}
