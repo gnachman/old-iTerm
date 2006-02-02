@@ -1,3 +1,7 @@
+2006-02-02	fabian
+
+	* Fixed background color incomplete bug (#1208764).
+	
 2006-02-01	fabian
 
 	* Fixed "can't save changes" bug.
