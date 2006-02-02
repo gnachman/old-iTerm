@@ -36,9 +36,9 @@
 #define KEY_DISPLAY_PROFILE				@"Display Profile"
 #define KEY_SHORTCUT					@"Shortcut"
 #define KEY_DEFAULT_BOOKMARK			@"Default Bookmark"
-#define KEY_BONJOUR_GROUP			@"Bounjour Group"
-#define KEY_BONJOUR_SERVICE			@"Bounjour Service"
-#define KEY_BONJOUR_SERVICE_ADDRESS  @"Bounjour Service Address"
+#define KEY_BONJOUR_GROUP			@"Bonjour Group"
+#define KEY_BONJOUR_SERVICE			@"Bonjour Service"
+#define KEY_BONJOUR_SERVICE_ADDRESS  @"Bonjour Service Address"
 
 
 @class TreeNode;
@@ -46,18 +46,18 @@
 @interface ITAddressBookMgr : NSObject 
 {
 	TreeNode *bookmarks;
-	NSNetServiceBrowser *sshBounjourBrowser;
-	NSNetServiceBrowser *ftpBounjourBrowser;
-	NSNetServiceBrowser *telnetBounjourBrowser;
-	TreeNode *bounjourGroup;
-	NSMutableArray *bounjourServices;
+	NSNetServiceBrowser *sshBonjourBrowser;
+	NSNetServiceBrowser *ftpBonjourBrowser;
+	NSNetServiceBrowser *telnetBonjourBrowser;
+	TreeNode *bonjourGroup;
+	NSMutableArray *bonjourServices;
 }
 
 + (id)sharedInstance;
 
 - (void) setBookmarks: (NSDictionary *) aDict;
 - (NSDictionary *) bookmarks;
-- (void) locateBounjourServices;
+- (void) locateBonjourServices;
 - (void) migrateOldBookmarks;
 
 // Model for NSOutlineView tree structure
@@ -84,6 +84,6 @@
 
 - (BOOL) _checkForDefaultBookmark: (TreeNode *) rootNode defaultBookmark: (TreeNode **)defaultBookmark;
 - (TreeNode *) _getBookmarkNodeWithName: (NSString *) aName searchFromNode: (TreeNode *) aNode;
-- (TreeNode *) _getBounjourServiceTypeNode: (NSString *) aType;
+- (TreeNode *) _getBonjourServiceTypeNode: (NSString *) aType;
 
 @end

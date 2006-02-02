@@ -43,7 +43,7 @@
     IBOutlet NSButton *focusFollowsMouse;
 	IBOutlet NSTextField *wordChars;
 	IBOutlet NSWindow *profilesWindow;
-	IBOutlet NSButton *enableBounjour;
+	IBOutlet NSButton *enableBonjour;
 	IBOutlet NSButton *cmdSelection;
 	IBOutlet NSButton *maxVertically;
 	
@@ -75,7 +75,7 @@
     int defaultTabViewType;
     BOOL defaultPromptOnClose;
     BOOL defaultFocusFollowsMouse;
-	BOOL defaultEnableBounjour;
+	BOOL defaultEnableBonjour;
 	BOOL defaultCmdSelection;
 	BOOL defaultMaxVertically;
 	NSString *defaultWordChars;
@@ -116,7 +116,7 @@
 - (void) setTabViewType: (NSTabViewType) type;
 - (BOOL) promptOnClose;
 - (BOOL) focusFollowsMouse;
-- (BOOL) enableBounjour;
+- (BOOL) enableBonjour;
 - (BOOL) cmdSelection;
 - (BOOL) maxVertically;
 - (NSString *) wordChars;

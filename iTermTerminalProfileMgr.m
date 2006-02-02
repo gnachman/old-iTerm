@@ -100,7 +100,7 @@ static iTermTerminalProfileMgr *singleInstance = nil;
 		
 		[aProfile setObject: @"Yes" forKey: @"Default Profile"];
 		
-		[self setType: @"vt100" forProfile: defaultName];
+		[self setType: @"ansi" forProfile: defaultName];
 		[self setEncoding: NSASCIIStringEncoding  forProfile: defaultName];
 		[self setScrollbackLines: 1000 forProfile: defaultName];
 		[self setSilenceBell: NO forProfile: defaultName];
