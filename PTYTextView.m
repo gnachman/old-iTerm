@@ -1,5 +1,5 @@
 // -*- mode:objc -*-
-// $Id: PTYTextView.m,v 1.233 2005-04-17 02:09:12 ujwal Exp $
+// $Id: PTYTextView.m,v 1.234 2006-02-02 08:07:59 yfabian Exp $
 /*
  **  PTYTextView.m
  **
@@ -2775,31 +2775,35 @@ static SInt32 systemVersion;
 - (void) _openURL: (NSString *) aURLString
 {
     NSURL *url;
+    NSString* trimmedURLString;
 	
-	if([aURLString length] <= 0)
-		return;
+    trimmedURLString = [aURLString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+	
+	// length returns an unsigned value, so couldn't this just be ==? [TRE]
+    if([trimmedURLString length] <= 0)
+        return;
 	    
     // Check for common types of URLs
-    if ([aURLString hasPrefix:@"file://"])
-        url = [NSURL URLWithString:aURLString];
-    else if ([aURLString hasPrefix:@"ftp"])
+    if ([trimmedURLString hasPrefix:@"file://"])
+        url = [NSURL URLWithString:trimmedURLString];
+    else if ([trimmedURLString hasPrefix:@"ftp"])
     {
-        if (![aURLString hasPrefix:@"ftp://"])
-            url = [NSURL URLWithString:[@"ftp://" stringByAppendingString:aURLString]];
+        if (![trimmedURLString hasPrefix:@"ftp://"])
+            url = [NSURL URLWithString:[@"ftp://" stringByAppendingString:trimmedURLString]];
         else
-            url = [NSURL URLWithString:aURLString];
+            url = [NSURL URLWithString:trimmedURLString];
     }
-	else if ([aURLString hasPrefix:@"mailto:"])
-        url = [NSURL URLWithString:aURLString];
-	else if([aURLString rangeOfString: @"@"].location != NSNotFound)
-		url = [NSURL URLWithString:[@"mailto:" stringByAppendingString:aURLString]];
-	else if ([aURLString hasPrefix:@"https://"])
-        url = [NSURL URLWithString:aURLString];
-    else if (![aURLString hasPrefix:@"http"])
-        url = [NSURL URLWithString:[@"http://" stringByAppendingString:aURLString]];
+	else if ([trimmedURLString hasPrefix:@"mailto:"])
+        url = [NSURL URLWithString:trimmedURLString];
+	else if([trimmedURLString rangeOfString: @"@"].location != NSNotFound)
+		url = [NSURL URLWithString:[@"mailto:" stringByAppendingString:trimmedURLString]];
+	else if ([trimmedURLString hasPrefix:@"https://"])
+        url = [NSURL URLWithString:trimmedURLString];
+    else if (![trimmedURLString hasPrefix:@"http"])
+        url = [NSURL URLWithString:[@"http://" stringByAppendingString:trimmedURLString]];
     else
-        url = [NSURL URLWithString:aURLString];
-    
+        url = [NSURL URLWithString:trimmedURLString];
+	
     [[NSWorkspace sharedWorkspace] openURL:url];
 	
 }

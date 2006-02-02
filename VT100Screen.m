@@ -1,5 +1,5 @@
 // -*- mode:objc -*-
-// $Id: VT100Screen.m,v 1.212 2005-04-10 03:44:57 ujwal Exp $
+// $Id: VT100Screen.m,v 1.213 2006-02-02 08:07:59 yfabian Exp $
 //
 /*
  **  VT100Screen.m
@@ -32,8 +32,6 @@
 #define DEBUG_ALLOC           0
 #define DEBUG_METHOD_TRACE    0
 
-#define MAX_STRING_SIZE			1024
-
 #import <iTerm/iTerm.h>
 #import <iTerm/VT100Screen.h>
 #import <iTerm/NSStringITerm.h>
@@ -57,16 +55,23 @@ void translate(unichar *s, int len)
 /* pad the source string whenever double width character appears */
 void padString(NSString *s, unichar *buf, char doubleWidth, int *len)
 {
-    unichar sc[MAX_STRING_SIZE]; 
+    unichar *sc; 
 	int l=[s length];
 	int i,j;
 	
-	[s getCharacters:sc];
-    for(i=j=0;i<l;i++,j++) {
-		buf[j]=sc[i];
-		if (doubleWidth&&ISDOUBLEWIDTHCHARACTER(sc[i])) buf[++j]=0xffff;
+	if (doubleWidth) {
+		sc = (unichar *) malloc (l * sizeof(unichar));
+		[s getCharacters:sc];
+		for(i=j=0;i<l;i++,j++) {
+			buf[j]=sc[i];
+			if (ISDOUBLEWIDTHCHARACTER(sc[i])) buf[++j]=0xffff;
+		}
+		*len=j;
 	}
-	*len=j;
+	else {
+		[s getCharacters:buf];
+		*len=[s length];
+	}
 }
 
 @implementation VT100Screen
@@ -795,16 +800,23 @@ void padString(NSString *s, unichar *buf, char doubleWidth, int *len)
 {
     int idx, screenIdx;
     int j, len, newx;
-	unichar buffer[MAX_STRING_SIZE];
+	unichar *buffer;
 
 #if DEBUG_METHOD_TRACE
     NSLog(@"%s(%d):-[VT100Screen setString:%@ at %d]",
           __FILE__, __LINE__, string, CURSOR_X);
 #endif
 
-	if ([string length] < 1 || !string || [string length] > MAX_STRING_SIZE) 
+	if ([string length] < 1 || !string) 
 	{
 		NSLog(@"%s: invalid string '%@'", __PRETTY_FUNCTION__, string);
+		return;		
+	}
+	
+	buffer = (unichar *) malloc( 2 * [string length] * sizeof(unichar) );
+	if (!buffer)
+	{
+		NSLog(@"%s: Out of memory", __PRETTY_FUNCTION__);
 		return;		
 	}
 	

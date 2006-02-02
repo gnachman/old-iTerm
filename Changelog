@@ -1,6 +1,10 @@
 2006-02-01	fabian
 
 	* Fixed "can't save changes" bug.
+	* Fixed a bug in [VT100Screen setString] that could cause crashes in rare occasions.
+	* Incorporated the patch submitted by Tom Emerson. Now the URL selection is trimmed 
+	  before it's sent to the browser.
+	* Updated zh_CN and zh_TW files.
 	
 2005-09-21	fabian
 
