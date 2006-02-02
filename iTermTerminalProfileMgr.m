@@ -68,12 +68,24 @@ static iTermTerminalProfileMgr *singleInstance = nil;
 
 - (void) setProfiles: (NSMutableDictionary *) aDict
 {
+	NSEnumerator *keyEnumerator;
+	NSMutableDictionary *mappingDict;
+	NSString *profileName;
+	NSDictionary *sourceDict;
 	
 	// recursively copy the dictionary to ensure mutability
-	[profiles setDictionary: aDict];
-	
-	// if we don't have any profile, create a default profile
-	if([profiles count] == 0)
+	if(aDict != nil)
+	{
+		keyEnumerator = [aDict keyEnumerator];
+		while((profileName = [keyEnumerator nextObject]) != nil)
+		{
+			sourceDict = [aDict objectForKey: profileName];
+			mappingDict = [[NSMutableDictionary alloc] initWithDictionary: sourceDict];
+			[profiles setObject: mappingDict forKey: profileName];
+			[mappingDict release];
+		}		
+	}
+    else  // if we don't have any profile, create a default profile
 	{
 		NSMutableDictionary *aProfile;
 		NSString *defaultName;
