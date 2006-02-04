@@ -1,5 +1,5 @@
 // -*- mode:objc -*-
-// $Id: PTYTextView.m,v 1.234 2006-02-02 08:07:59 yfabian Exp $
+// $Id: PTYTextView.m,v 1.235 2006-02-04 00:21:13 yfabian Exp $
 /*
  **  PTYTextView.m
  **
@@ -1315,7 +1315,6 @@ static SInt32 systemVersion;
 	NSRect visibleRect = [[self enclosingScrollView] documentVisibleRect];
 	if (([[self delegate] xtermMouseReporting]) 
 		&& (locationInTextView.y > visibleRect.origin.y))
-//		&& ([event modifierFlags] & NSCommandKeyMask == 0)) 
 	{
 		int rx, ry;
 		rx = (locationInTextView.x-MARGIN - visibleRect.origin.x)/charWidth;
@@ -1353,7 +1352,7 @@ static SInt32 systemVersion;
 	mouseDown = YES;
 	mouseDownOnSelection = NO;
     
-    if ([event clickCount]<2) {
+    if ([event clickCount]<2 ) {
         selectMode = SELECT_CHAR;
 
         // if we are holding the shift key down, we are extending selection
@@ -1373,7 +1372,7 @@ static SInt32 systemVersion;
 			[super mouseDown: event];
 			return;
 		}
-        else
+        else if (!([event modifierFlags] & NSCommandKeyMask))
         {
             endX = startX = x;
             endY = startY = y;
@@ -1504,7 +1503,8 @@ static SInt32 systemVersion;
     }
     else if ([mouseDownEvent locationInWindow].x == [event locationInWindow].x &&
 			 [mouseDownEvent locationInWindow].y == [event locationInWindow].y && 
-			 !([event modifierFlags] & NSCommandKeyMask) &&
+			 !([event modifierFlags] & NSCommandKeyMask) && 
+             !([event modifierFlags] & NSShiftKeyMask) &&
 			 [event clickCount] < 2 && !mouseDragged) 
 	{		
 		startX=-1;

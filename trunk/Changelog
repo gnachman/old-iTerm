@@ -1,3 +1,10 @@
+2006-02-03  fabian
+
+    * Fixed bugs in [VT100Screen InsertLines&DeleteLines] (#1180993), as suggested by
+      A'rpi (arpi@mplayerhq.hu)
+    * Fixed bug in Cmd-Click to start browser.
+    * Fixed bug in Shift-Click to extend selection.
+
 2006-02-02	fabian
 
 	* Fixed background color incomplete bug (#1208764).
