@@ -1,5 +1,5 @@
 // -*- mode:objc -*-
-// $Id: iTermApplication.m,v 1.7 2005-04-17 02:09:15 ujwal Exp $
+// $Id: iTermApplication.m,v 1.8 2006-02-05 17:32:23 ujwal Exp $
 //
 /*
  **  iTermApplication.m
@@ -43,19 +43,8 @@
 	id aWindow;
 	PseudoTerminal *currentTerminal;
 	PTYSession *currentSession;
-	unsigned int modflag;
-    NSString *unmodkeystr;
-    unichar unmodunicode = 0;	
 	
-	
-	if([anEvent type] == NSKeyDown)
-	{
-		modflag = [anEvent modifierFlags];
-		unmodkeystr = [anEvent charactersIgnoringModifiers];
-		unmodunicode = [unmodkeystr length]>0?[unmodkeystr characterAtIndex:0]:0;	
-		//NSLog(@"unmodkeystr = '%@'; unmodunicode = 0x%x", unmodkeystr, unmodunicode);
-	}
-	
+		
 	if([anEvent type] == NSKeyDown)
 	{
 		

@@ -1,3 +1,8 @@
+2006-02-05	ujwal
+
+	* Fixed outlet bug in German NIB that caused drawer not to open.
+	* Removed unnecessary code in iTermApplication.m 
+
 2006-02-03  fabian
 
     * Fixed bugs in [VT100Screen InsertLines&DeleteLines] (#1180993), as suggested by
