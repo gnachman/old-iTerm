@@ -1,3 +1,12 @@
+2006-02-05	dnedrow
+
+	* Updated NIB PreferencePanels to reflect Rendezvous->Bonjour namechange.
+	* Updated prefs routines to read/save to bonjour, rather than rendezvous to
+	  stay consistant with dialogs.
+	* Fixes for mismatched signedness warnings in PTYSession.m.
+	* Corrected an XCODE 2.2 warning re: boolean assignment used for while()
+	  in iTermApplicationDelegate.m.
+
 2006-02-05	ujwal
 
 	* Fixed outlet bug in German NIB that caused drawer not to open.
@@ -21,6 +30,10 @@
 	* Incorporated the patch submitted by Tom Emerson. Now the URL selection is trimmed 
 	  before it's sent to the browser.
 	* Updated zh_CN and zh_TW files.
+	
+2006-01-07	dnedrow
+	* Converted project to XCode 2.2.1.
+	* Set project to default to Universal Binary.
 	
 2005-09-21	fabian
 
