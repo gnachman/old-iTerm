@@ -1,3 +1,9 @@
+2006-02-06	dnedrow
+
+	* Set default terminal type to ANSI rather than VT100. This should
+	  reduce the numerous support message re: "lack of color" support
+          in the shell (eg. ls -G).
+
 2006-02-05	dnedrow
 
 	* Updated NIB PreferencePanels to reflect Rendezvous->Bonjour namechange.
