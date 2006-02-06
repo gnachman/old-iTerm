@@ -1,4 +1,4 @@
-// $Id: PreferencePanel.m,v 1.126 2006-02-02 18:48:58 dnedrow Exp $
+// $Id: PreferencePanel.m,v 1.127 2006-02-06 03:11:37 dnedrow Exp $
 /*
  **  PreferencePanel.m
  **
@@ -121,7 +121,7 @@ static BOOL editingBookmark = NO;
     defaultHideTab=[prefs objectForKey:@"HideTab"]?[[prefs objectForKey:@"HideTab"] boolValue]: YES;
     defaultPromptOnClose = [prefs objectForKey:@"PromptOnClose"]?[[prefs objectForKey:@"PromptOnClose"] boolValue]: YES;
     defaultFocusFollowsMouse = [prefs objectForKey:@"FocusFollowsMouse"]?[[prefs objectForKey:@"FocusFollowsMouse"] boolValue]: NO;
-	defaultEnableBonjour = [prefs objectForKey:@"EnableBonjour"]?[[prefs objectForKey:@"EnableBonjour"] boolValue]: YES;
+	defaultEnableBonjour = [prefs objectForKey:@"EnableRendezvous"]?[[prefs objectForKey:@"EnableRendezvous"] boolValue]: YES;
 	defaultCmdSelection = [prefs objectForKey:@"CommandSelection"]?[[prefs objectForKey:@"CommandSelection"] boolValue]: YES;
 	defaultMaxVertically = [prefs objectForKey:@"MaxVertically"]?[[prefs objectForKey:@"MaxVertically"] boolValue]: YES;
 	[defaultWordChars release];
@@ -161,7 +161,7 @@ static BOOL editingBookmark = NO;
     [prefs setInteger:defaultTabViewType forKey:@"TabViewType"];
     [prefs setBool:defaultPromptOnClose forKey:@"PromptOnClose"];
     [prefs setBool:defaultFocusFollowsMouse forKey:@"FocusFollowsMouse"];
-	[prefs setBool:defaultEnableBonjour forKey:@"EnableBonjour"];
+	[prefs setBool:defaultEnableBonjour forKey:@"EnableRendezvous"];
 	[prefs setBool:defaultCmdSelection forKey:@"CommandSelection"];
 	[prefs setBool:defaultMaxVertically forKey:@"MaxVertically"];
 	[prefs setObject: defaultWordChars forKey: @"WordCharacters"];
