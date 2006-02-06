@@ -1,5 +1,5 @@
 // -*- mode:objc -*-
-// $Id: iTermApplicationDelegate.m,v 1.29 2006-01-06 17:54:35 dnedrow Exp $
+// $Id: iTermApplicationDelegate.m,v 1.30 2006-02-06 20:59:24 yfabian Exp $
 /*
  **  iTermApplicationDelegate.m
  **
@@ -310,7 +310,7 @@ static BOOL usingAutoLaunchScript = NO;
 //    [NSApp orderFrontStandardAboutPanel:nil];
 
     // First Author
-    author1URL = [NSURL URLWithString: @"mailto:fabian@macvillage.net"];
+    author1URL = [NSURL URLWithString: @"mailto:yfabian@gmail.com"];
     linkAttributes= [NSDictionary dictionaryWithObjectsAndKeys: author1URL, NSLinkAttributeName,
                         [NSNumber numberWithInt: NSSingleUnderlineStyle], NSUnderlineStyleAttributeName,
 					    [NSColor blueColor], NSForegroundColorAttributeName,
