@@ -1,8 +1,6 @@
 2006-02-05	dnedrow
 
 	* Updated NIB PreferencePanels to reflect Rendezvous->Bonjour namechange.
-	* Updated prefs routines to read/save to bonjour, rather than rendezvous to
-	  stay consistant with dialogs.
 	* Fixes for mismatched signedness warnings in PTYSession.m.
 	* Corrected an XCODE 2.2 warning re: boolean assignment used for while()
 	  in iTermApplicationDelegate.m.
