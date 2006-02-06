@@ -1160,6 +1160,89 @@
 			};
 			name = Default;
 		};
+		BB1FA4F1099716FF00B9A377 /* Deployment <= 10.3 */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_VERSION = A;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_MODEL_TUNING = G4;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				INFOPLIST_FILE = iTerm_Framework.plist;
+				INSTALL_PATH = "@executable_path/../Frameworks";
+				JAVA_COMPILER_DEBUGGING_SYMBOLS = NO;
+				MACOSX_DEPLOYMENT_TARGET = 10.2;
+				OPTIMIZATION_CFLAGS = "-O3";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = (
+					"-seg1addr",
+					0x14000000,
+				);
+				OTHER_LIBTOOL_FLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRINCIPAL_CLASS = "";
+				PRODUCT_NAME = iTerm;
+				SECTORDER_FLAGS = "";
+				UNSTRIPPED_PRODUCT = NO;
+				WARNING_CFLAGS = "-Wmost";
+				WRAPPER_EXTENSION = framework;
+				ZERO_LINK = NO;
+			};
+			name = "Deployment <= 10.3";
+		};
+		BB1FA4F2099716FF00B9A377 /* Deployment <= 10.3 */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_MODEL_TUNING = G4;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_MISSING_PARENTHESES = YES;
+				GCC_WARN_SHADOW = YES;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_PARAMETER = NO;
+				GCC_WARN_UNUSED_VALUE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = iTerm.plist;
+				MACOSX_DEPLOYMENT_TARGET = 10.2;
+				OPTIMIZATION_CFLAGS = "-O3";
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = iTerm;
+				REZ_EXECUTABLE = YES;
+				SECTORDER_FLAGS = "";
+				UNSTRIPPED_PRODUCT = NO;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wmost",
+				);
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = NO;
+			};
+			name = "Deployment <= 10.3";
+		};
+		BB1FA4F3099716FF00B9A377 /* Deployment <= 10.3 */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = ppc;
+				MACOSX_DEPLOYMENT_TARGET = 10.2;
+				PREBINDING = YES;
+				SDKROOT = /Developer/SDKs/MacOSX10.3.9.sdk;
+			};
+			name = "Deployment <= 10.3";
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1168,6 +1251,7 @@
 			buildConfigurations = (
 				BB024D32096EE4080021E793 /* Development */,
 				BB024D33096EE4080021E793 /* Deployment */,
+				BB1FA4F1099716FF00B9A377 /* Deployment <= 10.3 */,
 				BB024D34096EE4080021E793 /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -1178,6 +1262,7 @@
 			buildConfigurations = (
 				BB024D36096EE4080021E793 /* Development */,
 				BB024D37096EE4080021E793 /* Deployment */,
+				BB1FA4F2099716FF00B9A377 /* Deployment <= 10.3 */,
 				BB024D38096EE4080021E793 /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -1188,6 +1273,7 @@
 			buildConfigurations = (
 				BB024D3A096EE4080021E793 /* Development */,
 				BB024D3B096EE4080021E793 /* Deployment */,
+				BB1FA4F3099716FF00B9A377 /* Deployment <= 10.3 */,
 				BB024D3C096EE4080021E793 /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
