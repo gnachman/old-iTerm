@@ -4,6 +4,9 @@
 	* Fixes for mismatched signedness warnings in PTYSession.m.
 	* Corrected an XCODE 2.2 warning re: boolean assignment used for while()
 	  in iTermApplicationDelegate.m.
+	* Disabled prebinding in default XCode project to clear linker warnings
+	  when compiling for UB targets. Can be enabled as needed for 10.2 or 
+	  10.3 builds.
 
 2006-02-05	ujwal
 
