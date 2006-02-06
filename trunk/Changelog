@@ -1,3 +1,7 @@
+2006-02-06  fabian
+
+    * Updated website files for the new release.
+
 2006-02-06	dnedrow
 
 	* Set default terminal type to ANSI rather than VT100. This should
