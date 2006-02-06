@@ -37,7 +37,7 @@
                 defaultSessionButton = NSButton; 
                 deleteBookmarkPanel = NSPanel; 
                 editBookmarkPanel = NSPanel; 
-                enableRendezvous = NSButton; 
+                enableBonjour = NSButton; 
                 focusFollowsMouse = NSButton; 
                 hideTab = id; 
                 maxVertically = id; 
