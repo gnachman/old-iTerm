@@ -404,6 +404,7 @@ static TreeNode *defaultBookmark = nil;
 - (void)netServiceBrowser:(NSNetServiceBrowser *)aNetServiceBrowser didFindService:(NSNetService *)aNetService moreComing:(BOOL)moreComing 
 {
 	NSMutableDictionary *aDict;
+	SInt32 gSystemVersion;
 
 	//NSLog(@"%s: %@", __PRETTY_FUNCTION__, aNetService);
 	
@@ -426,8 +427,12 @@ static TreeNode *defaultBookmark = nil;
 	// add to temporary array to retain it so that resolving works.
 	[bonjourServices addObject: aNetService];
 	[aNetService setDelegate: self];
-	[aNetService resolveWithTimeout: (NSTimeInterval)5];
-	
+	if(Gestalt(gestaltSystemVersion, &gSystemVersion) == noErr)
+		if(gSystemVersion < 0x1040)
+			[aNetService resolve];
+		else
+			[aNetService resolveWithTimeout: (NSTimeInterval)5];
+
 }
 
 
