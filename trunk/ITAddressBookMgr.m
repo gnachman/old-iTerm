@@ -404,8 +404,16 @@ static TreeNode *defaultBookmark = nil;
 - (void)netServiceBrowser:(NSNetServiceBrowser *)aNetServiceBrowser didFindService:(NSNetService *)aNetService moreComing:(BOOL)moreComing 
 {
 	NSMutableDictionary *aDict;
-	SInt32 gSystemVersion;
 
+	// Get the OS info without using Carbon. This method is recommended by Apple
+	NSDictionary *systemVersionDict = [NSDictionary dictionaryWithContentsOfFile:@"/System/Library/CoreServices/SystemVersion.plist"];
+	NSString *versionString = [systemVersionDict objectForKey:@"ProductVersion"];
+	NSArray *osArray = [versionString componentsSeparatedByString:@"."];
+	int osElementCount = [osArray count];
+	int osMajor = (osElementCount >= 1) ? [[osArray objectAtIndex:0] intValue] : 0;
+	int osMinor = (osElementCount >= 2) ? [[osArray objectAtIndex:1] intValue] : 0;
+	//int osBugfix = (osElementCount >= 3) ? [[osArray objectAtIndex:2] intValue] : 0;
+	
 	//NSLog(@"%s: %@", __PRETTY_FUNCTION__, aNetService);
 	
 	if(bonjourGroup == nil)
@@ -427,12 +435,11 @@ static TreeNode *defaultBookmark = nil;
 	// add to temporary array to retain it so that resolving works.
 	[bonjourServices addObject: aNetService];
 	[aNetService setDelegate: self];
-	if(Gestalt(gestaltSystemVersion, &gSystemVersion) == noErr)
-		if(gSystemVersion < 0x1040)
-			[aNetService resolve];
-		else
-			[aNetService resolveWithTimeout: (NSTimeInterval)5];
-
+		
+	if (osMajor == 10 && osMinor >= 4)
+		[aNetService resolveWithTimeout: (NSTimeInterval)5];
+	else
+		[aNetService resolve];
 }
 
 
