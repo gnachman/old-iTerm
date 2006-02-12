@@ -1,5 +1,5 @@
 // -*- mode:objc -*-
-// $Id: PTYTask.m,v 1.25 2005-04-05 03:34:00 ujwal Exp $
+// $Id: PTYTask.m,v 1.26 2006-02-12 17:54:36 ujwal Exp $
 //
 /*
  **  PTYTask.m
@@ -47,8 +47,6 @@
 @implementation PTYTask
 
 #define CTRLKEY(c)   ((c)-'A'+1)
-
-#define MEASURE_PROCESSING_TIME		0
 
 static void setup_tty_param(struct termios *term,
 			    struct winsize *win,
@@ -145,12 +143,8 @@ static int writep(int fds, char *buf, size_t len)
     id rootProxy;
     NSData *data = nil;
     BOOL exitf = NO;
-    NSAutoreleasePool *arPool = nil;
-	unsigned int iterationCount;
-#if MEASURE_PROCESSING_TIME
-    struct timeval tv;
-    BOOL newOutput = NO;
-#endif
+	int iterationCount = 0;
+	NSAutoreleasePool *arPool = nil;
 
 #if DEBUG_THREAD
     NSLog(@"%s(%d):+[PTYTask _processReadThread:%@] start",
@@ -182,14 +176,7 @@ static int writep(int fds, char *buf, size_t len)
 		FD_SET(boss->FILDES, &rfds);
 		FD_SET(boss->FILDES, &efds);
 		
-#if MEASURE_PROCESSING_TIME
-		tv.tv_sec = 0;
-		tv.tv_usec = 100000;
-		
-		sts = select(boss->FILDES + 1, &rfds, NULL, &efds, &tv);
-#else
 		sts = select(boss->FILDES + 1, &rfds, NULL, &efds, NULL);
-#endif
 
 		if (sts < 0) {
 			[arPool release];
@@ -237,39 +224,16 @@ static int writep(int fds, char *buf, size_t len)
 			else {
 				data = nil;
             }
-			
-#if MEASURE_PROCESSING_TIME
-			// measure processing time if we want to.
-			if(newOutput == NO)
-			{
-				//NSLog(@"PTYTask: Start new output");
-				newOutput = YES;
-			}
-#endif
-			
+						
             if (data != nil) {
+				// use boss instead of rootProxy for performance
                 [boss setHasOutput: YES];
-				[rootProxy readTask:data];
+				[boss readTask:data];
             }
             else
                 [boss setHasOutput: NO];
 			
 		}
-#if MEASURE_PROCESSING_TIME
-		else if (sts == 0)
-		{
-			// time out; do some other tasks in this idle time
-            [boss setHasOutput: NO];
-			
-			// measure processing time if we want to.
-			if(newOutput == YES)
-			{
-				//NSLog(@"PTYTask: End new output");
-                [rootProxy doIdleTasks];
-				newOutput = NO;
-			}	    
-		}
-#endif
 
 		// periodically refresh our autorelease pool
 		if((iterationCount % 10) == 0)
@@ -289,6 +253,8 @@ static int writep(int fds, char *buf, size_t len)
 
     [rootProxy brokenPipe];
 
+	[boss release];
+	[serverConnection invalidate];
     [serverConnection release];
 
 #if DEBUG_THREAD
@@ -303,7 +269,7 @@ static int writep(int fds, char *buf, size_t len)
 - (id)init
 {
 #if DEBUG_ALLOC
-    NSLog(@"%s(%d):-[PTYTask init]", __FILE__, __LINE__);
+    NSLog(@"%s: 0x%x", __PRETTY_FUNCTION__, self);
 #endif
     if ([super init] == nil)
 	return nil;
@@ -327,7 +293,7 @@ static int writep(int fds, char *buf, size_t len)
 - (void)dealloc
 {
 #if DEBUG_ALLOC
-    NSLog(@"%s(%d):-[PTYTask dealloc]", __FILE__, __LINE__);
+    NSLog(@"%s: 0x%x", __PRETTY_FUNCTION__, self);
 #endif
     if (PID > 0)
 		kill(PID, SIGKILL);
@@ -340,7 +306,7 @@ static int writep(int fds, char *buf, size_t len)
     [PATH release];
     [SENDPORT release];
     [RECVPORT release];
-    //[CONNECTION release];
+    [CONNECTION release];
 
     [super dealloc];
 }
@@ -427,7 +393,7 @@ static int writep(int fds, char *buf, size_t len)
     NSParameterAssert(CONNECTION != nil);
 	
     [NSThread detachNewThreadSelector:@selector(_processReadThread:)
-            	             toTarget:[PTYTask class]
+            	             toTarget: [PTYTask class]
 	                   withObject:self];
 }
 
