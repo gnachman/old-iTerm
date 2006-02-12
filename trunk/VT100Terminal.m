@@ -1,5 +1,5 @@
 // -*- mode:objc -*-
-// $Id: VT100Terminal.m,v 1.93 2005-05-04 18:06:48 yfabian Exp $
+// $Id: VT100Terminal.m,v 1.94 2006-02-12 17:47:25 ujwal Exp $
 //
 /*
  **  VT100Terminal.m
@@ -1193,7 +1193,7 @@ static VT100TCC decode_string(unsigned char *datap,
 {
 	
 #if DEBUG_ALLOC
-    NSLog(@"%s(%d):-[VT100Terminal init 0x%x]", __FILE__, __LINE__, self);
+    NSLog(@"%s: 0x%x", __PRETTY_FUNCTION__, self);
 #endif
     
     if ([super init] == nil)
@@ -1240,7 +1240,7 @@ static VT100TCC decode_string(unsigned char *datap,
 - (void)dealloc
 {
 #if DEBUG_ALLOC
-    NSLog(@"%s(%d):-[VT100Terminal dealloc 0x%x]", __FILE__, __LINE__, self);
+    NSLog(@"%s: 0x%x", __PRETTY_FUNCTION__, self);
 #endif
     
     [STREAM release];

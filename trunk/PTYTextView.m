@@ -1,5 +1,5 @@
 // -*- mode:objc -*-
-// $Id: PTYTextView.m,v 1.235 2006-02-04 00:21:13 yfabian Exp $
+// $Id: PTYTextView.m,v 1.236 2006-02-12 17:47:25 ujwal Exp $
 /*
  **  PTYTextView.m
  **
@@ -57,7 +57,7 @@ static SInt32 systemVersion;
 - (id)initWithFrame: (NSRect) aRect
 {
 #if DEBUG_ALLOC
-    NSLog(@"%s 0x%x", __PRETTY_FUNCTION__, self);
+    NSLog(@"%s: 0x%x", __PRETTY_FUNCTION__, self);
 #endif
     	
     self = [super initWithFrame: aRect];
@@ -116,7 +116,7 @@ static SInt32 systemVersion;
 - (void) dealloc
 {
 #if DEBUG_ALLOC
-    NSLog(@"PTYTextView: -dealloc 0x%x", self);
+    NSLog(@"%s: 0x%x", __PRETTY_FUNCTION__, self);
 #endif
 	int i;
     
