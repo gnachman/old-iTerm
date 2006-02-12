@@ -83,7 +83,7 @@ static NSString *PWD_ENVVALUE = @"~";
     addressBookEntry=nil;
 	
 #if DEBUG_ALLOC
-    NSLog(@"%s(%d):-[PTYSession init 0x%x]", __FILE__, __LINE__, self);
+    NSLog(@"%s: 0x%x", __PRETTY_FUNCTION__, self);
 #endif    
 	
     return (self);
@@ -92,7 +92,7 @@ static NSString *PWD_ENVVALUE = @"~";
 - (void) dealloc
 {
 #if DEBUG_ALLOC
-    NSLog(@"%s(%d):-[PTYSession dealloc 0x%x]", __FILE__, __LINE__, self);
+    NSLog(@"%s: 0x%x", __PRETTY_FUNCTION__, self);
 #endif
 	
     [SHELL release];
@@ -234,12 +234,7 @@ static NSString *PWD_ENVVALUE = @"~";
 
 - (void) terminate
 {
-	
-#if DEBUG_ALLOC
-    NSLog(@"%s(%d):-[PTYSession -terminate: retainCount = %d]", __FILE__, __LINE__, [self retainCount]);
-#endif
-	
-	
+			
 	// deregister from the notification center
 	[[NSNotificationCenter defaultCenter] removeObserver:self];    
     
