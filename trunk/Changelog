@@ -1,3 +1,10 @@
+2006-02-12	ujwal
+	* Fixed memory leak in PTYTask.
+	* Moved event handlers for NSMouseEntered and NSMouseExited to PTYWindow.
+	* Using separate thread in PTYSession to process data read from file descriptor in PTYTask. When data is read, the 
+	  PTYTask instance justs appends data to the STREAM in VT100Terminal. The separate thread in PTYSession now reads 
+	  the STREAM and processes data.
+
 2006-02-06  fabian
 
     * Updated website files for the new release.
