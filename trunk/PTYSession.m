@@ -1736,6 +1736,7 @@ static NSString *PWD_ENVVALUE = @"~";
 			{
 				[arPool release];
 				arPool = nil;
+				iterationCount = 0;
 			}
 		}
 		else
