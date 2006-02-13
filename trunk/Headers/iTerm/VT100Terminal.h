@@ -1,5 +1,5 @@
 // -*- mode:objc -*-
-// $Id: VT100Terminal.h,v 1.13 2005-04-09 23:43:02 ujwal Exp $
+// $Id: VT100Terminal.h,v 1.14 2006-02-13 01:13:14 ujwal Exp $
 /*
  **  VT100Terminal.h
  **
@@ -236,6 +236,7 @@ typedef enum {
     NSMutableData     *STREAM;
     VT100Screen       *SCREEN;
 	PseudoTerminal    *PARENT;
+	NSLock			  *streamLock;
 
     BOOL LINE_MODE;			// YES=Newline, NO=Line feed
     BOOL CURSOR_MODE;		// YES=Application, NO=Cursor
