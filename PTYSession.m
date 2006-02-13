@@ -184,12 +184,7 @@ static NSString *PWD_ENVVALUE = @"~";
                                              selector:@selector(tabViewWillRedraw:)
                                                  name:@"iTermTabViewWillRedraw"
                                                object:nil];
-	
-	//[[NSNotificationCenter defaultCenter] addObserver:self
-    //                                         selector:@selector(textViewResized:)
-    //                                             name:NSViewFrameDidChangeNotification
-    //                                           object:SCROLLVIEW];		
-	
+		
     [tabViewItem setLabelAttributes: chosenStateAttribute];
 }
 
@@ -228,6 +223,9 @@ static NSString *PWD_ENVVALUE = @"~";
 			  environment:env
 					width:[SCREEN width]
 				   height:[SCREEN height]];
+	
+	// launch a thread to process the data read from the SHELL process
+	[NSThread detachNewThreadSelector: @selector(_processReadDataThread:) toTarget: self withObject: nil];
 	
 }
 
@@ -288,7 +286,6 @@ static NSString *PWD_ENVVALUE = @"~";
 
 - (void)readTask:(NSData *)data
 {
-    VT100TCC token;
 	
 #if DEBUG_METHOD_TRACE
     NSLog(@"%s(%d):-[PTYSession readTask:%@]", __FILE__, __LINE__, [[[NSString alloc] initWithData: data encoding: nil] autorelease] );
@@ -296,30 +293,8 @@ static NSString *PWD_ENVVALUE = @"~";
     if (data == nil)
         return;
 	
-    [TERMINAL putStreamData:data];
+    [TERMINAL putStreamData:data];	
 	
-    if (REFRESHED==NO)
-    {
-        REFRESHED=YES;
-        if([[tabViewItem tabView] selectedTabViewItem] != tabViewItem)
-            [tabViewItem setLabelAttributes: newOutputStateAttribute];
-    }
-	
-    while (TERMINAL&&((token = [TERMINAL getNextToken]), 
-					  token.type != VT100CC_NULL &&
-					  token.type != VT100_WAIT))
-    {
-		if (token.type != VT100_SKIP)
-			[SCREEN putToken:token];
-    }
-    
-    oIdleCount=0;
-    if (token.type == VT100_NOTSUPPORT) {
-		NSLog(@"%s(%d):not support token", __FILE__ , __LINE__);
-    }
-	
-	//    [TEXTVIEW showCursor];
-	//    [TEXTVIEW refresh];
 }
 
 - (void)brokenPipe
@@ -330,14 +305,14 @@ static NSString *PWD_ENVVALUE = @"~";
     [SHELL sendSignal:SIGKILL];
     [SHELL stop];
     EXIT = YES;
-	    
-    if (autoClose)
+	
+	if (autoClose)
         [parent closeSession:self];
     else 
     {
         [self setName:[NSString stringWithFormat:@"[%@]",[self name]]];
         [tabViewItem setLabelAttributes: deadStateAttribute];
-    }
+    }		
 }
 
 - (BOOL) hasKeyMappingForEvent: (NSEvent *) event
@@ -1717,6 +1692,67 @@ static NSString *PWD_ENVVALUE = @"~";
 		i += 50000;
     }
     [self writeTask: data];
+}
+
+// thread to process data read from the task being run
+-(void)_processReadDataThread: (void *) arg
+{
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	NSAutoreleasePool *arPool = nil;
+	int iterationCount = 0;
+	VT100TCC token;
+	
+	while(EXIT == NO)
+	{
+		
+		token = [TERMINAL getNextToken];
+		if (TERMINAL && token.type != VT100CC_NULL && token.type != VT100_WAIT)
+		{	
+			
+			if(arPool = nil)
+				arPool = [[NSAutoreleasePool alloc] init];
+			
+			if (token.type != VT100_SKIP)
+			{
+				[SCREEN putToken:token];
+				
+				if (REFRESHED==NO)
+				{
+					REFRESHED=YES;
+					if([[tabViewItem tabView] selectedTabViewItem] != tabViewItem)
+						[tabViewItem setLabelAttributes: newOutputStateAttribute];
+				}
+				
+				oIdleCount=0;
+			}
+			
+			if (token.type == VT100_NOTSUPPORT) {
+				NSLog(@"%s(%d):not support token", __FILE__ , __LINE__);
+			}
+			
+			// periodically refresh autoreleasepool
+			iterationCount++;
+			if(iterationCount % 100 == 0)
+			{
+				[arPool release];
+				arPool = nil;
+			}
+		}
+		else
+			usleep(10000);
+		
+	}
+		
+	if(arPool == nil)
+	{
+		[arPool release];
+		arPool = nil;
+	}
+	
+	[pool release];
+	
+	[NSThread exit];
+	
 }
 
 
