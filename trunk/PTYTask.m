@@ -1,5 +1,5 @@
 // -*- mode:objc -*-
-// $Id: PTYTask.m,v 1.26 2006-02-12 17:54:36 ujwal Exp $
+// $Id: PTYTask.m,v 1.27 2006-02-13 23:31:11 yfabian Exp $
 //
 /*
  **  PTYTask.m
@@ -139,8 +139,6 @@ static int writep(int fds, char *buf, size_t len)
 + (void)_processReadThread:(PTYTask *)boss
 {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-    NSConnection *serverConnection;
-    id rootProxy;
     NSData *data = nil;
     BOOL exitf = NO;
 	int iterationCount = 0;
@@ -151,10 +149,6 @@ static int writep(int fds, char *buf, size_t len)
 	  __FILE__, __LINE__, [boss description]);
 #endif
 
-    serverConnection = [[NSConnection alloc] 
-               initWithReceivePort:boss->SENDPORT
-			  sendPort:boss->RECVPORT];
-    rootProxy = [serverConnection rootProxy];
 
     /*
       data receive loop
@@ -204,7 +198,7 @@ static int writep(int fds, char *buf, size_t len)
 			if (sts == 0) {
 				// session close
 				exitf = YES;
-                [rootProxy readTask: nil];
+                [boss readTask: nil];
 			}
 		}
 		else if (FD_ISSET(boss->FILDES, &rfds)) {
@@ -251,12 +245,6 @@ static int writep(int fds, char *buf, size_t len)
 		arPool = nil;
 	}
 
-    [rootProxy brokenPipe];
-
-	[boss release];
-	[serverConnection invalidate];
-    [serverConnection release];
-
 #if DEBUG_THREAD
     NSLog(@"%s(%d):+[PTYTask _processReadThread:] finish",
 	  __FILE__, __LINE__);
@@ -280,9 +268,6 @@ static int writep(int fds, char *buf, size_t len)
     RECVDATA = [[NSMutableData data] retain];
     FILDES = -1;
     TTY = nil;
-    SENDPORT = nil;
-    RECVPORT = nil;
-    CONNECTION = nil;
     LOG_PATH = nil;
     LOG_HANDLE = nil;
     hasOutput = NO;
@@ -304,9 +289,6 @@ static int writep(int fds, char *buf, size_t len)
     [RECVDATA release];
     [TTY release];
     [PATH release];
-    [SENDPORT release];
-    [RECVPORT release];
-    [CONNECTION release];
 
     [super dealloc];
 }
@@ -378,19 +360,6 @@ static int writep(int fds, char *buf, size_t len)
 	
     TTY = [[NSString stringWithCString:ttyname] retain];
     NSParameterAssert(TTY != nil);
-	
-    /*
-	 create data receive thread 
-	 */
-    SENDPORT = [NSPort port]; 
-    RECVPORT = [NSPort port];
-    CONNECTION = [[NSConnection alloc] initWithReceivePort:RECVPORT
-												  sendPort:SENDPORT];
-    [CONNECTION setRootObject:self];
-    [self release];
-	
-    NSParameterAssert(SENDPORT != nil && RECVPORT != nil);
-    NSParameterAssert(CONNECTION != nil);
 	
     [NSThread detachNewThreadSelector:@selector(_processReadThread:)
             	             toTarget: [PTYTask class]

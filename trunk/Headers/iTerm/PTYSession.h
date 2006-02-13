@@ -90,8 +90,6 @@
 	   arguments:(NSArray *)prog_argv
 	 environment:(NSDictionary *)prog_env;
 - (void) terminate;
-- (void) updateDisplayThread: (void *) incoming;
-- (void) startTimer;
 - (BOOL) isActiveSession;
 
 // Preferences

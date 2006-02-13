@@ -1,5 +1,5 @@
 // -*- mode:objc -*-
-// $Id: PTYTextView.m,v 1.236 2006-02-12 17:47:25 ujwal Exp $
+// $Id: PTYTextView.m,v 1.237 2006-02-13 23:31:11 yfabian Exp $
 /*
  **  PTYTextView.m
  **
@@ -2524,7 +2524,7 @@ static SInt32 systemVersion;
 		return image;
 	}
 	else if (j>=CELLSIZE) {
-		NSLog(@"new char, but cache full (%d, %d, %d)", code, c, i);
+		// NSLog(@"new char, but cache full (%d, %d, %d)", code, c, i);
 		int t=1;
 		for(j=2; j<=CELLSIZE; j++) {	//find a least used one, and replace it with new char
 			if (charImages[i-j].count < charImages[i-t].count) t = j;

@@ -1,5 +1,5 @@
 // -*- mode:objc -*-
-// $Id: VT100Screen.m,v 1.216 2006-02-12 17:47:25 ujwal Exp $
+// $Id: VT100Screen.m,v 1.217 2006-02-13 23:31:12 yfabian Exp $
 //
 /*
  **  VT100Screen.m
@@ -1532,12 +1532,9 @@ void padString(NSString *s, unichar *buf, char doubleWidth, int *len)
 #if DEBUG_METHOD_TRACE
     NSLog(@"%s(%d):-[VT100Screen blink]", __FILE__, __LINE__);
 #endif
-	int i;
 	
-	for (i=0; i<WIDTH*HEIGHT; i++) {
-		if (dirty[i]) break;
-	}
-    if (i<WIDTH*HEIGHT) [display refresh];
+    if (memchr(dirty, 1, WIDTH*HEIGHT)) [display refresh];
+	
 }
 
 - (int) cursorX
