@@ -1,5 +1,5 @@
 // -*- mode:objc -*-
-// $Id: VT100Terminal.m,v 1.95 2006-02-13 01:13:14 ujwal Exp $
+// $Id: VT100Terminal.m,v 1.96 2006-02-13 23:31:13 yfabian Exp $
 //
 /*
  **  VT100Terminal.m
@@ -688,7 +688,7 @@ static VT100TCC decode_other(unsigned char *datap,
 				switch (c2) {
 					case '8': result.type=VT100CSI_DECALN; break;
 					default:
-						NSLog(@"4: Unknown token %c", c2);
+						NSLog(@"4: Unknown token ESC # %c", c2);
 						result.type = VT100_NOTSUPPORT;
 				}
 				*rmlen = 3;

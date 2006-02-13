@@ -1,3 +1,7 @@
+2006-02-13  fabian
+
+    * Removed NSConnection from PTYTask all together
+    
 2006-02-12	ujwal
 	* Fixed memory leak in PTYTask.
 	* Moved event handlers for NSMouseEntered and NSMouseExited to PTYWindow.

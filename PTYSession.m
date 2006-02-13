@@ -193,12 +193,6 @@ static NSString *PWD_ENVVALUE = @"~";
     return ([[[self tabViewItem] tabView] selectedTabViewItem] == [self tabViewItem]);
 }
 
-- (void) startTimer
-{
-	[NSThread detachNewThreadSelector: @selector(updateDisplayThread:) toTarget: self withObject: nil];
-	
-}
-
 - (void)startProgram:(NSString *)program
 		   arguments:(NSArray *)prog_argv
 		 environment:(NSDictionary *)prog_env
@@ -1523,19 +1517,6 @@ static NSString *PWD_ENVVALUE = @"~";
 - (NSDictionary *)addressBookEntry
 {
     return addressBookEntry;
-}
-
-- (void) updateDisplayThread:(void*)incoming
-{
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	
-	while (EXIT == NO)
-	{
-		[self updateDisplay];
-		usleep(15000);
-	}
-	
-	[pool release];
 }
 
 
