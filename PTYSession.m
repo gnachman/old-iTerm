@@ -1709,7 +1709,7 @@ static NSString *PWD_ENVVALUE = @"~";
 		if (TERMINAL && token.type != VT100CC_NULL && token.type != VT100_WAIT)
 		{	
 			
-			if(arPool = nil)
+			if(arPool == nil)
 				arPool = [[NSAutoreleasePool alloc] init];
 			
 			if (token.type != VT100_SKIP)
@@ -1744,7 +1744,7 @@ static NSString *PWD_ENVVALUE = @"~";
 		
 	}
 		
-	if(arPool == nil)
+	if(arPool != nil)
 	{
 		[arPool release];
 		arPool = nil;
