@@ -1,3 +1,7 @@
+2009-10-21	fabian
+
+	* I think I finally nailed down the "scroll up/down" crash!
+	
 2009-10-20	fabian
 
 	* Incorporated the color template patch provided by Walter Dšrwald.
