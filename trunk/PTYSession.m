@@ -881,16 +881,9 @@ static NSImage *warningImage;
     if ([aString length] > 0)
     {
 		NSString *tempString = [aString stringReplaceSubstringFrom:@"\r\n" to:@"\r"];
-        NSData *strdata = [[tempString stringReplaceSubstringFrom:@"\n" to:@"\r"]
-                                    dataUsingEncoding:[TERMINAL encoding]
-								 allowLossyConversion:YES];
-		
-		// Do this in a new thread since we do not want to block the read code.
-		[NSThread detachNewThreadSelector:@selector(_processWriteDataThread:) toTarget:self withObject:strdata];
-		PTYScroller *ptys=(PTYScroller *)[SCROLLVIEW verticalScroller];
-		
-		[TEXTVIEW scrollEnd];
-		[ptys setUserScroll: NO];				
+		[self writeTask: [[tempString stringReplaceSubstringFrom:@"\n" to:@"\r"]
+						  dataUsingEncoding:[TERMINAL encoding]
+						  allowLossyConversion:YES]];
     }
     else
 		NSBeep();
@@ -1877,36 +1870,10 @@ static NSImage *warningImage;
 			i += 50000;
 		}
 		
-		// do this in a new thread so that we don't get stuck.
-		[NSThread detachNewThreadSelector:@selector(_processWriteDataThread:) toTarget:self withObject:data];
-		// Make sure we scroll down to the end
-		PTYScroller *ptys=(PTYScroller *)[SCROLLVIEW verticalScroller];
-		
-		[TEXTVIEW scrollEnd];
-		[ptys setUserScroll: NO];		
+		[self writeTask: data];
     }
 }
 
-// this is only used for non keyboard events
--(void)_processWriteDataThread: (NSData *) data
-{
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	
-    // check if we want to send this input to all the sessions
-    if([parent sendInputToAllSessions] == NO)
-    {
-		if (!EXIT) {
-			[SHELL writeTask: data];
-		}
-    }
-    else
-    {
-		// send to all sessions
-		[parent sendInputToAllSessions: data];
-    }
-	
-	[pool release];
-}
 
 -(void)handleTerminateScriptCommand: (NSScriptCommand *)command
 {
