@@ -1,3 +1,8 @@
+2009-10-22	fabian
+
+	* Detached tabs now keep their size/font settings.
+	* Removed the writing threads to avoid potential sync problems.
+	
 2009-10-21	fabian
 
 	* I think I finally nailed down the "scroll up/down" crash!

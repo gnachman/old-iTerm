@@ -1,5 +1,5 @@
 // -*- mode:objc -*-
-// $Id: PseudoTerminal.m,v 1.432 2008-10-17 04:46:13 yfabian Exp $
+// $Id: PseudoTerminal.m,v 1.433 2008-10-23 04:57:13 yfabian Exp $
 //
 /*
  **  PseudoTerminal.m
@@ -2371,7 +2371,7 @@ static unsigned int windowPositions[CACHED_WINDOW_POSITIONS];
     if(term == nil)
 		return nil;
 	
-	[term initWindowWithAddressbook: [aSession addressBookEntry]];
+	[term initWindowWithSettingsFrom: self];
 	
     [[iTermController sharedInstance] addInTerminals: term];
 	[term release];
