@@ -2,6 +2,7 @@
 
 	* Detached tabs now keep their size/font settings.
 	* Removed the writing threads to avoid potential sync problems.
+	* Now iTerm automatically restores its window title after a window resizes.
 	
 2009-10-21	fabian
 

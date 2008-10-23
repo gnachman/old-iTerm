@@ -1750,6 +1750,10 @@ static NSImage *warningImage;
 	if ([parent currentSession] == self) {
 		if (now.tv_sec*10+now.tv_usec/100000 >= lastBlink.tv_sec*10+lastBlink.tv_usec/100000+7) {
 			[TEXTVIEW refresh];
+			if ([parent tempTitle]) {
+				[parent setWindowTitle: windowTitle];
+				[parent resetTempTitle];
+			}
 			lastUpdate = lastBlink = now;
 		}
 		else if (lastOutput.tv_sec*1000+lastOutput.tv_usec/1000 >= lastUpdate.tv_sec*1000 + lastUpdate.tv_usec/1000 + 10) {

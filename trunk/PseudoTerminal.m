@@ -1,5 +1,5 @@
 // -*- mode:objc -*-
-// $Id: PseudoTerminal.m,v 1.433 2008-10-23 04:57:13 yfabian Exp $
+// $Id: PseudoTerminal.m,v 1.434 2008-10-23 05:14:02 yfabian Exp $
 //
 /*
  **  PseudoTerminal.m
@@ -1342,6 +1342,16 @@ static unsigned int windowPositions[CACHED_WINDOW_POSITIONS];
 		[window disableBlur];
 }
 
+- (BOOL) tempTitle
+{
+	return tempTitle;
+}
+
+- (void) resetTempTitle
+{
+	tempTitle = NO;
+}
+
 - (void)setFont:(NSFont *)font nafont:(NSFont *)nafont
 {
 	int i;
@@ -1711,7 +1721,8 @@ static unsigned int windowPositions[CACHED_WINDOW_POSITIONS];
 			
 			[self setFont:font nafont:nafont];
 			NSString *aTitle = [NSString stringWithFormat:@"%@ (%.0f)", [[self currentSession] name], [font pointSize]];
-			[self setWindowTitle: aTitle];    
+			[self setWindowTitle: aTitle];
+			tempTitle = YES;
 
 		}
         
@@ -1731,6 +1742,7 @@ static unsigned int windowPositions[CACHED_WINDOW_POSITIONS];
             // Display the new size in the window title.
             NSString *aTitle = [NSString stringWithFormat:@"%@ (%d,%d)", [[self currentSession] name], WIDTH, HEIGHT];
             [self setWindowTitle: aTitle];
+			tempTitle = YES;
             [self setWindowSize];
     	}
 	}	
