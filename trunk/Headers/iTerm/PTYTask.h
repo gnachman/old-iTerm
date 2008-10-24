@@ -1,5 +1,5 @@
 // -*- mode:objc -*-
-// $Id: PTYTask.h,v 1.13 2008-10-24 05:25:00 yfabian Exp $
+// $Id: PTYTask.h,v 1.14 2008-10-24 05:25:58 yfabian Exp $
 /*
  **  PTYTask.h
  **
@@ -91,4 +91,5 @@
 - (NSString *)description;
 
 - (void) processRead;
+- (void) processWrite;
 @end
