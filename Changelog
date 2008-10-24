@@ -1,3 +1,7 @@
+2009-10-23	fabian
+
+	* Fixed a problem with pasting a big chunk of stuff.
+	  
 2009-10-22	fabian
 
 	* Detached tabs now keep their size/font settings.
