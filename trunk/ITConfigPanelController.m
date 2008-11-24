@@ -162,12 +162,12 @@ static BOOL onScreen = NO;
 
 - (IBAction) setTransparency: (id) sender
 {
-	float tr = [sender floatValue];
-	[[_pseudoTerminal currentSession] setTransparency:  tr/100.0];
+	int tr = [sender intValue];
+	[[_pseudoTerminal currentSession] setTransparency: (float)tr/100.0];
 	if(sender == CONFIG_TRANS2)
-		[CONFIG_TRANSPARENCY setFloatValue:tr];
+		[CONFIG_TRANSPARENCY setIntValue:tr];
 	else if (sender == CONFIG_TRANSPARENCY)
-		[CONFIG_TRANS2 setFloatValue:tr];
+		[CONFIG_TRANS2 setIntValue:tr];
 }
 
 - (IBAction) setBlur: (id) sender
@@ -436,8 +436,8 @@ static BOOL onScreen = NO;
 	}
 	[CONFIG_ENCODING selectItemAtIndex: [CONFIG_ENCODING indexOfItemWithTag: [[currentSession TERMINAL] encoding]]];
 	
-    [CONFIG_TRANSPARENCY setFloatValue:([currentSession transparency]*100)];
-    [CONFIG_TRANS2 setFloatValue:([currentSession transparency]*100)];
+    [CONFIG_TRANSPARENCY setIntValue:((int)([currentSession transparency]*100))];
+    [CONFIG_TRANS2 setIntValue:((int)([currentSession transparency]*100))];
     
     [AI_ON setState:[currentSession antiIdle]?NSOnState:NSOffState];
     [AI_CODE setIntValue:[currentSession antiCode]];

@@ -1,3 +1,13 @@
+2008-11-24  delx
+	* ITConfigPanel can now only set transparency in integer multiples
+	* ITConfigPanel font spacing now snaps to ticks
+
+2008-11-21  delx
+	* Fixed the screen blanking bug on setWindowTitle (#2188028)
+	* Improved the layout of ITConfigPanel
+	* Removed "Use transparency" button from ITConfigPanel as it was causing
+	  confusion. To disable transparency just set it to 0%.
+
 2008-10-23	fabian
 
 	* Fixed a problem with pasting a big chunk of stuff.
