@@ -1,5 +1,5 @@
 // -*- mode:objc -*-
-// $Id: PseudoTerminal.m,v 1.435 2008-11-21 06:48:16 delx Exp $
+// $Id: PseudoTerminal.m,v 1.436 2009-01-16 07:46:53 delx Exp $
 //
 /*
  **  PseudoTerminal.m
@@ -1191,7 +1191,7 @@ static unsigned int windowPositions[CACHED_WINDOW_POSITIONS];
     NSLog(@"%s(%d):-[PseudoTerminal setWindowTitle:%@]",
           __FILE__, __LINE__, title);
 #endif
-	NSString *temp = title ? title : @"Session";
+	NSString *temp = [title length] > 0 ? title : @"Session";
 	
 	if([self sendInputToAllSessions]) {
 		temp = [NSString stringWithFormat:@"☛%@", temp];

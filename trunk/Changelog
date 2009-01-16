@@ -1,3 +1,7 @@
+2009-01-16  delx
+	* Terminal window title bar displays "Session" if an empty title is set
+	* Makefile ensures that permissions on build products are correct
+
 2008-11-24  delx
 	* ITConfigPanel can now only set transparency in integer multiples
 	* ITConfigPanel font spacing now snaps to ticks
