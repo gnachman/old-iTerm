@@ -1,3 +1,6 @@
+2009-02-07  delx
+	* Fixed rendering bug with bold characters
+
 2009-01-16  delx
 	* Terminal window title bar displays "Session" if an empty title is set
 	* Makefile ensures that permissions on build products are correct

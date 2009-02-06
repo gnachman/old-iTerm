@@ -1,5 +1,5 @@
 // -*- mode:objc -*-
-// $Id: PTYTextView.m,v 1.324 2008-10-21 05:43:52 yfabian Exp $
+// $Id: PTYTextView.m,v 1.325 2009-02-06 14:33:17 delx Exp $
 /*
  **  PTYTextView.m
  **
@@ -2701,7 +2701,7 @@ static int cacheCellSize;
 		
 		[self _renderChar: image 
 				withChar: code
-			   withColor: [self colorForCode: c & 0x1ff] //turn off bold mask
+			   withColor: [self colorForCode: c]
 			  withBGColor: (bg == -1 ? nil : [self colorForCode: bg])
 				withFont: dw?nafont:font
 					bold: c & BOLD_MASK];
