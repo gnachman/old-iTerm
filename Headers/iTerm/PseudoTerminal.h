@@ -1,5 +1,5 @@
 // -*- mode:objc -*-
-// $Id: PseudoTerminal.h,v 1.61 2008-10-23 05:14:02 yfabian Exp $
+// $Id: PseudoTerminal.h,v 1.62 2009-02-06 15:07:24 delx Exp $
 /*
  **  PseudoTerminal.h
  **
@@ -70,6 +70,9 @@
 	BOOL tempTitle;
 	
 	BOOL EXIT;
+
+	// For send input to all sessions highlighting
+	NSColor *normalBackgroundColor;
 	
 	// flags
 	BOOL _resizeInProgressFlag;
