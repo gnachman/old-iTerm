@@ -1,5 +1,5 @@
 ##
-## $Id: Makefile,v 1.7 2009-01-16 07:46:53 delx Exp $
+## $Id: Makefile,v 1.8 2009-02-06 14:31:07 delx Exp $
 ## iTerm Makefile
 ## 2003 Copyright(C) Ujwal S. Setlur
 ##
@@ -18,7 +18,7 @@ clean:
 
 Development:
 	xcodebuild -alltargets -configuration Development && \
-	chmod -R go+rX build/Deployment
+	chmod -R go+rX build/Development
 
 Deployment:
 	xcodebuild -alltargets -configuration Deployment && \
