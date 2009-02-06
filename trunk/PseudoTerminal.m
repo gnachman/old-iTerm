@@ -1,5 +1,5 @@
 // -*- mode:objc -*-
-// $Id: PseudoTerminal.m,v 1.436 2009-01-16 07:46:53 delx Exp $
+// $Id: PseudoTerminal.m,v 1.437 2009-02-06 15:07:23 delx Exp $
 //
 /*
  **  PseudoTerminal.m
@@ -1196,6 +1196,9 @@ static unsigned int windowPositions[CACHED_WINDOW_POSITIONS];
 	if([self sendInputToAllSessions]) {
 		temp = [NSString stringWithFormat:@"☛%@", temp];
 		[[self window] setBackgroundColor: [NSColor highlightColor]];
+	}
+	else {
+		[[self window] setBackgroundColor: normalBackgroundColor];
 	}
 
 	[[self window] setTitle: temp];
@@ -2655,7 +2658,7 @@ static unsigned int windowPositions[CACHED_WINDOW_POSITIONS];
 {
 	charHorizontalSpacingMultiplier = charVerticalSpacingMultiplier = 1.0;
 	[self setUseTransparency: YES];
-		
+	normalBackgroundColor = [[self window] backgroundColor];
 }
 
 - (NSFont *) _getMaxFont:(NSFont* ) font 

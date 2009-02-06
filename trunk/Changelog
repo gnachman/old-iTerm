@@ -1,5 +1,6 @@
 2009-02-07  delx
 	* Fixed rendering bug with bold characters
+	* Restore window title bar colour when leaving sendInputToAllTabs
 
 2009-01-16  delx
 	* Terminal window title bar displays "Session" if an empty title is set
