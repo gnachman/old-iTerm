@@ -1399,7 +1399,7 @@ static int cacheCellSize;
 			case MOUSE_REPORTING_BUTTON_MOTION:
 			case MOUSE_REPORTING_ALL_MOTION:
 				if([event deltaY] != 0) {
-					[task writeTask:[terminal mousePress:([event deltaY] > 0 ? 5:4) withModifiers:[event modifierFlags] atX:rx Y:ry]];
+					[task writeTask:[terminal mousePress:([event deltaY] > 0 ? 4:5) withModifiers:[event modifierFlags] atX:rx Y:ry]];
 					return;
 				}
 				break;
