@@ -1,3 +1,6 @@
+2009-02-09  delx
+	* Corrected xterm mouse scroll wheel button reporting (#2254084)
+
 2009-02-07  delx
 	* Fixed rendering bug with bold characters
 	* Restore window title bar colour when leaving sendInputToAllTabs

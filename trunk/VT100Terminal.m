@@ -2028,8 +2028,8 @@ static VT100TCC decode_string(unsigned char *datap,
 	static char buf[7];
 	char cb;
 	
-	cb = button % 3;
-	if (button > 3) cb += 64;
+	cb = button;
+	if (button > 3) cb += 64 - 4; // Subtract 4 for scroll wheel buttons
 	if (modflag & NSControlKeyMask) cb += 16;
 	if (modflag & NSShiftKeyMask) cb += 4;
 	if (modflag & NSAlternateKeyMask) cb += 8;
