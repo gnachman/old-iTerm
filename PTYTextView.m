@@ -665,6 +665,9 @@ static int cacheCellSize;
     scrollRect= [self visibleRect];
     scrollRect.origin.y+=[[self enclosingScrollView] verticalLineScroll];
     [self scrollRectToVisible: scrollRect];
+
+    forceUpdate = YES;
+    [self setNeedsDisplay: YES];
 }
 
 -(void) scrollPageUp: (id) sender
@@ -683,6 +686,9 @@ static int cacheCellSize;
     scrollRect= [self visibleRect];
     scrollRect.origin.y+= scrollRect.size.height - [[self enclosingScrollView] verticalPageScroll];
     [self scrollRectToVisible: scrollRect];
+
+    forceUpdate = YES;
+    [self setNeedsDisplay: YES];
 }
 
 -(void) scrollHome
