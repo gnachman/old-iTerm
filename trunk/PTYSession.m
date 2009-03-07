@@ -467,9 +467,11 @@ static NSImage *warningImage;
 				break;	
 			case KEY_ACTION_SCROLL_END:
 				[TEXTVIEW scrollEnd];
+				[(PTYScrollView *)[TEXTVIEW enclosingScrollView] detectUserScroll]; 
 				break;
 			case KEY_ACTION_SCROLL_HOME:
 				[TEXTVIEW scrollHome];
+				[(PTYScrollView *)[TEXTVIEW enclosingScrollView] detectUserScroll]; 
 				break;
 			case KEY_ACTION_SCROLL_LINE_DOWN:
 				[TEXTVIEW scrollLineDown: self];
