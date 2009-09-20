@@ -1,3 +1,9 @@
+2009-09-20 delx
+	* Fixed blinking text
+	* Fixed drawing corruption when new text is placed into a full buffer is not scrolled to the bottom
+	* Fixed a careless redraw error
+	* Fixed refreshing of non-active tabs (#2862256)
+
 2009-09-17 delx
 	* Save cursor position separately for alternate screens (#2833765)
 	* Show correct window titles (#2765347)
