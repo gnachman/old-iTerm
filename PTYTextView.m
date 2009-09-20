@@ -673,12 +673,9 @@ static float strokeWidth, boldStrokeWidth;
 		if(scrollbackOverflow < [dataSource height] && !userScroll) {
 			[self scrollRect:[self visibleRect] by:NSMakeSize(0, -amount)];
 		}
+	}
 
-		[self updateDirtyRects];
-	}
-	else {
-		[self updateDirtyRects];
-	}
+	[self updateDirtyRects];
 }
 
 
