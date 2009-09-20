@@ -1742,18 +1742,15 @@ static NSImage *warningImage;
 		gettimeofday(&now, NULL);
 
 		if(now.tv_sec*10+now.tv_usec/100000 >= lastBlink.tv_sec*10+lastBlink.tv_usec/100000+7) {
-			[TEXTVIEW refresh];
 			if([parent tempTitle]) {
 				[parent setWindowTitle];
 				[parent resetTempTitle];
 			}
 			lastBlink = now;
 		}
-		else {
-			[TEXTVIEW refresh];
-		}
 	}
 
+	[TEXTVIEW refresh];
 	[self scheduleUpdateSoon:NO];
 }
 
