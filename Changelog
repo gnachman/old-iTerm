@@ -1,3 +1,9 @@
+2009-09-22 delx
+	* Draw bold text the old fashioned way, much faster
+	* Separate bold & highlight attributes for text
+	* New behaviour gives four distinct modes -- plain, bold, highlight, bold+highlight
+	  Use the disable bold option to collapse the last 3 into one
+
 2009-09-20 delx
 	* Fixed blinking text
 	* Fixed drawing corruption when new text is placed into a full buffer is not scrolled to the bottom
