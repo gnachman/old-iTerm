@@ -377,7 +377,7 @@ static float strokeWidth, boldStrokeWidth;
 		}
 	}
 	else {
-		if((index & BOLD_MASK) && (index % 256 < 8)) {
+		if([self disableBold] && (index & BOLD_MASK) && (index % 256 < 8)) {
 			index = index - BOLD_MASK + 8;
 		}
 		color = colorTable[index & 0xff];
@@ -2472,60 +2472,21 @@ static float strokeWidth, boldStrokeWidth;
 
 - (void) _drawCharacter:(unichar)code fgColor:(int)fg AtX:(float)X Y:(float)Y doubleWidth:(BOOL) dw
 {
-	if (!code) {
-		return;
-	}
+	if (!code) return;
 
-	//NSLog(@"%s: %c(%d)",__PRETTY_FUNCTION__, code,code);
-	//
-	NSColor* color;
-	NSString* crap;
-	NSDictionary* attrib;
-	NSFont* theFont;
-	float sw;
-	BOOL renderBold;
-	NSFontManager* fontManager = [NSFontManager sharedFontManager];
+	NSFont* theFont = dw?nafont:font;
+	BOOL renderBold = (fg&BOLD_MASK) && ![self disableBold];
+	NSColor* color = [self colorForCode: fg];
 
-	theFont = dw?nafont:font;
-	renderBold = (fg&BOLD_MASK) && ![self disableBold];
-	color = [self colorForCode: fg];
-	
-	if(renderBold) {
-		theFont = [fontManager convertFont: theFont toHaveTrait: NSBoldFontMask];
-		
-		// Check if there is native bold support
-		// if conversion was successful, else use our own methods to convert to bold
-		if ([fontManager traitsOfFont:theFont] & NSBoldFontMask) {
-			sw = antiAlias ? strokeWidth:0;
-			renderBold = NO;
-		}
-		else {
-			sw = antiAlias? boldStrokeWidth : 0;
-		}
-	}
-	else {
-		sw = antiAlias ? strokeWidth:0;
-	}
+	NSDictionary* attrib=[NSDictionary dictionaryWithObjectsAndKeys:
+		theFont, NSFontAttributeName, color, NSForegroundColorAttributeName,
+		nil];
 
-	if (OSX_TIGERORLATER && sw) {
-		attrib=[NSDictionary dictionaryWithObjectsAndKeys:
-			theFont, NSFontAttributeName,
-			color, NSForegroundColorAttributeName,
-			[NSNumber numberWithFloat: sw], @"NSStrokeWidth",
-			nil];
-	}
-	else {
-		attrib=[NSDictionary dictionaryWithObjectsAndKeys:
-			theFont, NSFontAttributeName,
-			color, NSForegroundColorAttributeName,
-			nil];		
-	}
-
-	crap = [NSString stringWithCharacters:&code length:1];		
+	NSString* crap = [NSString stringWithCharacters:&code length:1];		
 	[crap drawWithRect:NSMakeRect(X,Y+[theFont ascender], 0, 0) options:0 attributes:attrib];
 	
 	// on older systems, for bold, redraw the character offset by 1 pixel
-	if (renderBold && (!OSX_TIGERORLATER || !antiAlias)) {
+	if (renderBold) {
 		[crap drawWithRect:NSMakeRect(X+1,Y+[theFont ascender], 0, 0) options:0 attributes:attrib];
 	}
 }	
