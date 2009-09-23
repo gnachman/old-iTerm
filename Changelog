@@ -1,3 +1,7 @@
+2009-09-24 delx
+	* Clear selection when VT100Screen calls setDirty
+	* Only redraw "blinked" characters every 0.5 seconds, not entire screen
+
 2009-09-23 delx
 	* Integrated new version of Sparkle for cryptographically protected
 	  updates. Should also be better about prompting for updates.
