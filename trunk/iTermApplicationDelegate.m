@@ -79,18 +79,6 @@ static BOOL usingAutoLaunchScript = NO;
 	[iTermProfileWindowController sharedInstance];
     [iTermBookmarkController sharedInstance];
     [PreferencePanel sharedInstance];
-    
-	
-#if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_4
-	NSString *appCast = [[PreferencePanel sharedInstance] checkTestRelease] ? 
-		[[NSBundle mainBundle] objectForInfoDictionaryKey:@"SUFeedURL"] : 
-		[[NSBundle mainBundle] objectForInfoDictionaryKey:@"SUFeedURLForFinalRelease"];
-	[[NSUserDefaults standardUserDefaults] setObject: appCast forKey:@"SUFeedURL"];
-#else
-	NSString *appCast = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"SUFeedURLForPanther"];
-	[[NSUserDefaults standardUserDefaults] setObject: appCast forKey:@"SUFeedURL"];
-#endif
-	
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification

@@ -148,7 +148,7 @@ static NSString *NoHandler = @"<No Handler>";
     defaultOpenBookmark = [prefs objectForKey:@"OpenBookmark"]?[[prefs objectForKey:@"OpenBookmark"] boolValue]: NO;
 	defaultQuitWhenAllWindowsClosed = [prefs objectForKey:@"QuitWhenAllWindowsClosed"]?[[prefs objectForKey:@"QuitWhenAllWindowsClosed"] boolValue]: NO;
 	defaultCursorType=[prefs objectForKey:@"CursorType"]?[prefs integerForKey:@"CursorType"]:2;
-    defaultCheckUpdate = [prefs objectForKey:@"SUCheckAtStartup"]?[[prefs objectForKey:@"SUCheckAtStartup"] boolValue]: YES;
+	defaultCheckUpdate = [prefs objectForKey:@"SUEnableAutomaticChecks"]?[[prefs objectForKey:@"SUEnableAutomaticChecks"] boolValue]: YES;
 	defaultUseBorder = [prefs objectForKey:@"UseBorder"]?[[prefs objectForKey:@"UseBorder"] boolValue]: NO;
 	defaultHideScrollbar = [prefs objectForKey:@"HideScrollbar"]?[[prefs objectForKey:@"HideScrollbar"] boolValue]: NO;
 	defaultCheckTestRelease = [prefs objectForKey:@"CheckTestRelease"]?[[prefs objectForKey:@"CheckTestRelease"] boolValue]: YES;
@@ -205,7 +205,7 @@ static NSString *NoHandler = @"<No Handler>";
 	[prefs setObject: [[iTermTerminalProfileMgr singleInstance] profiles] forKey: @"Terminals"];
 	[prefs setObject: [[ITAddressBookMgr sharedInstance] bookmarks] forKey: @"Bookmarks"];
 	[prefs setBool:defaultQuitWhenAllWindowsClosed forKey:@"QuitWhenAllWindowsClosed"];
-    [prefs setBool:defaultCheckUpdate forKey:@"SUCheckAtStartup"];
+	[prefs setBool:defaultCheckUpdate forKey:@"SUEnableAutomaticChecks"];
 	[prefs setInteger:defaultCursorType forKey:@"CursorType"];
 	[prefs setBool:defaultUseBorder forKey:@"UseBorder"];
 	[prefs setBool:defaultHideScrollbar forKey:@"HideScrollbar"];
@@ -253,7 +253,7 @@ static NSString *NoHandler = @"<No Handler>";
     [refreshRate setIntValue: defaultRefreshRate];
 	[wordChars setStringValue: ([defaultWordChars length] > 0)?defaultWordChars:@""];	
 	[quitWhenAllWindowsClosed setState: defaultQuitWhenAllWindowsClosed?NSOnState:NSOffState];
-    [checkUpdate setState: defaultCheckUpdate?NSOnState:NSOffState];
+	[checkUpdate setState: defaultCheckUpdate?NSOnState:NSOffState];
 	[cursorType selectCellWithTag:defaultCursorType];
 	[useBorder setState: defaultUseBorder?NSOnState:NSOffState];
 	[hideScrollbar setState: defaultHideScrollbar?NSOnState:NSOffState];
@@ -310,15 +310,10 @@ static NSString *NoHandler = @"<No Handler>";
 		
 			defaultCheckTestRelease = ([checkTestRelease state] == NSOnState);
 
-#if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_4
-			NSString *appCast = defaultCheckTestRelease ? 
-				[[NSBundle mainBundle] objectForInfoDictionaryKey:@"SUFeedURL"] : 
-				[[NSBundle mainBundle] objectForInfoDictionaryKey:@"SUFeedURLForFinalRelease"];
+			NSString *appCast = defaultCheckTestRelease ?
+				[[NSBundle mainBundle] objectForInfoDictionaryKey:@"SUFeedURLForTesting"] : 
+				[[NSBundle mainBundle] objectForInfoDictionaryKey:@"SUFeedURLForFinal"];
 			[[NSUserDefaults standardUserDefaults] setObject: appCast forKey:@"SUFeedURL"];
-#else
-			NSString *appCast = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"SUFeedURLForPanther"];
-			[[NSUserDefaults standardUserDefaults] setObject: appCast forKey:@"SUFeedURL"];
-#endif
 		}
 	}
 }
