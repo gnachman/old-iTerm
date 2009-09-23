@@ -531,16 +531,29 @@ static float strokeWidth, boldStrokeWidth;
 		dirty += WIDTH;
 	}
 
+	// Time to redraw blinking text?
+	struct timeval now;
+	BOOL redrawBlink = NO;
+	gettimeofday(&now, NULL);
+	if(now.tv_sec*10+now.tv_usec/100000 >= lastBlink.tv_sec*10+lastBlink.tv_usec/100000+7) {
+		blinkShow = !blinkShow;
+		lastBlink = now;
+		redrawBlink = YES;
+	}
+
 	// Visible chars that have changed selection status are dirty
+	// Also mark blinking text as dirty if needed
 	lineStart = [self visibleRect].origin.y / lineHeight;
 	lineEnd = lineStart + ceil([self visibleRect].size.height / lineHeight);
 	if(lineStart < 0) lineStart = 0;
 	if(lineEnd > [dataSource numberOfLines]) lineEnd = [dataSource numberOfLines];
 	for(int y = lineStart; y < lineEnd; y++) {
+		screen_char_t* theLine = [dataSource getLineAtIndex:y];
 		for(int x = 0; x < WIDTH; x++) {
 			BOOL isSelected = [self _isCharSelectedInRow:y col:x checkOld:NO];
 			BOOL wasSelected = [self _isCharSelectedInRow:y col:x checkOld:YES];
-			if(isSelected != wasSelected) {
+			BOOL blinked = redrawBlink && (theLine[x].fg_color & BLINK_MASK);
+			if(isSelected != wasSelected || blinked) {
 				NSRect dirtyRect = [self visibleRect];
 				dirtyRect.origin.y = y*lineHeight;
 				dirtyRect.size.height = lineHeight;
@@ -598,15 +611,6 @@ static float strokeWidth, boldStrokeWidth;
 
 	int height = [dataSource numberOfLines] * lineHeight;
 	NSRect frame = [self frame];
-
-	// Blinking
-	struct timeval now;
-	gettimeofday(&now, NULL);
-	if(now.tv_sec*10+now.tv_usec/100000 >= lastBlink.tv_sec*10+lastBlink.tv_usec/100000+7) {
-		blinkShow = !blinkShow;
-		lastBlink = now;
-		[self setNeedsDisplay:YES];
-	}
 
 	if(height != frame.size.height) {
 		// Grow to allow space for drawing the new lines
