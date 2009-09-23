@@ -1,3 +1,7 @@
+2009-09-23 delx
+	* Integrated new version of Sparkle for cryptographically protected
+	  updates. Should also be better about prompting for updates.
+
 2009-09-22 delx
 	* Draw bold text the old fashioned way, much faster
 	* Separate bold & highlight attributes for text
