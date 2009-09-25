@@ -812,61 +812,36 @@ static float strokeWidth, boldStrokeWidth;
 	[self _drawCursor];
 }
 
-- (void)keyDown:(NSEvent *)event
+- (void)keyDown:(NSEvent*)event
 {
-    NSInputManager *imana = [NSInputManager currentInputManager];
-    BOOL IMEnable = [imana wantsToInterpretAllKeystrokes];
-    id delegate = [self delegate];
+	id delegate = [self delegate];
 	unsigned int modflag = [event modifierFlags];
-    BOOL prev = [self hasMarkedText];
-	
+	BOOL prev = [self hasMarkedText];
+
 #if DEBUG_METHOD_TRACE
-    NSLog(@"%s(%d):-[PTYTextView keyDown:%@]",
-          __FILE__, __LINE__, event );
+	NSLog(@"%s(%d):-[PTYTextView keyDown:%@]", __FILE__, __LINE__, event );
 #endif
-    
+
 	keyIsARepeat = [event isARepeat];
-	
-    // Hide the cursor
-    [NSCursor setHiddenUntilMouseMoves: YES];   
-		
-	if ([delegate hasKeyMappingForEvent: event highPriority: YES]) 
+
+	// Hide the cursor
+	[NSCursor setHiddenUntilMouseMoves: YES];
+
+	if([delegate hasKeyMappingForEvent:event highPriority:YES] ||
+		(modflag & NSNumericPadKeyMask) ||
+		(modflag & NSFunctionKeyMask))
 	{
 		[delegate keyDown:event];
 		return;
 	}
-	
-    IM_INPUT_INSERT = NO;
-    if (IMEnable) {
-        [self interpretKeyEvents:[NSArray arrayWithObject:event]];
-        
-        if (prev == NO &&
-            IM_INPUT_INSERT == NO &&
-            [self hasMarkedText] == NO)
-        {
-            [delegate keyDown:event];
-        }
-    }
-    else {
-		// Check whether we have a custom mapping for this event or if numeric or function keys were pressed.
-		if ( prev == NO && 
-			 ([delegate hasKeyMappingForEvent: event highPriority: NO] ||
-			  (modflag & NSNumericPadKeyMask) || 
-			  (modflag & NSFunctionKeyMask)))
-		{
-			[delegate keyDown:event];
-		}
-		else {
-			if([[self delegate] optionKey] == OPT_NORMAL)
-			{
-				[self interpretKeyEvents:[NSArray arrayWithObject:event]];
-			}
-			
-			if (IM_INPUT_INSERT == NO) {
-				[delegate keyDown:event];
-			}
-		}
-    }
+
+	IM_INPUT_INSERT = NO;
+	if([[self delegate] optionKey] == OPT_NORMAL) {
+		[self interpretKeyEvents:[NSArray arrayWithObject:event]];
+	}
+	if(!prev && !IM_INPUT_INSERT && ![self hasMarkedText]) {
+		[delegate keyDown:event];
+	}
 }
 
 - (BOOL) keyIsARepeat
