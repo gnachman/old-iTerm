@@ -1,3 +1,6 @@
+2009-09-27 delx
+	* Fixed focus follows mouse not working when viewing scrollback (#2764633)
+
 2009-09-26 delx
 	* Fixed option key as esc/meta under Snow Leopard (#2849154)
 
