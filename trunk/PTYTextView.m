@@ -2452,22 +2452,28 @@ static float strokeWidth, boldStrokeWidth;
 {
 	if (!code) return;
 
+	static int oldfg = -1;
+	static NSFont* oldFont = nil;
+	static NSMutableDictionary* attrib = nil;
+	if(attrib == nil) attrib = [[NSMutableDictionary alloc] init];
+
 	NSFont* theFont = dw?nafont:font;
 	BOOL renderBold = (fg&BOLD_MASK) && ![self disableBold];
-	NSColor* color = [self colorForCode: fg];
+	NSColor* color = [self colorForCode:fg];
 
-	NSDictionary* attrib=[NSDictionary dictionaryWithObjectsAndKeys:
-		theFont, NSFontAttributeName, color, NSForegroundColorAttributeName,
-		nil];
+	if(oldfg != fg)
+		[attrib setObject:color forKey:NSForegroundColorAttributeName];
+	if(oldFont != theFont)
+		[attrib setObject:theFont forKey: NSFontAttributeName];
 
-	NSString* crap = [NSString stringWithCharacters:&code length:1];		
+	NSString* crap = [NSString stringWithCharacters:&code length:1];
 	[crap drawWithRect:NSMakeRect(X,Y+[theFont ascender], 0, 0) options:0 attributes:attrib];
 	
 	// redraw the character offset by 1 pixel, this is faster than real bold
-	if (renderBold) {
+	if(renderBold) {
 		[crap drawWithRect:NSMakeRect(X+1,Y+[theFont ascender], 0, 0) options:0 attributes:attrib];
 	}
-}	
+}
 
 - (void) _scrollToLine:(int)line
 {
