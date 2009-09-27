@@ -13,7 +13,7 @@ run: Development
 
 zip: Deployment
 	cd build/Deployment && \
-	zip -r iTerm.app.zip iTerm.app
+	zip -r iTerm_$$(cat ../../version.txt).$$(date '+%Y%m%d').zip iTerm.app
 
 clean:
 	xcodebuild -alltargets clean
