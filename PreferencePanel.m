@@ -468,8 +468,6 @@ static NSString *NoHandler = @"<No Handler>";
 //  defaults write net.sourceforge.iTerm MinTabWidth -int 100        
 //  defaults write net.sourceforge.iTerm MinCompactTabWidth -int 120
 //  defaults write net.sourceforge.iTerm OptimumTabWidth -int 100
-//  defaults write net.sourceforge.iTerm StrokeWidth -float -1
-//  defaults write net.sourceforge.iTerm BoldStrokeWidth -float -3
 
 - (BOOL) useUnevenTabs
 {
@@ -489,16 +487,6 @@ static NSString *NoHandler = @"<No Handler>";
 - (int) optimumTabWidth
 {
     return [prefs objectForKey:@"OptimumTabWidth"]?[[prefs objectForKey:@"OptimumTabWidth"] intValue]:175;
-}
-
-- (float) strokeWidth
-{
-    return [prefs objectForKey:@"StrokeWidth"]?[[prefs objectForKey:@"StrokeWidth"] floatValue]:0;
-}
-
-- (float) boldStrokeWidth
-{
-    return [prefs objectForKey:@"BoldStrokeWidth"]?[[prefs objectForKey:@"BoldStrokeWidth"] floatValue]:-2;
 }
 
 - (NSString *) searchCommand
