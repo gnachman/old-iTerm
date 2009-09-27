@@ -583,32 +583,31 @@ static float strokeWidth, boldStrokeWidth;
 	[dataSource resetDirty];
 }
 
-// We override this method since both refresh and window resize can conflict resulting in this happening twice
-// So we do not allow the size to be set larger than what the data source can fill
+// We override this method since both refresh and window resize can conflict
+// resulting in this happening twice So we do not allow the size to be set
+// larger than what the data source can fill
 - (void)setFrameSize:(NSSize)frameSize
 {
 	// Force the height to always be correct
 	frameSize.height = [dataSource numberOfLines] * lineHeight;
 	[super setFrameSize:frameSize];
-
-	if(![(PTYScroller *)([[self enclosingScrollView] verticalScroller]) userScroll]) {
-		[self scrollEnd];
-	}
-
-	// reset tracking rect
-	if(trackingRectTag) {
-		[self removeTrackingRect:trackingRectTag];
-	}
-	trackingRectTag = [self addTrackingRect:[self visibleRect] owner:self userData:nil assumeInside:NO];
 }
 
 - (void)refresh
 {
 	if(dataSource == nil) return;
 
+	// reset tracking rect
+	if(trackingRectTag) {
+		[self removeTrackingRect:trackingRectTag];
+	}
+	trackingRectTag = [self addTrackingRect:[self visibleRect] owner:self userData:nil assumeInside:NO];
+
+	// number of lines that have disappeared if circular buffer is full
 	int scrollbackOverflow = [dataSource scrollbackOverflow];
 	[dataSource resetScrollbackOverflow];
 
+	// frame size changed?
 	int height = [dataSource numberOfLines] * lineHeight;
 	NSRect frame = [self frame];
 

@@ -306,9 +306,7 @@ static NSImage *warningImage;
 			[self setBell: NO];
 			PTYScroller* ptys=(PTYScroller*)[SCROLLVIEW verticalScroller];
 			[SHELL writeTask: data];
-			// Make sure we scroll down to the end
-			[TEXTVIEW scrollEnd];
-			[ptys setUserScroll: NO];
+			[ptys setUserScroll:NO];
 		}
 	}
 	else {
@@ -1751,6 +1749,9 @@ static NSImage *warningImage;
 	}
 
 	[TEXTVIEW refresh];
+	if(![(PTYScroller*)([SCROLLVIEW verticalScroller]) userScroll]) {
+		[TEXTVIEW scrollEnd];
+	}
 	[self scheduleUpdateSoon:NO];
 }
 

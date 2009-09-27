@@ -275,18 +275,4 @@ end:
 	return YES;
 }
 
-- (void)sendEvent:(NSEvent *)event
-{
-	// NSLog(@"%s: 0x%x", __PRETTY_FUNCTION__, self);
-	
-	if([event type] == NSMouseEntered)
-	{		
-        //NSLog(@"window mouse entered");
-		if([[PreferencePanel sharedInstance] focusFollowsMouse])
-			[self makeKeyWindow];
-	}
-	
-	if (super) [super sendEvent:event];
-}
-
 @end
