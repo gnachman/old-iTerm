@@ -2103,6 +2103,7 @@ static __inline__ screen_char_t *incrementLinePointer(screen_char_t *buf_start, 
 - (void)setDirty
 {
 //	memset(dirty,1,WIDTH*HEIGHT*sizeof(char));
+	[self resetScrollbackOverflow];
 	[display deselect];
 	[display setNeedsDisplay:YES];
 }
