@@ -48,7 +48,6 @@
 #include <math.h>
 
 static NSCursor* textViewCursor =  nil;
-static float strokeWidth, boldStrokeWidth;
 
 @implementation PTYTextView
 
@@ -67,8 +66,6 @@ static float strokeWidth, boldStrokeWidth;
     [reverseCursorImage compositeToPoint:NSMakePoint(2,0) operation:NSCompositePlusLighter];
     [aCursorImage unlockFocus];
     textViewCursor = [[NSCursor alloc] initWithImage:aCursorImage hotSpot:hotspot];
-    strokeWidth = [[PreferencePanel sharedInstance] strokeWidth];
-    boldStrokeWidth = [[PreferencePanel sharedInstance] boldStrokeWidth];
 }
 
 + (NSCursor *) textViewCursor
