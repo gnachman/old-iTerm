@@ -44,6 +44,12 @@
 #import <iTermProfileWindowController.h>
 #import <iTermBookmarkController.h>
 
+
+@interface NSApplication (Undocumented)
+- (void)_cycleWindowsReversed:(BOOL)back;
+@end
+
+
 static NSString* APPLICATION_SUPPORT_DIRECTORY = @"~/Library/Application Support";
 static NSString *SUPPORT_DIRECTORY = @"~/Library/Application Support/iTerm";
 static NSString *SCRIPT_DIRECTORY = @"~/Library/Application Support/iTerm/Scripts";
@@ -205,6 +211,16 @@ static BOOL initDone = NO;
 - (IBAction)newSession:(id)sender
 {
     [self launchBookmark:nil inTerminal: FRONT];
+}
+
+// navigation
+- (IBAction) previousTerminal:(id)sender
+{
+	[NSApp _cycleWindowsReversed:YES];
+}
+- (IBAction)nextTerminal:(id)sender
+{
+	[NSApp _cycleWindowsReversed:NO];
 }
 
 - (PseudoTerminal *) currentTerminal
