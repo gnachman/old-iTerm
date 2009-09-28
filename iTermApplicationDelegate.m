@@ -266,17 +266,6 @@ static BOOL usingAutoLaunchScript = NO;
     [[iTermController sharedInstance] newSession:sender];
 }
 
-// navigation
-- (IBAction) previousTerminal: (id) sender
-{
-    [[iTermController sharedInstance] previousTerminal:sender];
-}
-
-- (IBAction) nextTerminal: (id) sender
-{
-    [[iTermController sharedInstance] nextTerminal:sender];
-}
-
 - (IBAction)showPrefWindow:(id)sender
 {
     [[PreferencePanel sharedInstance] run];
@@ -460,9 +449,6 @@ static BOOL usingAutoLaunchScript = NO;
     if (frontTerminal != [aNotification object]) return;
 	
 	unsigned int drawerState;
-
-	[previousTerminal setAction: (frontTerminal?@selector(previousTerminal:):nil)];
-	[nextTerminal setAction: (frontTerminal?@selector(nextTerminal:):nil)];
 
 	[self buildSessionSubmenu: aNotification];
 	[self buildAddressBookMenu: aNotification];

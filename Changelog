@@ -2,6 +2,7 @@
 	* Fixed IME when option key is set to meta/esc
 	* Fix auto update bug
 	* Fix showing toolbar when window is maximised (#2765328)
+	* Removed prev/next items from Window menu (fixes #2805216, #2688460)
 
 2009-09-27 delx
 	* Fixed focus follows mouse not working when viewing scrollback (#2764633)
