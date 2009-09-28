@@ -38,8 +38,8 @@
 typedef struct screen_char_t
 {
 	unichar ch;    // the actual character
-	unsigned int bg_color; // background color
-	unsigned int fg_color; // foreground color
+	unsigned short bg_color; // background color
+	unsigned short fg_color; // foreground color
 } screen_char_t;
 
 #define TABWINDOW	300
