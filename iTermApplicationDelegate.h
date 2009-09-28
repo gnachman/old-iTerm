@@ -50,6 +50,8 @@
     // Menu items
     IBOutlet NSMenu     *bookmarkMenu;
     IBOutlet NSMenuItem *selectTab;
+    IBOutlet NSMenuItem *previousTerminal;
+    IBOutlet NSMenuItem *nextTerminal;
     IBOutlet NSMenuItem *logStart;
     IBOutlet NSMenuItem *logStop;
     IBOutlet NSMenuItem *closeTab;
@@ -80,6 +82,10 @@
 
 - (IBAction)showPrefWindow:(id)sender;
 - (IBAction)showBookmarkWindow:(id)sender;
+
+    // navigation
+- (IBAction) previousTerminal: (id) sender;
+- (IBAction) nextTerminal: (id) sender;
 
 // Notifications
 - (void) reloadMenus: (NSNotification *) aNotification;
