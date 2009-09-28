@@ -152,7 +152,11 @@ static NSString *NoHandler = @"<No Handler>";
 	defaultUseBorder = [prefs objectForKey:@"UseBorder"]?[[prefs objectForKey:@"UseBorder"] boolValue]: NO;
 	defaultHideScrollbar = [prefs objectForKey:@"HideScrollbar"]?[[prefs objectForKey:@"HideScrollbar"] boolValue]: NO;
 	defaultCheckTestRelease = [prefs objectForKey:@"CheckTestRelease"]?[[prefs objectForKey:@"CheckTestRelease"] boolValue]: YES;
-	
+	NSString *appCast = defaultCheckTestRelease ?
+		[[NSBundle mainBundle] objectForInfoDictionaryKey:@"SUFeedURLForTesting"] :
+		[[NSBundle mainBundle] objectForInfoDictionaryKey:@"SUFeedURLForFinal"];
+	[[NSUserDefaults standardUserDefaults] setObject:appCast forKey:@"SUFeedURL"];
+
 	NSArray *urlArray;
 	NSDictionary *tempDict = [prefs objectForKey:@"URLHandlers"];
 	int i;
