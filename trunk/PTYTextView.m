@@ -821,20 +821,22 @@ static NSCursor* textViewCursor =  nil;
 	keyIsARepeat = [event isARepeat];
 
 	// Hide the cursor
-	[NSCursor setHiddenUntilMouseMoves: YES];
+	[NSCursor setHiddenUntilMouseMoves:YES];
 
+	// Should we process the event immediately in the delegate?
 	if([delegate hasKeyMappingForEvent:event highPriority:YES] ||
-		(modflag & NSNumericPadKeyMask) ||
-		(modflag & NSFunctionKeyMask))
+		(modflag & NSNumericPadKeyMask) || (modflag & NSFunctionKeyMask) ||
+		((modflag & NSAlternateKeyMask) && [delegate optionKey] != OPT_NORMAL))
 	{
 		[delegate keyDown:event];
 		return;
 	}
 
+	// Let the IME process key events
 	IM_INPUT_INSERT = NO;
-	if([[self delegate] optionKey] == OPT_NORMAL) {
-		[self interpretKeyEvents:[NSArray arrayWithObject:event]];
-	}
+	[self interpretKeyEvents:[NSArray arrayWithObject:event]];
+
+	// If the IME didn't want it, pass it on to the delegate
 	if(!prev && !IM_INPUT_INSERT && ![self hasMarkedText]) {
 		[delegate keyDown:event];
 	}
