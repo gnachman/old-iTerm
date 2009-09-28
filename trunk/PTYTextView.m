@@ -1180,7 +1180,10 @@ static NSCursor* textViewCursor =  nil;
 				break;
 		}
 	}
-	
+
+	// Lock auto scrolling while the user is selecting text
+	[(PTYScroller*)([[self enclosingScrollView] verticalScroller]) setUserScroll:YES];
+
 	if(mouseDownEvent != nil)
     {
 		[mouseDownEvent release];
@@ -1330,7 +1333,12 @@ static NSCursor* textViewCursor =  nil;
 				break;
 		}
 	}
-	
+
+	// Unlock auto scrolling as the user as finished selecting text
+	if(([self visibleRect].origin.y + [self visibleRect].size.height) / lineHeight == [dataSource numberOfLines]) {
+		[(PTYScroller*)([[self enclosingScrollView] verticalScroller]) setUserScroll:NO];
+	}
+
 	if(mouseDown == NO)
 		return;
 	mouseDown = NO;
