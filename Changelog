@@ -1,3 +1,8 @@
+2009-09-28 delx
+	* Fixed IME when option key is set to meta/esc
+	* Fix auto update bug
+	* Fix showing toolbar when window is maximised (#2765328)
+
 2009-09-27 delx
 	* Fixed focus follows mouse not working when viewing scrollback (#2764633)
 

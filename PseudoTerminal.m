@@ -1726,6 +1726,7 @@ NSString *sessionsKey = @"sessions";
 
 - (void) windowDidToggleToolbarVisibility: (id) sender
 {
+	[self setWindowSize];
 }
 
 // Bookmarks
