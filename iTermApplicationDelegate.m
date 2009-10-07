@@ -374,7 +374,7 @@ static BOOL usingAutoLaunchScript = NO;
     webSite = [[NSAttributedString alloc] initWithString: @"http://iterm.sourceforge.net" attributes: linkAttributes];
 
     // Bug report
-    bugURL = [NSURL URLWithString: @"https://sourceforge.net/tracker/?func=add&group_id=67789&atid=518973"];
+    bugURL = [NSURL URLWithString: @"http://iterm.sourceforge.net/tracker-bug"];
     linkAttributes= [NSDictionary dictionaryWithObjectsAndKeys: bugURL, NSLinkAttributeName,
         [NSNumber numberWithInt: NSSingleUnderlineStyle], NSUnderlineStyleAttributeName,
         [NSColor blueColor], NSForegroundColorAttributeName,

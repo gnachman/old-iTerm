@@ -1,3 +1,6 @@
+2009-10-07 delx
+	* Fixed report bug link in about box (#2872981)
+
 2009-09-29 delx
 	* Lock scrolling while the user is selecting text (#2868971)
 
