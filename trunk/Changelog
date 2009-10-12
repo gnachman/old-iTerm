@@ -1,5 +1,6 @@
 2009-10-12 delx
 	* Fixed incorrect vertical font positioning (#2765901)
+	* Lock scrollback buffer after finding text (#2875908)
 
 2009-10-07 delx
 	* Fixed report bug link in about box (#2872981)

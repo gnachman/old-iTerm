@@ -2935,6 +2935,9 @@ static NSCursor* textViewCursor =  nil;
 		endX = anIndex % [dataSource width];
 		endY = anIndex/[dataSource width];
 
+		// Lock scrolling after finding text
+		[(PTYScroller*)([[self enclosingScrollView] verticalScroller]) setUserScroll:YES];
+
 		[self _scrollToLine:endY];
 		[self setNeedsDisplay:YES];
 
