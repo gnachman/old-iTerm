@@ -33,7 +33,6 @@
 #import <iTerm/PreferencePanel.h>
 #import <iTerm/PseudoTerminal.h>
 #import <iTerm/iTermController.h>
-#import <CGSInternal.h>
 
 #define DEBUG_METHOD_ALLOC	0
 #define DEBUG_METHOD_TRACE	0
@@ -78,47 +77,6 @@
 }
 
 
-- (void)enableBlur
-{
-#if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_4
-	// Only works in Leopard (or hopefully later)
-	if (!OSX_LEOPARDORLATER) return;
-	
-	if (blurFilter)
-		return;
-
-	CGSConnectionID con = CGSMainConnectionID();
-	if (!con)
-		return;
-
-	if (CGSNewCIFilterByName(con, (CFStringRef)@"CIGaussianBlur", &blurFilter))
-		return;
-
-	// should really set this from options:
-	NSDictionary *optionsDict = [NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:2.0] forKey:@"inputRadius"];
-	CGSSetCIFilterValuesFromDictionary(con, blurFilter, (CFDictionaryRef)optionsDict);
-
-	CGSAddWindowFilter(con, [self windowNumber], blurFilter, kCGWindowFilterUnderlay);
-#endif
-}
-
-- (void)disableBlur
-{
-#if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_4
-	//only works in Leopard (or hopefully later)
-	if (!OSX_LEOPARDORLATER) return;
-
-	if (blurFilter) {
-		CGSConnectionID con = CGSMainConnectionID();
-		if (!con)
-			return;
-
-		CGSRemoveWindowFilter(con, (CGSWindowID)[self windowNumber], blurFilter);
-		CGSReleaseCIFilter(CGSMainConnectionID(), blurFilter);
-		blurFilter = 0;
-	}
-#endif
-}
 
 - (int)screenNumber
 {
@@ -128,13 +86,6 @@
 - (void)smartLayout
 {
 	NSEnumerator* iterator;
-
-#if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_4
-	CGSConnectionID con = CGSMainConnectionID();
-	if (!con) return;
-	CGSWorkspaceID currentSpace = -1;
-	CGSGetWorkspace(con, &currentSpace);
-#endif
 
 	int currentScreen = [self screenNumber];
 	NSRect screenRect = [[self screen] visibleFrame];
@@ -149,12 +100,6 @@
 
 		int otherScreen = [otherWindow screenNumber];
 		if(otherScreen != currentScreen) continue;
-
-#if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_4
-		CGSWorkspaceID otherSpace = -1;
-		CGSGetWindowWorkspace(con, [otherWindow windowNumber], &otherSpace);
-		if(otherSpace != currentSpace) continue;
-#endif
 
 		[windows addObject:otherWindow];
 	}
