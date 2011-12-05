@@ -39,7 +39,7 @@
 #import <iTerm/ITAddressBookMgr.h>
 #import <iTerm/iTermTerminalProfileMgr.h>
 #import <iTerm/iTermDisplayProfileMgr.h>
-#import <iTerm/iTermGrowlDelegate.h>
+//#import <iTerm/iTermGrowlDelegate.h>
 
 #include <unistd.h>
 #include <sys/wait.h>
@@ -109,7 +109,7 @@ static NSImage *warningImage;
 	NSParameterAssert(SHELL != nil && TERMINAL != nil && SCREEN != nil);	
 
 	// Need Growl plist stuff
-	gd = [iTermGrowlDelegate sharedInstance];
+	//gd = [iTermGrowlDelegate sharedInstance];
 	growlIdle = growlNewOutput = NO;
 
 	return (self);
@@ -357,9 +357,11 @@ static NSImage *warningImage;
 #if DEBUG_METHOD_TRACE
 	NSLog(@"%s(%d):-[PTYSession brokenPipe]", __FILE__, __LINE__);
 #endif
+#if 0
 	[gd growlNotify:NSLocalizedStringFromTableInBundle(@"Broken Pipe",@"iTerm", [NSBundle bundleForClass: [self class]], @"Growl Alerts")
 	withDescription:[NSString stringWithFormat:NSLocalizedStringFromTableInBundle(@"Session %@ #%d just terminated.",@"iTerm", [NSBundle bundleForClass: [self class]], @"Growl Alerts"),[self name],[self realObjectCount]] 
 	andNotification:@"Broken Pipes"];
+#endif
 
 	EXIT=YES;
 	[self setLabelAttribute];
@@ -951,6 +953,7 @@ static NSImage *warningImage;
             if (newOutput)
 			{
 				// Idle after new output
+#if 0
                 if (!growlIdle && now.tv_sec > lastOutput.tv_sec+1) {
                     [gd growlNotify:NSLocalizedStringFromTableInBundle(@"Idle",@"iTerm", [NSBundle bundleForClass: [self class]], @"Growl Alerts")
                     withDescription:[NSString stringWithFormat:NSLocalizedStringFromTableInBundle(@"Session %@ #%d becomes idle.",@"iTerm", [NSBundle bundleForClass: [self class]], @"Growl Alerts"),[self name],[self realObjectCount]]  
@@ -958,6 +961,7 @@ static NSImage *warningImage;
                     growlIdle = YES;
                     growlNewOutput = NO;
                 }
+#endif
                 [parent setLabelColor: idleStateColor forTabViewItem: tabViewItem];
 			}
             else
@@ -972,12 +976,14 @@ static NSImage *warningImage;
                 if(isProcessing == NO && ![[PreferencePanel sharedInstance] useCompactLabel])
                     [self setIsProcessing: YES];
 
+#if 0
                 if (!growlNewOutput && ![parent sendInputToAllSessions]) {
                     [gd growlNotify:NSLocalizedStringFromTableInBundle(@"New Output",@"iTerm", [NSBundle bundleForClass: [self class]], @"Growl Alerts")
                     withDescription:[NSString stringWithFormat:NSLocalizedStringFromTableInBundle(@"New Output was received in %@ #%d.",@"iTerm", [NSBundle bundleForClass: [self class]], @"Growl Alerts"),[self name],[self realObjectCount]] 
                     andNotification:@"New Output"];
                     growlNewOutput=YES;
                 }
+#endif
                 
                 [parent setLabelColor: newOutputStateColor forTabViewItem: tabViewItem];
             }
@@ -1006,10 +1012,12 @@ static NSImage *warningImage;
         if (bell)
 		{
             [self setIcon: warningImage];
+#if 0
 			if([TEXTVIEW keyIsARepeat] == NO && ![[TEXTVIEW window] isKeyWindow])
 				[gd growlNotify:NSLocalizedStringFromTableInBundle(@"Bell",@"iTerm", [NSBundle bundleForClass: [self class]], @"Growl Alerts")
 				withDescription:[NSString stringWithFormat:NSLocalizedStringFromTableInBundle(@"Session %@ #%d just rang a bell!",@"iTerm", [NSBundle bundleForClass: [self class]], @"Growl Alerts"),[self name],[self realObjectCount]] 
-				andNotification:@"Bells"];			
+				andNotification:@"Bells"];	
+#endif
 		}
         else
             [self setIcon: nil];

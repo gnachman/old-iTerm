@@ -58,7 +58,7 @@
 #import <PSMTabBarControl.h>
 #import <PSMTabStyle.h>
 #import <iTermBookmarkController.h>
-#import <iTerm/iTermGrowlDelegate.h>
+//#import <iTerm/iTermGrowlDelegate.h>
 #include <unistd.h>
 
 @interface PSMTabBarControl (Private)

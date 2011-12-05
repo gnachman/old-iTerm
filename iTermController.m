@@ -40,7 +40,7 @@
 #import <iTerm/ITAddressBookMgr.h>
 #import <iTerm/Tree.h>
 #import <iTerm/ITConfigPanelController.h>
-#import <iTerm/iTermGrowlDelegate.h>
+//#import <iTerm/iTermGrowlDelegate.h>
 #import <iTermProfileWindowController.h>
 #import <iTermBookmarkController.h>
 
@@ -115,7 +115,7 @@ static BOOL initDone = NO;
 	 * Need to add routine in iTerm prefs for Growl support and
 	 * PLIST check here.
 	 */
-    gd = [iTermGrowlDelegate sharedInstance];
+    //gd = [iTermGrowlDelegate sharedInstance];
 	
     return (self);
 }
@@ -138,8 +138,8 @@ static BOOL initDone = NO;
 	[terminalWindows release];
 
 	// Release the GrowlDelegate
-	if(gd)
-		[gd release];
+	//if(gd)
+	//	[gd release];
 
 	[super dealloc];
 }

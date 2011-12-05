@@ -42,7 +42,7 @@
 #import <iTerm/PTYSession.h>
 #import <iTerm/PTYTask.h>
 #import <iTerm/PreferencePanel.h>
-#import <iTerm/iTermGrowlDelegate.h>
+//#import <iTerm/iTermGrowlDelegate.h>
 #import <iTerm/iTermTerminalProfileMgr.h>
 #include <string.h>
 #include <unistd.h>
@@ -173,7 +173,7 @@ static __inline__ screen_char_t *incrementLinePointer(screen_char_t *buf_start, 
     for(i=0;i<4;i++) saveCharset[i]=charset[i]=0;
 	
     // Need Growl plist stuff
-	gd = [iTermGrowlDelegate sharedInstance];
+	//gd = [iTermGrowlDelegate sharedInstance];
 
     return self;
 }
@@ -972,7 +972,8 @@ static __inline__ screen_char_t *incrementLinePointer(screen_char_t *buf_start, 
 		}
 		break;
 
-	// Our iTerm specific codes    
+	// Our iTerm specific codes  
+#if 0
     case ITERM_GROWL:
         if (GROWL) {
             [gd growlNotify:NSLocalizedStringFromTableInBundle(@"Alert",@"iTerm", [NSBundle bundleForClass: [self class]], @"Growl Alerts")
@@ -980,6 +981,7 @@ static __inline__ screen_char_t *incrementLinePointer(screen_char_t *buf_start, 
             andNotification:@"Customized Message"];
         }
         break;
+#endif
         
     default:
 		/*NSLog(@"%s(%d): bug?? token.type = %d", 

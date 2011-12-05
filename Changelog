@@ -1,3 +1,9 @@
+2011-12-04 ujwal
+	* Updatd project file for Xcode on Lion.
+	* Disabled Growl support for now: Removed existing Growl and added new Growl
+	* Deleted CGSInternal since that does not compile for Lion anymore.
+	* Result: iTerm builds, but no windows open. Need to fix.
+
 2009-10-12 delx
 	* Fixed incorrect vertical font positioning (#2765901)
 	* Lock scrollback buffer after finding text (#2875908)
